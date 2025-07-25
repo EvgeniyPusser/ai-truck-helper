@@ -11,21 +11,19 @@ const trucks = JSON.parse(
   fs.readFileSync(path.resolve("./src/data/trucks.json"), "utf-8")
 );
 
-const plannerConfig = JSON.parse(
-  fs.readFileSync(path.resolve("./src/logic/planner.json"), "utf-8")
-);
-
-// ... остальной код без изменений
-
-
-dotenv.config();
+// Параметры расчета по умолчанию, т.к. plannerConfig удален
+const helpersPerVolume = 0.5;
+const minHelpers = 1;
+const maxHelpers = 5;
+const basePricePerKm = 2.5;
+const pricePerM3 = 30;
+const notes = "Default pricing without planner.json";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 function calculateHelpers(volume) {
-  const { helpersPerVolume, minHelpers, maxHelpers } = plannerConfig;
   let helpers = Math.ceil(volume * helpersPerVolume);
   if (helpers < minHelpers) helpers = minHelpers;
   if (helpers > maxHelpers) helpers = maxHelpers;
@@ -33,22 +31,16 @@ function calculateHelpers(volume) {
 }
 
 function calculatePrice(distanceKm, volume) {
-  const { basePricePerKm, pricePerM3 } = plannerConfig;
   return basePricePerKm * distanceKm + pricePerM3 * volume;
 }
 
 function selectTruck(volume) {
-  // Сортируем грузовики по объёму по возрастанию
   const sortedTrucks = trucks.slice().sort((a, b) => a.volume_m3 - b.volume_m3);
-
-  // Ищем первый грузовик, который подходит по объёму
   for (const truck of sortedTrucks) {
     if (truck.volume_m3 >= volume) {
       return truck;
     }
   }
-
-  // Если не нашли подходящий — возвращаем самый большой
   return sortedTrucks[sortedTrucks.length - 1];
 }
 
@@ -66,24 +58,25 @@ app.post("/api/chat", async (req, res) => {
       comments,
     } = aiResponse;
 
-    // Выбираем грузовик из trucks.json по объёму
     const truck = selectTruck(estimated_volume_m3);
-
     const helpers_needed = calculateHelpers(estimated_volume_m3);
-    const estimated_price_usd = calculatePrice(estimated_distance_km, estimated_volume_m3);
+    const estimated_price_usd = calculatePrice(
+      estimated_distance_km,
+      estimated_volume_m3
+    );
 
     const reply = {
       from,
       to,
       date,
-      truck_size: truck.id,       // Используем id из trucks.json
-      truck_name: truck.name,     // Добавляем имя для удобства
+      truck_size: truck.id,
+      truck_name: truck.name,
       estimated_volume_m3,
       estimated_distance_km,
       helpers_needed,
       estimated_price_usd,
       comments,
-      pricing_formula: plannerConfig.notes,
+      pricing_formula: notes,
     };
 
     res.json({ reply });
@@ -93,9 +86,7 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`🚚 AI Truck Helper running at http://localhost:${PORT}`);
 });
-
