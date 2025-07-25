@@ -1,8 +1,0 @@
-{
-  "helpersPerVolume": 0.1,
-  "basePricePerKm": 1.2,
-  "pricePerM3": 50,
-  "minHelpers": 1,
-  "maxHelpers": 5,
-  "notes": "Цена считается по формуле: basePricePerKm * distance_km + pricePerM3 * volume_m3"
-}

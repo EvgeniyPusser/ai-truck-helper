@@ -1,0 +1,22 @@
+[
+  {
+    "id": "truck101",
+    "owner": "JohnTruckRentals",
+    "location": "Los Angeles, CA",
+    "size": 26,
+    "clean": true,
+    "pricePerMile": 1.2,
+    "availableDates": ["2025-08-15", "2025-08-16"],
+    "rating": 4.8
+  },
+  {
+    "id": "truck102",
+    "owner": "BobMoverCo",
+    "location": "Los Angeles, CA",
+    "size": 20,
+    "clean": false,
+    "pricePerMile": 1.0,
+    "availableDates": ["2025-08-15"],
+    "rating": 3.9
+  }
+]

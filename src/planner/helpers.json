@@ -1,0 +1,11 @@
+[
+  {
+    "id": "helper001",
+    "name": "Alex",
+    "location": "Los Angeles, CA",
+    "pricePerHour": 25,
+    "availableDates": ["2025-08-15"],
+    "rating": 4.7
+  }
+]
+
