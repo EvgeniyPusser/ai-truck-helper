@@ -1,0 +1,21 @@
+ai-truck-helper/
+┣ chat-test.http
+┣ generateTree.js
+┣ generateTree.ts
+┣ package-lock.json
+┣ package.json
+┣ public/
+┣ README.md
+┣ src/
+┃ ┣ api/
+┃ ┃ ┗ chat.js
+┃ ┣ config.js
+┃ ┣ data/
+┃ ┃ ┗ trucks.json
+┃ ┣ planner/
+┃ ┃ ┣ clients.json
+┃ ┃ ┣ helpers.json
+┃ ┃ ┣ planner.ts
+┃ ┃ ┗ trucks.json
+┃ ┗ server.js
+┗ test.js
