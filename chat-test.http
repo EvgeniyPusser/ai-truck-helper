@@ -1,6 +1,16 @@
+# POST http://localhost:3001/api/chat
+# Content-Type: application/json
+
+# {
+#   "message": "Я переезжаю из Москвы в Нью-Йорк через три дня, у меня диван, кровать и 12 коробок и три больших кошки"
+# }
 POST http://localhost:3001/api/chat
 Content-Type: application/json
 
 {
-  "message": "Я переезжаю из Москвы в Нью-Йорк через три дня, у меня диван, кровать и 12 коробок и три больших кошки"
+  "from": "Los Angeles, CA",
+  "to": "San Diego, CA",
+  "date": "2025-08-10",
+  "volume": 12,
+  "needHelpers": true
 }

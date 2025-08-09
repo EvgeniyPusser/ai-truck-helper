@@ -5,8 +5,11 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { askAI } from "./api/chat.js";
+import { config } from "./config.js";
+import { geocode } from "./services/geocode.js";
 
 dotenv.config();
+console.log("🔑 Ключ из .env:", process.env.OPENROUTER_API_KEY);
 
 // Load trucks data JSON
 const trucks = JSON.parse(
@@ -50,9 +53,11 @@ function selectTruck(volume) {
 
 // API route: /api/chat (existing AI + calculation)
 app.post("/api/chat", async (req, res) => {
-  const { message } = req.body;
+  const formData = req.body;
   try {
-    const aiResponse = await askAI(message);
+    console.log("📨 POST /api/chat called with:", formData);
+
+    const aiResponse = await askAI(formData);
 
     const {
       estimated_volume_m3,
