@@ -2,16 +2,25 @@ import fs from "fs";
 import path from "path";
 
 // Read JSON data from files
+
+
+const dataDir = path.resolve(__dirname, "../../data");
+
 const clients = JSON.parse(
-  fs.readFileSync(path.resolve("./src/planner/clients.json"), "utf-8")
-);
-const trucks = JSON.parse(
-  fs.readFileSync(path.resolve("./src/planner/trucks.json"), "utf-8")
-);
-const helpers = JSON.parse(
-  fs.readFileSync(path.resolve("./src/planner/helpers.json"), "utf-8")
+  fs.readFileSync(path.join(dataDir, "clients.json"), "utf-8")
 );
 
+const trucks = JSON.parse(
+  fs.readFileSync(path.join(dataDir, "trucks.json"), "utf-8")
+);
+
+const helpers = JSON.parse(
+  fs.readFileSync(path.join(dataDir, "helpers.json"), "utf-8")
+);
+
+
+
+  
 // Simple distance estimator placeholder (replace with real API later)
 function estimateDistance(from: string, to: string): number {
   // For now, hardcoded example or simple logic:

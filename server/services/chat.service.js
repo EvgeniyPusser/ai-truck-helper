@@ -1,7 +1,7 @@
-import { geocode } from "../../src/services/geocode.ts"; // tsx lets us import .ts
-import { getRoute } from "../../src/services/route.js";
+import { geocode } from "./geocode.ts"; // tsx lets us import .ts
+import { getRoute } from "./route.js";
 import fetch from "node-fetch";
-import { config } from "../../src/config.js";
+import { config } from "../config.js";
 
 export async function buildPlan({ from, to, date, volume, needHelpers }) {
   // 1) geocode + route
@@ -98,5 +98,4 @@ Return <= 120 words + 3 bullet tips.`,
     pricing: { transport, labor, platformFee, estTotal },
     narrative,
   };
-
 }
