@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
+import pyRoutes from "./routes/py.js";
+
 const app = express();
 
 const allowedOrigins = [
@@ -29,13 +31,16 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "5mb" }));
 app.use(morgan("tiny"));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
+app.use("/py", pyRoutes);
 
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
+
+app.use("/api/py", limits.chat, pyRoutes); 
 
 app.use(notFound);
 app.use(errorHandler);

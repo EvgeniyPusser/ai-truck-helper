@@ -136,6 +136,8 @@ app.get("/", (req, res) => {
   res.send("Backend is alive and ready!");
 });
 
+
+
 // Start the server on port 3001
 const PORT = 3001;
 app.listen(PORT, () => {

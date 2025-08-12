@@ -1,16 +1,21 @@
-// src/services/geocode.ts
+
+
+
+
+
 import fetch from "node-fetch";
 
-/**
- * Geocode using OpenStreetMap Nominatim (no API key).
- * Returns [lng, lat] like before.
- */
+/** Возвращает [lng, lat] для США */
 export async function geocode(place: string): Promise<[number, number]> {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(place)}`;
+  // Если нет явного указания США — дописываем ", USA"
+  const q = /usa|united\s*states|,?\s*[A-Z]{2}\s*,?\s*USA/i.test(place)
+    ? place
+    : `${place}, USA`;
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
 
   const res = await fetch(url, {
     headers: {
-      // Nominatim requires a valid User-Agent/contact per policy
       "User-Agent": "HolyMove/1.0 (support@holymove.example)",
       "Accept": "application/json",
     },
@@ -19,18 +24,16 @@ export async function geocode(place: string): Promise<[number, number]> {
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`Geocode error ${res.status}: ${text || res.statusText}`);
-    }
+  }
 
   const data: any = await res.json();
   if (Array.isArray(data) && data.length > 0 && data[0].lon && data[0].lat) {
     const lng = parseFloat(data[0].lon);
     const lat = parseFloat(data[0].lat);
+    // быстрая проверка, что это США (в США долгота отрицательная)
+    if (lng > 0) throw new Error(`Geocode sanity check failed: lng=${lng} (ожидали США, отрицательная долгота)`);
     return [lng, lat];
   }
 
-  throw new Error(`No coordinates found for "${place}"`);
+  throw new Error(`No coordinates found for "${q}"`);
 }
-
-
-
-
