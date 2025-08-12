@@ -1,4 +1,5 @@
 ai-truck-helper/
+┣ ai-truck-helper@1.0.0
 ┣ chat-test.http
 ┣ generateTree.js
 ┣ generateTree.ts
@@ -6,6 +7,29 @@ ai-truck-helper/
 ┣ package.json
 ┣ public/
 ┣ README.md
+┣ scripts/
+┃ ┣ routeDiag.js
+┃ ┣ route_opt.py
+┃ ┗ test.py
+┣ server/
+┃ ┣ app.js
+┃ ┣ controllers/
+┃ ┃ ┣ auth.controller.js
+┃ ┃ ┗ chat.controller.js
+┃ ┣ index.js
+┃ ┣ middleware/
+┃ ┃ ┣ auth.js
+┃ ┃ ┣ error.js
+┃ ┃ ┗ rateLimit.js
+┃ ┣ py/
+┃ ┣ routes/
+┃ ┃ ┣ auth.routes.js
+┃ ┃ ┗ chat.routes.js
+┃ ┣ services/
+┃ ┃ ┣ chat.service.js
+┃ ┃ ┗ user.service.js
+┃ ┗ utils/
+┃   ┗ jwt.js
 ┣ src/
 ┃ ┣ api/
 ┃ ┃ ┗ chat.js
@@ -17,5 +41,11 @@ ai-truck-helper/
 ┃ ┃ ┣ helpers.json
 ┃ ┃ ┣ planner.ts
 ┃ ┃ ┗ trucks.json
-┃ ┗ server.js
-┗ test.js
+┃ ┣ server.js
+┃ ┗ services/
+┃   ┣ geocode.ts
+┃   ┣ providers.js
+┃   ┗ route.js
+┣ structure.txt
+┣ test.js
+┗ tsx

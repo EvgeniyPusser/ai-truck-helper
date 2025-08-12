@@ -1,4 +1,5 @@
-// src/config.js
+// server/config.js
+
 export const config = {
   // MAPS (OpenRouteService)
   orsApiKey: process.env.OPENROUTESERVICE_API_KEY || "",

@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx server/index.js"
+    "dev": "tsx server/index.js",
+    "start": "node --enable-source-maps server/index.js",
+    "typecheck": "tsc --noEmit"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -31,7 +32,7 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.2.1",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.3",
+    "tsx": "^4.20.4",
     "typescript": "^5.9.2"
   }
 }

@@ -1,4 +1,5 @@
-// src/services/providers.js
+// server/services/providers.js
+
 import fetch from "node-fetch";
 import { config } from "../config.js"; // config.DOLLY_API_KEY и т.д.
 
