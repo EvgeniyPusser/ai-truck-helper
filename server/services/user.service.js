@@ -2,7 +2,7 @@
 import crypto from "crypto";
 const sha = (s) => crypto.createHash("sha256").update(s).digest("hex");
 
-// Моки пользователей под все 5 ролей
+// Моки пользователей под все 5 ролей + админ
 const users = [
   {
     id: "u1",
@@ -19,25 +19,32 @@ const users = [
   {
     id: "u3",
     email: "truck@example.com",
-    role: "truck",
+    role: "truck_owner",
     passwordHash: sha("truck123"),
-  }, // владелец/водитель
+  },
   {
     id: "u4",
     email: "mover@example.com",
-    role: "mover",
+    role: "moving_company",
     passwordHash: sha("mover123"),
-  }, // мувинговая компания
+  },
   {
     id: "u5",
     email: "agent@example.com",
     role: "agent",
     passwordHash: sha("agent123"),
-  }, // агент
+  },
+  {
+    id: "u6",
+    email: "admin@example.com",
+    role: "admin",
+    passwordHash: sha("admin123"),
+  },
 ];
 
 export const findUserByEmail = async (email) =>
-  users.find((u) => u.email.toLowerCase() === email.toLowerCase()) || null;
+  users.find((u) => u.email.toLowerCase() == String(email).toLowerCase()) ||
+  null;
 
 export const verifyPassword = async (user, password) =>
   user.passwordHash === sha(password);

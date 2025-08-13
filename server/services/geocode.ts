@@ -1,13 +1,8 @@
-
-
-
-
-
+// server/services/geocode.ts
 import fetch from "node-fetch";
 
-/** Возвращает [lng, lat] для США */
+/** Возвращает [lng, lat] (США) */
 export async function geocode(place: string): Promise<[number, number]> {
-  // Если нет явного указания США — дописываем ", USA"
   const q = /usa|united\s*states|,?\s*[A-Z]{2}\s*,?\s*USA/i.test(place)
     ? place
     : `${place}, USA`;
@@ -16,7 +11,7 @@ export async function geocode(place: string): Promise<[number, number]> {
 
   const res = await fetch(url, {
     headers: {
-      "User-Agent": "HolyMove/1.0 (support@holymove.example)",
+      "User-Agent": "HolyMove/1.0",
       "Accept": "application/json",
     },
   });
@@ -30,8 +25,7 @@ export async function geocode(place: string): Promise<[number, number]> {
   if (Array.isArray(data) && data.length > 0 && data[0].lon && data[0].lat) {
     const lng = parseFloat(data[0].lon);
     const lat = parseFloat(data[0].lat);
-    // быстрая проверка, что это США (в США долгота отрицательная)
-    if (lng > 0) throw new Error(`Geocode sanity check failed: lng=${lng} (ожидали США, отрицательная долгота)`);
+    if (lng > 0) throw new Error(`Geocode sanity check failed: lng=${lng} (expected USA negative longitude)`);
     return [lng, lat];
   }
 

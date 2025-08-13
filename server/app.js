@@ -6,41 +6,33 @@ import helmet from "helmet";
 
 import chatRoutes from "./routes/chat.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import rolesRoutes from "./routes/roles.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
-
-
 
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  process.env.VITE_API_URL,
-  `https://${process.env.NGROK_DOMAIN}`,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  process.env.CLIENT_ORIGIN,
 ].filter(Boolean);
 
 app.use(helmet());
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (allowedOrigins.some((o) => origin.startsWith(o)))
-        return cb(null, true);
-      return cb(new Error("Not allowed by CORS"));
-    },
+    origin: allowedOrigins.length ? allowedOrigins : true,
     credentials: true,
   })
 );
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "1mb" }));
 app.use(morgan("tiny"));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
-// app.use("/py", pyRoutes);
 
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
-
-// app.use("/api/py", limits.chat, pyRoutes); 
+app.use("/api/roles", rolesRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
