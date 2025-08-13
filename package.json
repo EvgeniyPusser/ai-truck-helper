@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "dev:trace": "node --trace-warnings server/index.js"
+    "dev:trace": "node --trace-warnings server/index.js",
+    "build": "tsc",
+    "start": "node dist/server/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

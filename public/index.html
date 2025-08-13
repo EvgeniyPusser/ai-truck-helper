@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HolyMove - AI Moving Assistant</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-helper.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
@@ -60,6 +61,176 @@
                     <div class="roles-section">
                         <h3>System Roles:</h3>
                         <div id="roles-list"></div>
+                    </div>
+                </div>
+
+                <!-- Helper Dashboard -->
+                <div id="helper-panel" class="panel hidden">
+                    <div class="helper-header">
+                        <div class="gnome-helper-welcome">
+                            <span class="gnome-character">🧙‍♂️</span>
+                            <h2>Helper Dashboard - Ready to Help!</h2>
+                        </div>
+                    </div>
+
+                    <!-- Available Jobs -->
+                    <div class="helper-section">
+                        <h3>🎯 Available Moving Jobs</h3>
+                        <div id="available-jobs" class="jobs-grid">
+                            <!-- Jobs will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- My Active Jobs -->
+                    <div class="helper-section">
+                        <h3>🚛 My Active Jobs</h3>
+                        <div id="my-jobs" class="jobs-grid">
+                            <!-- Active jobs will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Earnings Overview -->
+                    <div class="helper-section">
+                        <h3>💰 Earnings Overview</h3>
+                        <div class="earnings-stats">
+                            <div class="stat-card">
+                                <span class="stat-icon">💵</span>
+                                <div class="stat-info">
+                                    <h4>Today's Earnings</h4>
+                                    <p id="today-earnings">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-icon">📅</span>
+                                <div class="stat-info">
+                                    <h4>This Week</h4>
+                                    <p id="week-earnings">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-icon">⭐</span>
+                                <div class="stat-info">
+                                    <h4>Rating</h4>
+                                    <p id="helper-rating">4.8/5.0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Helper Profile -->
+                    <div class="helper-section">
+                        <h3>👤 My Profile</h3>
+                        <div class="helper-profile">
+                            <div class="profile-info">
+                                <div class="profile-field">
+                                    <label>Available Services:</label>
+                                    <div class="service-tags">
+                                        <span class="service-tag active">Loading/Unloading</span>
+                                        <span class="service-tag active">Packing</span>
+                                        <span class="service-tag">Heavy Items</span>
+                                        <span class="service-tag">Assembly</span>
+                                    </div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Working Hours:</label>
+                                    <p>8:00 AM - 6:00 PM</p>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Service Area:</label>
+                                    <p>Within 25 miles of ZIP 10001</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Truck Owner Dashboard -->
+                <div id="truck-owner-panel" class="panel hidden">
+                    <div class="truck-owner-header">
+                        <div class="gnome-truck-owner-welcome">
+                            <span class="gnome-character">🧙‍♂️</span>
+                            <h2>Truck Fleet Dashboard - Magical Logistics!</h2>
+                        </div>
+                    </div>
+
+                    <!-- My Truck Fleet -->
+                    <div class="truck-owner-section">
+                        <h3>🚛 My Truck Fleet</h3>
+                        <div id="truck-fleet" class="trucks-grid">
+                            <!-- Trucks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Rental Requests -->
+                    <div class="truck-owner-section">
+                        <h3>📋 Rental Requests</h3>
+                        <div id="rental-requests" class="requests-grid">
+                            <!-- Rental requests will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Active Rentals -->
+                    <div class="truck-owner-section">
+                        <h3>🎯 Active Rentals</h3>
+                        <div id="active-rentals" class="rentals-grid">
+                            <!-- Active rentals will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Revenue Overview -->
+                    <div class="truck-owner-section">
+                        <h3>💰 Revenue Overview</h3>
+                        <div class="revenue-stats">
+                            <div class="stat-card truck-stat">
+                                <span class="stat-icon">🚛</span>
+                                <div class="stat-info">
+                                    <h4>Active Trucks</h4>
+                                    <p id="active-trucks">3/5</p>
+                                </div>
+                            </div>
+                            <div class="stat-card truck-stat">
+                                <span class="stat-icon">💵</span>
+                                <div class="stat-info">
+                                    <h4>Today's Revenue</h4>
+                                    <p id="today-revenue">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="stat-card truck-stat">
+                                <span class="stat-icon">📈</span>
+                                <div class="stat-info">
+                                    <h4>This Month</h4>
+                                    <p id="month-revenue">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="stat-card truck-stat">
+                                <span class="stat-icon">⭐</span>
+                                <div class="stat-info">
+                                    <h4>Fleet Rating</h4>
+                                    <p id="fleet-rating">4.9/5.0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fleet Management -->
+                    <div class="truck-owner-section">
+                        <h3>⚙️ Fleet Management</h3>
+                        <div class="fleet-management">
+                            <div class="management-actions">
+                                <button class="btn-primary" onclick="app.addNewTruck()">
+                                    🧙‍♂️ Add New Truck
+                                </button>
+                                <button class="btn-secondary" onclick="app.manageMaintenance()">
+                                    🔧 Maintenance Schedule
+                                </button>
+                                <button class="btn-secondary" onclick="app.viewEarnings()">
+                                    📊 Fleet Analytics
+                                </button>
+                                <button class="btn-secondary" onclick="app.updateAvailability()">
+                                    � Update Availability
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

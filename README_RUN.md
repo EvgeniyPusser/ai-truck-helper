@@ -18,6 +18,19 @@ npm run dev
 1. POST /api/auth/login → returns { token, user }
 2. Use Authorization: Bearer <token> on protected routes.
 
+## Testing Role-Based UI
+### Test Users (use in login form):
+- **Client**: username: `client1`, password: `password123`
+- **Helper**: username: `helper1`, password: `password123` 
+- **Truck Owner**: username: `truck_owner1`, password: `password123`
+- **Admin**: username: `admin1`, password: `password123`
+
+### UI Features by Role:
+- **Client**: Quote calculator with gnome assistant
+- **Helper**: Green-themed dashboard with job management 🧙‍♂️
+- **Truck Owner**: Orange-themed fleet management interface 🚛
+- **Admin**: User and role management
+
 ## Detected Routers (best-effort)
 - /mnt/data/upload_unpacked/root_zip/server/app.js — GET /health
 - /mnt/data/upload_unpacked/root_zip/server/routes/auth.routes.js — POST /login

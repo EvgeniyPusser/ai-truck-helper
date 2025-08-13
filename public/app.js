@@ -131,12 +131,25 @@ class HolyMoveApp {
         // Update user info
         document.getElementById('user-role').textContent = this.user.role;
         
-        // Show admin panel if admin
+        // Hide all panels first
+        document.getElementById('admin-panel').classList.add('hidden');
+        document.getElementById('helper-panel').classList.add('hidden');
+        document.getElementById('truck-owner-panel').classList.add('hidden');
+        document.getElementById('quote-section').classList.add('hidden');
+        
+        // Show appropriate panel based on role
         if (this.user.role === 'admin') {
             document.getElementById('admin-panel').classList.remove('hidden');
             this.loadRoles();
+        } else if (this.user.role === 'helper') {
+            document.getElementById('helper-panel').classList.remove('hidden');
+            this.loadHelperDashboard();
+        } else if (this.user.role === 'truck_owner') {
+            document.getElementById('truck-owner-panel').classList.remove('hidden');
+            this.loadTruckOwnerDashboard();
         } else {
-            document.getElementById('admin-panel').classList.add('hidden');
+            // For clients and other roles, show the quote section
+            document.getElementById('quote-section').classList.remove('hidden');
         }
     }
 
@@ -158,6 +171,207 @@ class HolyMoveApp {
         } catch (error) {
             console.error('Error loading roles:', error);
         }
+    }
+
+    async loadHelperDashboard() {
+        // Load available jobs
+        this.loadAvailableJobs();
+        
+        // Load helper's active jobs
+        this.loadMyJobs();
+        
+        // Load earnings data
+        this.loadEarnings();
+    }
+
+    loadAvailableJobs() {
+        // Mock data for available jobs
+        const availableJobs = [
+            {
+                id: 1,
+                title: "Studio Apartment Move",
+                from: "New York, NY 10001",
+                to: "Brooklyn, NY 11201",
+                date: "2025-08-15",
+                time: "9:00 AM",
+                pay: "$75",
+                distance: "8 miles",
+                duration: "3-4 hours",
+                services: ["Loading", "Unloading"],
+                status: "available"
+            },
+            {
+                id: 2,
+                title: "2-Bedroom House Move",
+                from: "Queens, NY 11375",
+                to: "Manhattan, NY 10025",
+                date: "2025-08-16",
+                time: "8:00 AM",
+                pay: "$150",
+                distance: "15 miles",
+                duration: "6-7 hours",
+                services: ["Loading", "Unloading", "Packing"],
+                status: "available"
+            },
+            {
+                id: 3,
+                title: "Office Move",
+                from: "Manhattan, NY 10001",
+                to: "New Jersey, NJ 07030",
+                date: "2025-08-17",
+                time: "10:00 AM",
+                pay: "$200",
+                distance: "12 miles",
+                duration: "8 hours",
+                services: ["Loading", "Unloading", "Heavy Items"],
+                status: "available"
+            }
+        ];
+
+        this.displayAvailableJobs(availableJobs);
+    }
+
+    loadMyJobs() {
+        // Mock data for helper's active jobs
+        const myJobs = [
+            {
+                id: 4,
+                title: "1-Bedroom Apartment Move",
+                from: "Brooklyn, NY 11201",
+                to: "Queens, NY 11375",
+                date: "2025-08-14",
+                time: "2:00 PM",
+                pay: "$100",
+                distance: "10 miles",
+                duration: "4-5 hours",
+                services: ["Loading", "Unloading"],
+                status: "accepted",
+                client: "John Smith"
+            }
+        ];
+
+        this.displayMyJobs(myJobs);
+    }
+
+    loadEarnings() {
+        // Mock earnings data
+        document.getElementById('today-earnings').textContent = "$125.00";
+        document.getElementById('week-earnings').textContent = "$850.00";
+        document.getElementById('helper-rating').textContent = "4.8/5.0";
+    }
+
+    displayAvailableJobs(jobs) {
+        const container = document.getElementById('available-jobs');
+        container.innerHTML = jobs.map(job => `
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-title">${job.title}</div>
+                    <div class="job-pay">${job.pay}</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">
+                        <span class="icon">📍</span>
+                        <span><strong>From:</strong> ${job.from}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">🎯</span>
+                        <span><strong>To:</strong> ${job.to}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">📅</span>
+                        <span><strong>Date:</strong> ${job.date} at ${job.time}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">🚗</span>
+                        <span><strong>Distance:</strong> ${job.distance}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">⏱️</span>
+                        <span><strong>Duration:</strong> ${job.duration}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">🛠️</span>
+                        <span><strong>Services:</strong> ${job.services.join(', ')}</span>
+                    </div>
+                </div>
+                <div class="job-actions">
+                    <button class="btn-accept" onclick="app.acceptJob(${job.id})">
+                        🧙‍♂️ Accept Job
+                    </button>
+                    <button class="btn-details" onclick="app.viewJobDetails(${job.id})">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    displayMyJobs(jobs) {
+        const container = document.getElementById('my-jobs');
+        if (jobs.length === 0) {
+            container.innerHTML = `
+                <div class="job-card">
+                    <div class="job-title">No active jobs</div>
+                    <p>🧙‍♂️ Ready to help with new moving jobs! Check available jobs above.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = jobs.map(job => `
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-title">${job.title}</div>
+                    <div class="job-pay">${job.pay}</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">
+                        <span class="icon">👤</span>
+                        <span><strong>Client:</strong> ${job.client}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">📍</span>
+                        <span><strong>From:</strong> ${job.from}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">🎯</span>
+                        <span><strong>To:</strong> ${job.to}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">📅</span>
+                        <span><strong>Date:</strong> ${job.date} at ${job.time}</span>
+                    </div>
+                    <div class="job-detail">
+                        <span class="icon">✅</span>
+                        <span><strong>Status:</strong> Accepted</span>
+                    </div>
+                </div>
+                <div class="job-actions">
+                    <button class="btn-details" onclick="app.contactClient(${job.id})">
+                        📞 Contact Client
+                    </button>
+                    <button class="btn-details" onclick="app.viewJobDetails(${job.id})">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    acceptJob(jobId) {
+        alert(`🧙‍♂️ Great! You've accepted job #${jobId}. The client will be notified and you'll receive further details soon!`);
+        // Here you would make an API call to accept the job
+        this.loadHelperDashboard(); // Refresh the dashboard
+    }
+
+    viewJobDetails(jobId) {
+        alert(`📋 Viewing detailed information for job #${jobId}...`);
+        // Here you would open a detailed modal or navigate to job details page
+    }
+
+    contactClient(jobId) {
+        alert(`📞 Opening communication channel with client for job #${jobId}...`);
+        // Here you would open a chat interface or contact form
     }
 
     async getQuote() {
@@ -814,6 +1028,248 @@ class HolyMoveApp {
             return div;
         };
         info.addTo(this.map);
+    }
+
+    // Truck Owner Dashboard Methods
+    async loadTruckOwnerDashboard() {
+        console.log('Loading truck owner dashboard...');
+        try {
+            // Load truck fleet
+            await this.loadTruckFleet();
+            
+            // Load rental requests
+            await this.loadRentalRequests();
+            
+            // Load revenue stats
+            await this.loadRevenueStats();
+            
+            // Update welcome message
+            const welcomeMsg = document.querySelector('.truck-owner-header h2');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = `Welcome, ${this.user.username || 'Truck Owner'}! 🚛`;
+            }
+        } catch (error) {
+            console.error('Error loading truck owner dashboard:', error);
+        }
+    }
+
+    async loadTruckFleet() {
+        // Sample truck fleet data - replace with actual API call
+        const trucks = [
+            {
+                id: 1,
+                name: "Big Rig Alpha",
+                type: "Semi Truck",
+                capacity: "26 tons",
+                location: "New York, NY",
+                status: "available",
+                rate: 150,
+                rating: 4.8
+            },
+            {
+                id: 2,
+                name: "City Mover Beta",
+                type: "Box Truck",
+                capacity: "5 tons",
+                location: "Brooklyn, NY", 
+                status: "rented",
+                rate: 80,
+                rating: 4.6
+            },
+            {
+                id: 3,
+                name: "Heavy Hauler Gamma",
+                type: "Flatbed",
+                capacity: "40 tons",
+                location: "Queens, NY",
+                status: "maintenance",
+                rate: 200,
+                rating: 4.9
+            }
+        ];
+
+        this.displayTruckFleet(trucks);
+    }
+
+    displayTruckFleet(trucks) {
+        const grid = document.getElementById('trucks-grid');
+        if (!grid) return;
+
+        grid.innerHTML = trucks.map(truck => `
+            <div class="truck-card">
+                <div class="truck-header">
+                    <div class="truck-name">${truck.name}</div>
+                    <div class="truck-status ${truck.status}">${this.formatStatus(truck.status)}</div>
+                </div>
+                <div class="truck-info">
+                    <div class="truck-detail">
+                        <span class="icon">🚛</span>
+                        <span>${truck.type}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">📦</span>
+                        <span>${truck.capacity}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">📍</span>
+                        <span>${truck.location}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">💰</span>
+                        <span>$${truck.rate}/hour</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">⭐</span>
+                        <span>${truck.rating}/5</span>
+                    </div>
+                </div>
+                <div class="truck-actions">
+                    <button class="btn-primary" onclick="app.editTruck(${truck.id})">Edit</button>
+                    <button class="btn-secondary" onclick="app.viewTruckHistory(${truck.id})">History</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async loadRentalRequests() {
+        // Sample rental requests - replace with actual API call
+        const requests = [
+            {
+                id: 1,
+                client: "John Smith",
+                from: "Manhattan, NY 10001",
+                to: "Brooklyn, NY 11201",
+                date: "2024-01-20",
+                truckType: "Box Truck",
+                duration: "4 hours",
+                price: 320,
+                status: "pending"
+            },
+            {
+                id: 2,
+                client: "Sarah Johnson",
+                from: "Queens, NY 11101",
+                to: "Bronx, NY 10451",
+                date: "2024-01-22",
+                truckType: "Semi Truck",
+                duration: "8 hours",
+                price: 1200,
+                status: "pending"
+            }
+        ];
+
+        this.displayRentalRequests(requests);
+    }
+
+    displayRentalRequests(requests) {
+        const grid = document.getElementById('requests-grid');
+        if (!grid) return;
+
+        grid.innerHTML = requests.map(request => `
+            <div class="request-card">
+                <div class="request-header">
+                    <div class="request-title">${request.client}</div>
+                    <div class="request-price">$${request.price}</div>
+                </div>
+                <div class="request-details">
+                    <div class="truck-detail">
+                        <span class="icon">📍</span>
+                        <span>From: ${request.from}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">🏁</span>
+                        <span>To: ${request.to}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">📅</span>
+                        <span>${request.date}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">🚛</span>
+                        <span>${request.truckType}</span>
+                    </div>
+                    <div class="truck-detail">
+                        <span class="icon">⏱️</span>
+                        <span>${request.duration}</span>
+                    </div>
+                </div>
+                <div class="truck-actions">
+                    <button class="btn-primary" onclick="app.acceptRentalRequest(${request.id})">Accept</button>
+                    <button class="btn-secondary" onclick="app.viewRequestDetails(${request.id})">Details</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async loadRevenueStats() {
+        // Sample revenue stats - replace with actual API call
+        const stats = {
+            totalRevenue: 15750,
+            monthlyRevenue: 2400,
+            activeTrucks: 2,
+            totalRentals: 47
+        };
+
+        // Update stat cards
+        const statCards = document.querySelectorAll('.truck-owner-section .stat-card');
+        if (statCards.length >= 4) {
+            statCards[0].querySelector('.stat-value').textContent = `$${stats.totalRevenue.toLocaleString()}`;
+            statCards[1].querySelector('.stat-value').textContent = `$${stats.monthlyRevenue.toLocaleString()}`;
+            statCards[2].querySelector('.stat-value').textContent = stats.activeTrucks;
+            statCards[3].querySelector('.stat-value').textContent = stats.totalRentals;
+        }
+    }
+
+    // Truck Owner Action Methods
+    editTruck(truckId) {
+        console.log('Editing truck:', truckId);
+        alert(`Editing truck ${truckId} - Feature coming soon!`);
+    }
+
+    viewTruckHistory(truckId) {
+        console.log('Viewing truck history:', truckId);
+        alert(`Viewing history for truck ${truckId} - Feature coming soon!`);
+    }
+
+    acceptRentalRequest(requestId) {
+        console.log('Accepting rental request:', requestId);
+        alert(`Rental request ${requestId} accepted! 🎉`);
+        // Refresh requests after acceptance
+        this.loadRentalRequests();
+    }
+
+    viewRequestDetails(requestId) {
+        console.log('Viewing request details:', requestId);
+        alert(`Viewing details for request ${requestId} - Feature coming soon!`);
+    }
+
+    addNewTruck() {
+        console.log('Adding new truck');
+        alert('Add new truck form - Feature coming soon!');
+    }
+
+    manageMaintenance() {
+        console.log('Managing maintenance');
+        alert('Maintenance scheduler - Feature coming soon!');
+    }
+
+    viewEarnings() {
+        console.log('Viewing earnings');
+        alert('Detailed earnings report - Feature coming soon!');
+    }
+
+    updateAvailability() {
+        console.log('Updating availability');
+        alert('Availability manager - Feature coming soon!');
+    }
+
+    formatStatus(status) {
+        const statusMap = {
+            'available': 'Available',
+            'rented': 'Rented',
+            'maintenance': 'Maintenance'
+        };
+        return statusMap[status] || status;
     }
 }
 
