@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HolyMove - AI Moving Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div id="app">
+        <!-- Login Section -->
+        <div id="login-section" class="section">
+            <div class="container">
+                <h1>🚛 HolyMove - AI Moving Assistant</h1>
+                <div class="login-form">
+                    <h2>Login to Your Account</h2>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button id="login-btn">Sign In</button>
+                    <div class="demo-users">
+                        <h3>Quick Demo Access:</h3>
+                        <div class="demo-buttons">
+                            <button class="demo-btn" data-email="client@example.com" data-password="client123" data-role="client">Customer</button>
+                            <button class="demo-btn" data-email="helper@example.com" data-password="helper123" data-role="helper">Helper</button>
+                            <button class="demo-btn" data-email="truck@example.com" data-password="truck123" data-role="truck_owner">Truck Owner</button>
+                            <button class="demo-btn" data-email="mover@example.com" data-password="mover123" data-role="moving_company">Moving Company</button>
+                            <button class="demo-btn" data-email="agent@example.com" data-password="agent123" data-role="agent">Agent</button>
+                            <button class="demo-btn" data-email="admin@example.com" data-password="admin123" data-role="admin">Admin</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Section -->
+        <div id="main-section" class="section hidden">
+            <div class="container">
+                <header>
+                    <h1>🚛 HolyMove Dashboard</h1>
+                    <div class="user-info">
+                        <span id="user-role"></span>
+                        <button id="logout-btn">Sign Out</button>
+                    </div>
+                </header>
+
+                <!-- Admin Panel -->
+                <div id="admin-panel" class="panel hidden">
+                    <h2>Admin Panel</h2>
+                    <div class="roles-section">
+                        <h3>System Roles:</h3>
+                        <div id="roles-list"></div>
+                    </div>
+                </div>
+
+                <!-- Moving Quote Section -->
+                <div id="quote-section" class="panel">
+                    <h2>🏠 Get Your Moving Quote</h2>
+                    <div class="move-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="fromZip">From ZIP Code</label>
+                                <input type="text" id="fromZip" placeholder="e.g., 10001" pattern="[0-9]{5}" maxlength="5" required>
+                                <input type="text" id="fromAddress" placeholder="Street address (optional)">
+                            </div>
+                            <div class="input-group">
+                                <label for="toZip">To ZIP Code</label>
+                                <input type="text" id="toZip" placeholder="e.g., 90210" pattern="[0-9]{5}" maxlength="5" required>
+                                <input type="text" id="toAddress" placeholder="Street address (optional)">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="moveDate">Moving Date</label>
+                                <input type="date" id="moveDate" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="homeSize">Home Size</label>
+                                <select id="homeSize" required>
+                                    <option value="">Select home size</option>
+                                    <option value="studio">Studio (500-600 sq ft)</option>
+                                    <option value="1bedroom">1 Bedroom (600-900 sq ft)</option>
+                                    <option value="2bedroom">2 Bedroom (900-1200 sq ft)</option>
+                                    <option value="3bedroom">3 Bedroom (1200-1600 sq ft)</option>
+                                    <option value="4bedroom">4+ Bedroom (1600+ sq ft)</option>
+                                    <option value="custom">Custom Volume</option>
+                                </select>
+                                <input type="number" id="customVolume" placeholder="Volume (cubic feet)" min="1" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="needMovers">
+                                    Need professional movers
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="needPacking">
+                                    Need packing services
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="needStorage">
+                                    Need temporary storage
+                                </label>
+                            </div>
+                            <button id="get-quote-btn">Get AI Quote & Route</button>
+                        </div>
+                    </div>
+                    
+                    <div id="chat-messages"></div>
+                    <div id="map" style="height: 400px; margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
