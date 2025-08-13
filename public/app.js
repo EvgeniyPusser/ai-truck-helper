@@ -964,12 +964,12 @@ class HolyMoveApp {
                 });
                 
                 const endIcon = L.divIcon({
-                    html: `<div class="route-marker end-marker">
+                  html: `<div class="route-marker end-marker">
                         <div class="marker-icon">�</div>
                     </div>`,
-                    iconSize: [40, 40],
-                    iconAnchor: [20, 35],
-                    className: 'custom-route-marker'
+                  iconSize: [40, 40],
+                  iconAnchor: [20, 35],
+                  className: "custom-route-marker",
                 });
 
                 L.marker(fromCoords, {icon: startIcon})
