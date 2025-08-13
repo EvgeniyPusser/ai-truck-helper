@@ -316,7 +316,10 @@ class HolyMoveApp {
             const { itinerary, resources, pricing } = data;
             return `
                 <div class="quote-response">
-                    <h4>🚛 Your Moving Quote & Price List</h4>
+                    <div class="gnome-quote-header">
+                        <span class="gnome-character">🧙‍♂️</span>
+                        <h4>✨ Your Magical Moving Quote & Price List ✨</h4>
+                    </div>
                     
                     <!-- Route Information -->
                     <div class="route-info">
@@ -328,9 +331,17 @@ class HolyMoveApp {
                         <p><strong>Move Date:</strong> ${new Date(itinerary.date).toLocaleDateString('en-US')}</p>
                     </div>
 
+                    <!-- Gnome's Price Wisdom -->
+                    <div class="gnome-wisdom">
+                        <span class="gnome-icon">🧙‍♂️</span>
+                        <div class="wisdom-text">
+                            "As your magical moving advisor, I've calculated the most fair and transparent pricing for your journey!"
+                        </div>
+                    </div>
+
                     <!-- Detailed Price List -->
                     <div class="price-list">
-                        <h5>💰 Detailed Price List</h5>
+                        <h5>💰 Magical Price List</h5>
                         <table class="pricing-table">
                             <thead>
                                 <tr>
@@ -341,30 +352,31 @@ class HolyMoveApp {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Transportation</strong></td>
+                                    <td><strong>🚛 Transportation</strong></td>
                                     <td>Professional truck and driver</td>
                                     <td>$${pricing.transport}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Labor</strong></td>
-                                    <td>${resources.helpers} helpers @ 4 hours</td>
+                                    <td><strong>👥 Labor</strong></td>
+                                    <td>${resources.helpers} magical helpers @ 4 hours</td>
                                     <td>$${pricing.labor}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Platform Fee</strong></td>
+                                    <td><strong>🛡️ Platform Fee</strong></td>
                                     <td>Service coordination and insurance</td>
                                     <td>$${pricing.platformFee}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="total-price">
-                            <strong>Total Estimated Cost: $${pricing.estTotal}</strong>
+                            <span class="gnome-icon">🧙‍♂️</span>
+                            <strong>Total Magical Cost: $${pricing.estTotal}</strong>
                         </div>
                     </div>
 
                     <!-- Truck Options -->
                     <div class="truck-options">
-                        <h5>🚛 Available Truck Options</h5>
+                        <h5>🚛 Enchanted Truck Options</h5>
                         ${this.generateTruckOptions()}
                     </div>
 
@@ -372,14 +384,19 @@ class HolyMoveApp {
                         `<div class="resources-info">
                             <h5>📦 Volume Estimate</h5>
                             <p><strong>Estimated Volume:</strong> ${resources.estimated_volume_m3} cubic meters</p>
-                            <p><strong>Helpers Needed:</strong> ${resources.helpers} professional movers</p>
+                            <p><strong>Magical Helpers:</strong> ${resources.helpers} professional gnome assistants</p>
                         </div>` : ''}
 
                     ${data.narrative ? 
                         `<div class="ai-advice">
-                            <h5>🤖 AI Recommendations</h5>
+                            <h5>�‍♂️ Gnome's Wisdom</h5>
                             <p>${data.narrative}</p>
                         </div>` : ''}
+
+                    <div class="gnome-footer">
+                        <span class="gnome-character">🧙‍♂️</span>
+                        <em>"Remember: Every great journey begins with a single magical step!"</em>
+                    </div>
                 </div>
             `;
         } else if (data.message) {
@@ -449,29 +466,29 @@ class HolyMoveApp {
         
         const truckOptions = {
             'studio': [
-                { type: 'Pickup Truck', size: '6ft bed', capacity: '500 cu ft', price: '$89/day', suitable: true },
-                { type: 'Cargo Van', size: '10ft cargo', capacity: '400 cu ft', price: '$99/day', suitable: true },
-                { type: 'Small Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: false }
+                { type: 'Magical Pickup Truck', size: '6ft bed', capacity: '500 cu ft', price: '$89/day', suitable: true, gnomeAdvice: 'Perfect for studio magic!' },
+                { type: 'Enchanted Cargo Van', size: '10ft cargo', capacity: '400 cu ft', price: '$99/day', suitable: true, gnomeAdvice: 'Cozy and efficient!' },
+                { type: 'Small Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: false, gnomeAdvice: 'A bit too big for this spell' }
             ],
             '1bedroom': [
-                { type: 'Cargo Van', size: '10ft cargo', capacity: '400 cu ft', price: '$99/day', suitable: false },
-                { type: 'Small Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: true },
-                { type: 'Medium Moving Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: true }
+                { type: 'Enchanted Cargo Van', size: '10ft cargo', capacity: '400 cu ft', price: '$99/day', suitable: false, gnomeAdvice: 'Might need extra magic!' },
+                { type: 'Magical Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: true, gnomeAdvice: 'Just right for 1-bedroom spells!' },
+                { type: 'Medium Magic Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: true, gnomeAdvice: 'Extra space for treasures!' }
             ],
             '2bedroom': [
-                { type: 'Small Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: false },
-                { type: 'Medium Moving Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: true },
-                { type: 'Large Moving Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: true }
+                { type: 'Small Moving Truck', size: '12ft box', capacity: '450 cu ft', price: '$129/day', suitable: false, gnomeAdvice: 'Too small for this adventure' },
+                { type: 'Magical Medium Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: true, gnomeAdvice: 'Perfect for 2-bedroom magic!' },
+                { type: 'Large Enchanted Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: true, gnomeAdvice: 'Room for all your magical items!' }
             ],
             '3bedroom': [
-                { type: 'Medium Moving Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: false },
-                { type: 'Large Moving Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: true },
-                { type: 'Extra Large Truck', size: '26ft box', capacity: '1600 cu ft', price: '$289/day', suitable: true }
+                { type: 'Medium Magic Truck', size: '16ft box', capacity: '800 cu ft', price: '$169/day', suitable: false, gnomeAdvice: 'Need more powerful magic!' },
+                { type: 'Large Enchanted Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: true, gnomeAdvice: 'Great for family magic!' },
+                { type: 'Extra Large Magic Truck', size: '26ft box', capacity: '1600 cu ft', price: '$289/day', suitable: true, gnomeAdvice: 'Ultimate magical capacity!' }
             ],
             '4bedroom': [
-                { type: 'Large Moving Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: false },
-                { type: 'Extra Large Truck', size: '26ft box', capacity: '1600 cu ft', price: '$289/day', suitable: true },
-                { type: 'Semi Truck + Trailer', size: '53ft trailer', capacity: '3000 cu ft', price: '$399/day', suitable: true }
+                { type: 'Large Enchanted Truck', size: '20ft box', capacity: '1200 cu ft', price: '$219/day', suitable: false, gnomeAdvice: 'Need stronger spells!' },
+                { type: 'Mega Magic Truck', size: '26ft box', capacity: '1600 cu ft', price: '$289/day', suitable: true, gnomeAdvice: 'Built for big family magic!' },
+                { type: 'Legendary Semi + Trailer', size: '53ft trailer', capacity: '3000 cu ft', price: '$399/day', suitable: true, gnomeAdvice: 'The ultimate moving magic!' }
             ]
         };
 
@@ -482,14 +499,18 @@ class HolyMoveApp {
                 ${options.map(truck => `
                     <div class="truck-option ${truck.suitable ? 'recommended' : 'not-recommended'}">
                         <div class="truck-header">
-                            <h6>${truck.type} ${truck.suitable ? '⭐ RECOMMENDED' : ''}</h6>
+                            <h6>🚛 ${truck.type} ${truck.suitable ? '⭐ RECOMMENDED' : ''}</h6>
                             <span class="truck-price">${truck.price}</span>
                         </div>
                         <div class="truck-details">
                             <p><strong>Size:</strong> ${truck.size}</p>
                             <p><strong>Capacity:</strong> ${truck.capacity}</p>
+                            <div class="gnome-truck-advice">
+                                <span class="gnome-icon">🧙‍♂️</span>
+                                <span class="advice-text">"${truck.gnomeAdvice}"</span>
+                            </div>
                             <p class="suitability ${truck.suitable ? 'suitable' : 'not-suitable'}">
-                                ${truck.suitable ? '✅ Perfect for your move' : '⚠️ May be too small'}
+                                ${truck.suitable ? '✅ Gnome Approved!' : '⚠️ Gnome says: might be challenging'}
                             </p>
                         </div>
                     </div>
