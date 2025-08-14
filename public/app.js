@@ -1,7 +1,14 @@
 // HolyMove Frontend - Connected to Express.js Backend
 class HolyMoveApp {
     constructor() {
-        this.baseURL = 'http://localhost:3001/api';
+        // Auto-detect if we're in development or production
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        this.baseURL = isLocalhost 
+            ? 'http://localhost:3001/api' 
+            : `${window.location.protocol}//${window.location.host}/api`;
+        
+        console.log('🌐 Using API base URL:', this.baseURL);
+        
         this.token = localStorage.getItem('token');
         this.user = null;
         this.map = null;
@@ -66,6 +73,8 @@ class HolyMoveApp {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
+        console.log('Login attempt:', { email, password: '***', baseURL: this.baseURL });
+
         if (!email || !password) {
             alert('Please enter email and password');
             return;
@@ -80,11 +89,21 @@ class HolyMoveApp {
                 body: JSON.stringify({ email, password })
             });
 
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+
             if (!response.ok) {
-                throw new Error('Login failed');
+              const errorText = await response.text();
+              console.error("Login error response:", errorText);
+              throw new Error(`Login failed: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log("Login success:", {
+              user: data.user,
+              hasToken: !!data.token,
+            });
+            
             this.token = data.token;
             this.user = data.user;
             

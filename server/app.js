@@ -24,6 +24,8 @@ const allowedOrigins = [
   process.env.CLIENT_ORIGIN,
   // Add Render domain pattern
   /\.onrender\.com$/,
+  // Allow same origin requests for production
+  "self"
 ].filter(Boolean);
 
 app.use(
