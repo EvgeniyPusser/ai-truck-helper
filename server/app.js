@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import chatRoutes from "./routes/chat.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import rolesRoutes from "./routes/roles.routes.js";
+import searchRoutes from "./routes/search.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
@@ -25,7 +26,7 @@ const allowedOrigins = [
   // Add Render domain pattern
   /\.onrender\.com$/,
   // Allow same origin requests for production
-  "self"
+  "self",
 ].filter(Boolean);
 
 app.use(
@@ -63,6 +64,7 @@ app.get("/", (_req, res) => {
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/roles", rolesRoutes);
+app.use("/api", searchRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

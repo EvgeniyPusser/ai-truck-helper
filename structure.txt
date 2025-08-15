@@ -1,51 +1,112 @@
 ai-truck-helper/
-┣ ai-truck-helper@1.0.0
+┣ ai=truck-helper.zip
+┣ all-test-requests.md
 ┣ chat-test.http
+┣ deploy-check.sh
+┣ DEPLOY_GUIDE.md
+┣ env.example
+┣ frontend/
+┃ ┣ eslint.config.js
+┃ ┣ frontend.zip
+┃ ┣ index.html
+┃ ┣ package-lock.json
+┃ ┣ package.json
+┃ ┣ public/
+┃ ┃ ┗ vite.svg
+┃ ┣ README.md
+┃ ┣ src/
+┃ ┃ ┣ App.css
+┃ ┃ ┣ App.jsx
+┃ ┃ ┣ assets/
+┃ ┃ ┃ ┗ react.svg
+┃ ┃ ┣ components/
+┃ ┃ ┃ ┣ agent/
+┃ ┃ ┃ ┣ chat/
+┃ ┃ ┃ ┣ client/
+┃ ┃ ┃ ┣ common/
+┃ ┃ ┃ ┣ company/
+┃ ┃ ┃ ┣ helper/
+┃ ┃ ┃ ┣ landing/
+┃ ┃ ┃ ┗ truck-owner/
+┃ ┃ ┣ hooks/
+┃ ┃ ┣ index.css
+┃ ┃ ┣ main.jsx
+┃ ┃ ┣ pages/
+┃ ┃ ┃ ┣ AgentDashboard.jsx
+┃ ┃ ┃ ┣ CompanyDashboard.jsx
+┃ ┃ ┃ ┣ HelperDashboard.jsx
+┃ ┃ ┃ ┣ LandingPage.jsx
+┃ ┃ ┃ ┣ PlanningPage.jsx
+┃ ┃ ┃ ┗ TruckOwnerDashboard.jsx
+┃ ┃ ┣ src.zip
+┃ ┃ ┣ store/
+┃ ┃ ┃ ┣ authStore.js
+┃ ┃ ┃ ┣ chatStore.js
+┃ ┃ ┃ ┗ searchStore.js
+┃ ┃ ┣ theme/
+┃ ┃ ┃ ┗ theme.js
+┃ ┃ ┗ utils/
+┃ ┗ vite.config.js
 ┣ generateTree.js
 ┣ generateTree.ts
 ┣ package-lock.json
 ┣ package.json
+┣ Procfile
 ┣ public/
+┃ ┣ app.js
+┃ ┣ gnome-placeholder.md
+┃ ┣ images/
+┃ ┃ ┗ icon-192.png
+┃ ┣ index.html
+┃ ┣ styles-helper.css
+┃ ┣ styles-hybrid.css
+┃ ┗ styles.css
 ┣ README.md
+┣ README_RUN.md
+┣ render.yaml
+┣ routes.csv
 ┣ scripts/
+┃ ┣ client/
+┃ ┃ ┗ chat.js
 ┃ ┣ routeDiag.js
 ┃ ┣ route_opt.py
 ┃ ┗ test.py
 ┣ server/
 ┃ ┣ app.js
+┃ ┣ config.js
 ┃ ┣ controllers/
 ┃ ┃ ┣ auth.controller.js
 ┃ ┃ ┗ chat.controller.js
+┃ ┣ data/
+┃ ┃ ┣ clients.json
+┃ ┃ ┣ helpers.json
+┃ ┃ ┗ trucks.json
 ┃ ┣ index.js
 ┃ ┣ middleware/
 ┃ ┃ ┣ auth.js
 ┃ ┃ ┣ error.js
-┃ ┃ ┗ rateLimit.js
+┃ ┃ ┣ rateLimit.js
+┃ ┃ ┗ roles.js
+┃ ┣ planner/
+┃ ┃ ┗ planner/
+┃ ┃   ┗ planner.ts
 ┃ ┣ py/
 ┃ ┣ routes/
 ┃ ┃ ┣ auth.routes.js
-┃ ┃ ┗ chat.routes.js
+┃ ┃ ┣ chat.routes.js
+┃ ┃ ┗ roles.routes.js
+┃ ┣ server.zip
 ┃ ┣ services/
 ┃ ┃ ┣ chat.service.js
+┃ ┃ ┣ geocode.ts
+┃ ┃ ┣ providers.js
+┃ ┃ ┣ route.js
 ┃ ┃ ┗ user.service.js
 ┃ ┗ utils/
 ┃   ┗ jwt.js
-┣ src/
-┃ ┣ api/
-┃ ┃ ┗ chat.js
-┃ ┣ config.js
-┃ ┣ data/
-┃ ┃ ┗ trucks.json
-┃ ┣ planner/
-┃ ┃ ┣ clients.json
-┃ ┃ ┣ helpers.json
-┃ ┃ ┣ planner.ts
-┃ ┃ ┗ trucks.json
-┃ ┣ server.js
-┃ ┗ services/
-┃   ┣ geocode.ts
-┃   ┣ providers.js
-┃   ┗ route.js
 ┣ structure.txt
+┣ test-api.js
+┣ test-login.js
 ┣ test.js
+┣ tsconfig.json.backup
 ┗ tsx
