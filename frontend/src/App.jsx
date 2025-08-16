@@ -1,13 +1,28 @@
 // frontend/src/App.jsx
 import React, { useMemo, useState } from 'react';
 import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import ResultPage from './pages/ResultPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+
+function useToken() {
+  const get = () => localStorage.getItem('holly_token') || localStorage.getItem('token') || '';
+  const [tok, setTok] = useState(get());
+  const refresh = () => setTok(get());
+  const clear = () => {
+    localStorage.removeItem('holly_token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setTok('');
+  };
+  return { token: tok, refresh, clear };
+}
 
 function Landing() {
   const [form, setForm] = useState({ fromZip: '', toZip: '', moveDate: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { token } = useToken(); // только читаем
 
   // Черновой мэппинг объёма
   const APT_TO_VOL = { studio: 5, '1br': 8, '2br': 12, '3br': 18, '4br': 24 };
@@ -25,10 +40,15 @@ function Landing() {
   const onChange = (e) => setForm(s => ({ ...s, [e.target.name]: e.target.value }));
 
   const handleSearch = async () => {
+    // Требуем логин перед поиском, чтобы ВСЕГДА был AI-план
+    if (!token) {
+      alert('Please sign in first to get AI plan.');
+      navigate('/login');
+      return;
+    }
+
     setLoading(true);
     try {
-      const token = localStorage.getItem('holly_token') || localStorage.getItem('token') || '';
-
       const payload = {
         from: form.fromZip || 'Los Angeles, CA',
         to: form.toZip || 'San Diego, CA',
@@ -37,7 +57,7 @@ function Landing() {
         needHelpers: true,
       };
 
-      // 1) Маршрут — обязательно
+      // 1) Маршрут — через наш бэк
       const mapRes = await fetch('/api/maps/route', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -46,29 +66,23 @@ function Landing() {
       const route = await mapRes.json();
       if (!mapRes.ok || !route.ok) throw new Error(route.error || `route status ${mapRes.status}`);
 
-      // 2) ИИ-план — опционально (если есть токен)
-      let plan = null;
-      if (token) {
-        try {
-          const aiRes = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify(payload),
-          });
-          if (aiRes.ok) plan = await aiRes.json();
-          else console.warn('AI request failed:', aiRes.status);
-        } catch (e) {
-          console.warn('AI request error:', e);
-        }
-      } else {
-        console.warn('No token found — skipping /api/chat');
-      }
+      // 2) ИИ-план — обязательно (т.к. токен есть)
+      const aiRes = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!aiRes.ok) throw new Error(`AI request failed: ${aiRes.status}`);
+      const plan = await aiRes.json();
 
       // 3) Переход на страницу результата
       navigate('/result', { state: { input: payload, plan, route } });
     } catch (e) {
       console.error('Search error:', e);
-      alert(e.message?.includes('route') ? 'Маршрут не построился. Проверь адреса.' : 'Ошибка. Проверь сервер (3001).');
+      alert(e.message || 'Error');
     } finally {
       setLoading(false);
     }
@@ -77,9 +91,17 @@ function Landing() {
   return (
     <div className="app">
       <header className="header">
-        <div className="container">
-          <h1 className="logo">🏠 Holly Move</h1>
-          <p className="tagline">Your magical moving companion!</p>
+        <div className="container" style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <div>
+            <h1 className="logo">🏠 Holly Move</h1>
+            <p className="tagline">Your magical moving companion!</p>
+          </div>
+          <nav>
+            {token ? (
+              <Link to="/result" style={{ marginRight: 12 }}>Result</Link>
+            ) : null}
+            <Link to="/login">{token ? 'Re-login' : 'Login'}</Link>
+          </nav>
         </div>
       </header>
 
@@ -120,9 +142,11 @@ export default function RouterApp() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/result" element={<ResultPage />} />
     </Routes>
   );
 }
+
 
 
