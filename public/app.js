@@ -9,7 +9,7 @@ class HolyMoveApp {
         
         console.log('🌐 Using API base URL:', this.baseURL);
         
-        this.token = localStorage.getItem('token');
+        this.token = localStorage.getItem("holly_token");
         this.user = null;
         this.map = null;
         
@@ -107,7 +107,7 @@ class HolyMoveApp {
             this.token = data.token;
             this.user = data.user;
             
-            localStorage.setItem('token', this.token);
+            localStorage.setItem('holly_token', this.token);
             localStorage.setItem('user', JSON.stringify(this.user));
             
             this.showMainSection();
@@ -120,7 +120,7 @@ class HolyMoveApp {
     logout() {
         this.token = null;
         this.user = null;
-        localStorage.removeItem('token');
+        localStorage.removeItem("holly_token");
         localStorage.removeItem('user');
         this.showLoginSection();
     }
