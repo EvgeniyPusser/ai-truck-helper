@@ -16,8 +16,11 @@ import { limits } from "./middleware/rateLimit.js";
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import mapsRoutes from "./routes/maps.routes.js";
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+import mapsRoutes from "./routes/maps.routes.js";
 app.use("/api/maps", mapsRoutes);
 
 

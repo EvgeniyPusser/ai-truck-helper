@@ -1,5 +1,13 @@
 import "dotenv/config";
 
+console.log(
+  "[ORS] looksLikeHex:",
+  /^[0-9a-f]{32,64}$/i.test(process.env.OPENROUTESERVICE_API_KEY || ""),
+  "len:",
+  (process.env.OPENROUTESERVICE_API_KEY || "").length
+);
+
+
 import http from "http";
 import app from "./app.js";
 
