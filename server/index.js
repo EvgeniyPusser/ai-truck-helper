@@ -7,7 +7,6 @@ console.log(
   (process.env.OPENROUTESERVICE_API_KEY || "").length
 );
 
-
 import http from "http";
 import app from "./app.js";
 
@@ -25,3 +24,4 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log(`[HolyMove] API listening on :${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
 });
+

@@ -15,7 +15,12 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": false,
     "removeComments": true,
-    "types": ["node"]
+    "types": ["node"],
+    
+  "lib": ["es2015"],
+  "moduleResolution": "node",
+  "types": ["node"]
+
   },
   "include": [
     "server/**/*.js",
