@@ -3,9 +3,18 @@ ai-truck-helper/
 ┣ all-test-requests.md
 ┣ chat-test.http
 ┣ core/
+┃ ┣ index.d.ts
 ┃ ┣ index.ts
 ┃ ┣ package-lock.json
 ┃ ┣ package.json
+┃ ┣ shared/
+┃ ┃ ┣ config.js
+┃ ┃ ┣ middleware/
+┃ ┃ ┃ ┣ error.js
+┃ ┃ ┃ ┣ rateLimit.js
+┃ ┃ ┃ ┗ roles.js
+┃ ┃ ┗ utils/
+┃ ┃   ┗ jwt.js
 ┃ ┗ tsconfig.json
 ┣ deploy-check.sh
 ┣ DEPLOY_GUIDE.md
@@ -21,7 +30,6 @@ ai-truck-helper/
 ┃ ┣ src/
 ┃ ┃ ┣ App.css
 ┃ ┃ ┣ App.jsx
-┃ ┃ ┣ App2.jsx
 ┃ ┃ ┣ App_new.jsx
 ┃ ┃ ┣ assets/
 ┃ ┃ ┃ ┗ react.svg

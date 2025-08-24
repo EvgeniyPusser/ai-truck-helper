@@ -1,6 +1,8 @@
 //export const API_BASE = import.meta.env.VITE_API_URL || '';
 // frontend/src/config.js
-export const API_BASE = "https://api.hollymove.com";
+//export const API_BASE = "https://api.hollymove.com";
+export const API_BASE = "https://ai-truck-helper.onrender.com";
+
 
 export const api = (path) => `${API_BASE}${path}`;
 
