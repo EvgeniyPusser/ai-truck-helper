@@ -14,6 +14,29 @@ import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
 const app = express();
+import cors from "cors";
+
+// Разрешим фронт с Render и локалку
+const ALLOWED = [
+  "http://localhost:5173",
+  "https://ai-truck-helper-frontend.onrender.com",
+  "https://hollymove.com",
+  "https://www.hollymove.com",
+];
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin || ALLOWED.includes(origin)) return cb(null, true);
+      return cb(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+app.options("*", cors());
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
