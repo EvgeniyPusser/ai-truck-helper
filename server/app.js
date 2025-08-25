@@ -17,13 +17,13 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 app.get("/api/health", (_req, res) => {
   res
     .type("application/json")
     .status(200)
     .send({ ok: true, time: new Date().toISOString() });
 });
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
