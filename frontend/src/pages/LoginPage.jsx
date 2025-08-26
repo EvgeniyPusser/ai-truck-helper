@@ -1,20 +1,22 @@
 // frontend/src/pages/LoginPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_LOGIN } from '../config.js';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('client@example.com');   // можно поменять
   const [password, setPassword] = useState('client123');      // можно поменять
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(API_LOGIN, {
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();

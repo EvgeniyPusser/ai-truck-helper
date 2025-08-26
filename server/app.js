@@ -14,7 +14,7 @@ import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
 const app = express();
-import cors from "cors";
+
 
 // Разрешим фронт с Render и локалку
 const ALLOWED = [
