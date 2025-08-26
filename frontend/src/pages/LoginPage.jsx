@@ -1,14 +1,12 @@
-// frontend/src/pages/LoginPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_LOGIN } from '../config.js';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('client@example.com');   // можно поменять
-  const [password, setPassword] = useState('client123');      // можно поменять
+  const [email, setEmail] = useState('client@example.com');
+  const [password, setPassword] = useState('client123');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +20,6 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || `Login failed: ${res.status}`);
 
-      // сохраняем токен под обоими ключами для совместимости
       localStorage.setItem('holly_token', data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user || {}));
@@ -64,3 +61,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
