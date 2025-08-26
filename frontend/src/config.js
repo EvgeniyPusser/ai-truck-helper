@@ -9,3 +9,5 @@ export const API_BASE = isLocal ? "" : "https://ai-truck-helper.onrender.com";
 export const api = (path) => `${API_BASE}${path}`;
 export const API_LOGIN = api("/api/auth/login");
 export const API_CHAT = api("/api/chat");
+
+

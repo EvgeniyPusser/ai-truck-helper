@@ -13,8 +13,8 @@ const useAuthStore = create((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
-      //const response = await fetch('/api/auth/login', {
-      const response = await fetch(API_LOGIN, {
+      const response = await fetch("/api/auth/login", {
+        // const response = await fetch(API_LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
