@@ -1,9 +1,0 @@
-        [[redirects]]
-        from = "/https://app.netlify.com/projects/lovely-druid-fb06ce/deploys"
-        to = "/https://www.holymovela.com/"
-        status = 301
-
-        [[redirects]]
-        from = "/api/*"
-        to = "/.netlify/functions/:splat"
-        status = 200

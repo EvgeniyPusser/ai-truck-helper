@@ -1,23 +1,41 @@
 [
   {
     "id": "small",
-    "name": "Малый грузовик",
+    "name": "Small Truck",
     "volume_m3": 10,
     "max_weight_kg": 1500,
-    "description": "Подходит для небольших переездов — квартира студия, до 2 комнат."
+    "pricePerMile": 1.2,
+    "location": "Los Angeles, CA",
+    "availableDates": ["2025-08-15", "2025-08-16"],
+    "rating": 4.8,
+    "clean": true,
+    "size": 10,
+    "description": "Suitable for small moves — studio or up to 2 rooms."
   },
   {
     "id": "medium",
-    "name": "Средний грузовик",
+    "name": "Medium Truck",
     "volume_m3": 25,
     "max_weight_kg": 3500,
-    "description": "Оптимален для квартир от 2 до 4 комнат."
+    "pricePerMile": 1.7,
+    "location": "Los Angeles, CA",
+    "availableDates": ["2025-08-15", "2025-08-17"],
+    "rating": 4.6,
+    "clean": true,
+    "size": 25,
+    "description": "Optimal for apartments with 2 to 4 rooms."
   },
   {
     "id": "large",
-    "name": "Большой грузовик",
+    "name": "Large Truck",
     "volume_m3": 50,
     "max_weight_kg": 7000,
-    "description": "Для больших домов и офисных переездов."
+    "pricePerMile": 2.3,
+    "location": "Los Angeles, CA",
+    "availableDates": ["2025-08-15", "2025-08-18"],
+    "rating": 4.9,
+    "clean": true,
+    "size": 50,
+    "description": "For big houses and office moves."
   }
 ]

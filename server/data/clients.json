@@ -1,10 +1,24 @@
 [
   {
-  "id": "req001",
-  "from": "Los Angeles, CA",
-  "to": "Phoenix, AZ",
-  "date": "2025-08-15",
-  "volume": 23,
-  "needHelpers": true
+    "id": "req001",
+    "from": "Los Angeles, CA",
+    "to": "Phoenix, AZ",
+    "date": "2025-08-15",
+    "volume": 23,
+    "needHelpers": true,
+    "contact": "john.doe@email.com",
+    "status": "pending",
+    "comments": "Fragile items, need extra care."
+  },
+  {
+    "id": "req002",
+    "from": "Los Angeles, CA",
+    "to": "San Diego, CA",
+    "date": "2025-08-16",
+    "volume": 12,
+    "needHelpers": false,
+    "contact": "jane.smith@email.com",
+    "status": "confirmed",
+    "comments": "No furniture, only boxes."
   }
 ]

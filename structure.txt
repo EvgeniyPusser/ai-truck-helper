@@ -22,10 +22,12 @@ ai-truck-helper/
 ┣ frontend/
 ┃ ┣ eslint.config.js
 ┃ ┣ index.html
+┃ ┣ netlify.toml
 ┃ ┣ package-lock.json
 ┃ ┣ package.json
 ┃ ┣ public/
-┃ ┃ ┗ vite.svg
+┃ ┃ ┣ vite.svg
+┃ ┃ ┗ _redirects
 ┃ ┣ README.md
 ┃ ┣ src/
 ┃ ┃ ┣ App.css
@@ -46,6 +48,8 @@ ai-truck-helper/
 ┃ ┃ ┣ config.js
 ┃ ┃ ┣ hooks/
 ┃ ┃ ┣ index.css
+┃ ┃ ┣ lib/
+┃ ┃ ┃ ┗ api.ts
 ┃ ┃ ┣ main.jsx
 ┃ ┃ ┣ pages/
 ┃ ┃ ┃ ┣ AgentDashboard.jsx
@@ -62,8 +66,9 @@ ai-truck-helper/
 ┃ ┃ ┃ ┗ searchStore.js
 ┃ ┃ ┣ theme/
 ┃ ┃ ┃ ┗ theme.js
-┃ ┃ ┗ utils/
-┃ ┃   ┗ api.js
+┃ ┃ ┣ utils/
+┃ ┃ ┃ ┗ api.js
+┃ ┃ ┗ vite-env.d.ts
 ┃ ┗ vite.config.js
 ┣ generateTree.js
 ┣ generateTree.ts
