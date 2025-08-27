@@ -111,7 +111,7 @@
 
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
+
 import morgan from "morgan";
 import helmet from "helmet";
 import path from "path";
@@ -126,7 +126,20 @@ import mapsRoutes from "./routes/maps.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
-const app = express(); // ✅ create app BEFORE using it
+const app = express();
+
+// 🔧 TEMP: force CORS for your prod origin (debugging)
+// Place this BEFORE any routes or other middleware.
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://www.holymovela.com");
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+// ✅ create app BEFORE using it
 
 import cors from "cors";
 const ALLOWED = [
