@@ -1,7 +1,0 @@
-router_file,mount_guess,method,subpath,middlewares
-/mnt/data/upload_unpacked/root_zip/server/app.js,,GET,/health,"(_req, res")
-/mnt/data/upload_unpacked/root_zip/server/routes/auth.routes.js,,POST,/login,login
-/mnt/data/upload_unpacked/root_zip/server/routes/chat.routes.js,,GET,/ping,"(req, res")
-/mnt/data/upload_unpacked/root_zip/server/routes/chat.routes.js,,POST,/,"requireAuth, chatHandler"
-/mnt/data/upload_unpacked/root_zip/server/routes/roles.routes.js,,GET,/,"requireAuth, requireRole(""admin""")
-/mnt/data/upload_unpacked/root_zip/server/routes/roles.routes.js,,POST,/,"requireAuth, requireRole(""admin""")
