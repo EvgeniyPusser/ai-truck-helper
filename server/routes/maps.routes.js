@@ -2,7 +2,8 @@ import express from "express";
 const router = express.Router();
 
 // --- helpers ---
-const US_BBOX = { minLat: 24, maxLat: 50, minLon: -125, maxLon: -66 };
+// const US_BBOX = { minLat: 24, maxLat: 50, minLon: -125, maxLon: -66 };
+const US_BBOX = { minLat: 18, maxLat: 72, minLon: -179.5, maxLon: -64 };
 const US_STATES = new Set([
   "AL",
   "AK",
@@ -91,17 +92,40 @@ async function geocodeORS(query, key, forceUS = false) {
   return { lat, lon };
 }
 
+// async function geocodeNominatim(query, forceUS = false) {
+//   const isZip = /^\s*\d{5}\s*$/.test(query);
+//   const base = "https://nominatim.openstreetmap.org/search";
+//   const params = new URLSearchParams({
+//     format: "json",
+//     limit: "1",
+//     "accept-language": "en",
+//   });
+//   if (forceUS) params.set("countrycodes", "us");
+//   if (isZip) params.set("postalcode", query.trim());
+//   else params.set("q", query);
+
+//   const url = `${base}?${params.toString()}`;
+//   const res = await fetch(url, { headers: { "User-Agent": "HollyMove/1.0" } });
+//   if (!res.ok) throw new Error(`NOM_GEOCODE_${res.status}`);
+//   const data = await res.json();
+//   if (!Array.isArray(data) || !data[0]) return null;
+//   return { lat: +data[0].lat, lon: +data[0].lon };
+// }
+
 async function geocodeNominatim(query, forceUS = false) {
-  const isZip = /^\s*\d{5}\s*$/.test(query);
   const base = "https://nominatim.openstreetmap.org/search";
+  const isZip = /^\s*\d{5}\s*$/.test(query);
   const params = new URLSearchParams({
     format: "json",
     limit: "1",
     "accept-language": "en",
   });
-  if (forceUS) params.set("countrycodes", "us");
-  if (isZip) params.set("postalcode", query.trim());
+
+  // Ключевая правка:
+  if (isZip) params.set("q", `${query.trim()}, USA`);
   else params.set("q", query);
+
+  if (forceUS) params.set("countrycodes", "us");
 
   const url = `${base}?${params.toString()}`;
   const res = await fetch(url, { headers: { "User-Agent": "HollyMove/1.0" } });
@@ -110,6 +134,7 @@ async function geocodeNominatim(query, forceUS = false) {
   if (!Array.isArray(data) || !data[0]) return null;
   return { lat: +data[0].lat, lon: +data[0].lon };
 }
+
 
 async function routeORS(a, b, key) {
   const url =
@@ -208,6 +233,8 @@ router.post("/route", async (req, res) => {
     console.error("[/api/maps/route] error:", e?.message || e);
     return res.status(500).json({ error: "route_failed" });
   }
+
+  
 });
 
 export default router;

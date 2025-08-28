@@ -506,3 +506,7 @@
   line-height: 1.5;
 }
 }
+#map-root {
+  height: 70vh;
+  width: 100%;
+}
