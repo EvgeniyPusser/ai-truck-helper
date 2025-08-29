@@ -1,51 +1,68 @@
 ai-truck-helper/
 ┣ ai-truck-helper@1.0.0
 ┣ chat-test.http
+┣ eslint.config.js
+┣ frontend/
+┃ ┣ eslint.config.js
+┃ ┣ index.html
+┃ ┣ package-lock.json
+┃ ┣ package.json
+┃ ┣ public/
+┃ ┃ ┗ vite.svg
+┃ ┣ README.md
+┃ ┣ src/
+┃ ┃ ┣ App.css
+┃ ┃ ┣ App.jsx
+┃ ┃ ┣ assets/
+┃ ┃ ┃ ┗ react.svg
+┃ ┃ ┣ index.css
+┃ ┃ ┗ main.jsx
+┃ ┗ vite.config.js
 ┣ generateTree.js
 ┣ generateTree.ts
+┣ index.html
 ┣ package-lock.json
 ┣ package.json
 ┣ public/
+┃ ┗ vite.svg
 ┣ README.md
 ┣ scripts/
+┃ ┣ client/
+┃ ┃ ┗ chat.js
 ┃ ┣ routeDiag.js
 ┃ ┣ route_opt.py
 ┃ ┗ test.py
 ┣ server/
 ┃ ┣ app.js
+┃ ┣ config.ts
 ┃ ┣ controllers/
 ┃ ┃ ┣ auth.controller.js
 ┃ ┃ ┗ chat.controller.js
+┃ ┣ data/
+┃ ┃ ┣ clients.json
+┃ ┃ ┣ helpers.json
+┃ ┃ ┗ trucks.json
 ┃ ┣ index.js
 ┃ ┣ middleware/
 ┃ ┃ ┣ auth.js
 ┃ ┃ ┣ error.js
 ┃ ┃ ┗ rateLimit.js
-┃ ┣ py/
+┃ ┣ planner/
+┃ ┃ ┗ planner/
+┃ ┃   ┗ planner.ts
 ┃ ┣ routes/
 ┃ ┃ ┣ auth.routes.js
 ┃ ┃ ┗ chat.routes.js
 ┃ ┣ services/
 ┃ ┃ ┣ chat.service.js
+┃ ┃ ┣ geocode.ts
+┃ ┃ ┣ providers.js
+┃ ┃ ┣ route.js
 ┃ ┃ ┗ user.service.js
 ┃ ┗ utils/
 ┃   ┗ jwt.js
-┣ src/
-┃ ┣ api/
-┃ ┃ ┗ chat.js
-┃ ┣ config.js
-┃ ┣ data/
-┃ ┃ ┗ trucks.json
-┃ ┣ planner/
-┃ ┃ ┣ clients.json
-┃ ┃ ┣ helpers.json
-┃ ┃ ┣ planner.ts
-┃ ┃ ┗ trucks.json
-┃ ┣ server.js
-┃ ┗ services/
-┃   ┣ geocode.ts
-┃   ┣ providers.js
-┃   ┗ route.js
 ┣ structure.txt
 ┣ test.js
-┗ tsx
+┣ tsconfig.json
+┣ tsx
+┗ vite.config.js

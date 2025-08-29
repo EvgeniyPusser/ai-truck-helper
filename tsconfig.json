@@ -11,10 +11,22 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "baseUrl": ".",
-    "rootDir": "server",
+    "rootDir": ".",
     "outDir": "build",
-    "types": ["node"]
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es2015"
+    ],
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["server/**/*"],
-  "exclude": ["node_modules", "build"]
+  "include": [
+    "**/*.ts",
+    "server/config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }
