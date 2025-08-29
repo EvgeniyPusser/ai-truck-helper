@@ -1,4 +1,4 @@
-import { geocode } from "./geocode.ts"; // tsx lets us import .ts
+import { geocode } from "./geocode.ts";
 import { getRoute } from "./route.js";
 import fetch from "node-fetch";
 import { config } from "../config.js";
@@ -8,26 +8,7 @@ export async function buildPlan({ from, to, date, volume, needHelpers }) {
   const origin = await geocode(from);
   const dest = await geocode(to);
 
-  async function planForSingle({ from, to, date, volume, needHelpers }) {
-    if (!from || !to) throw new Error("from and to are required");
-
-    // 1) геокод + маршрут
-    const origin = await geocode(from);
-    const dest = await geocode(to);
-
-    // 👉 Диагностика: что именно вернул геокодер
-    console.log("[geocode] from:", from, "->", origin, "| to:", to, "->", dest);
-
-    // 👉 Защита: если координаты совпали — бросаем понятную ошибку
-    if (origin[0] === dest[0] && origin[1] === dest[1]) {
-      throw new Error(
-        "Geocoding produced the same point for 'from' and 'to'. Try making addresses more specific (city, state, ZIP), e.g. 'Los Angeles, CA, USA'."
-      );
-    }
-
-    const route = await getRoute(origin, dest);
-    // ... остальной код без изменений ...
-  }
+  // Удалена неиспользуемая функция planForSingle
 
   const route = await getRoute(origin, dest);
 
@@ -76,22 +57,15 @@ Return <= 120 words + 3 bullet tips.`,
     }
   }
 
-  // return {
-  //   itinerary: { from, to, date, hours, km, geometry: route.geometry },
-  //   resources: { estimated_volume_m3: volume ?? null, helpers },
-  //   pricing: { transport, labor, platformFee, estTotal },
-  //   narrative,
-  // };
-
   return {
     itinerary: {
       from,
       to,
       date,
-      hours, // existing
-      km, // existing
-      miles: +(km * 0.621371).toFixed(1), // ← add
-      drive_time_h: +(route.duration / 3600).toFixed(1), // ← add
+      hours,
+      km,
+      miles: +(km * 0.621371).toFixed(1),
+      drive_time_h: +(route.duration / 3600).toFixed(1),
       geometry: route.geometry,
     },
     resources: { estimated_volume_m3: volume ?? null, helpers },
