@@ -50,8 +50,8 @@ def main():
 
     # quick suggestions (very simple placeholders)
     suggestions = {
-        "crossDockCandidates": [],   # fill with nodes/depots if you have them
-        "assetShare": [],            # opportunities to share trucks/equipment between nearby legs
+        "crossDockCandidates": [],
+        "assetShare": [],
         "notes": [
             "You can plug real depot/vehicle data here to get actionable cross-docking suggestions.",
             "Provide time windows and vehicle capacities to enable real route optimization."
@@ -89,8 +89,8 @@ def main():
             }
         }
     }
-
-    print(json.dumps(result))
+    print(json.dumps(result, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()
+

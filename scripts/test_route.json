@@ -1,0 +1,23 @@
+{
+  "itinerary": {
+    "from": "Moscow",
+    "to": "Saint Petersburg",
+    "geometry": {
+      "coordinates": [
+        [37.6173, 55.7558],
+        [30.3141, 59.9386]
+      ]
+    },
+    "date": "2025-09-01",
+    "hours": 8
+  },
+  "resources": {
+    "helpers": 2,
+    "estimated_volume_m3": 20
+  },
+  "pricing": {
+    "transport": 15000,
+    "labor": 5000,
+    "platformFee": 1000
+  }
+}
