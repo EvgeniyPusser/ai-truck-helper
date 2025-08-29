@@ -1,32 +1,35 @@
-// server/services/route.js
-
 import fetch from "node-fetch";
+import { config } from "../config.js"; // config.orsApiKey
 
 export async function getRoute(origin, dest) {
-  const [olng, olat] = origin;
-  const [dlng, dlat] = dest;
-  const url = `https://router.project-osrm.org/route/v1/driving/${olng},${olat};${dlng},${dlat}?overview=full&geometries=geojson`;
+  const url = "https://api.openrouteservice.org/v2/directions/driving-car";
+  const body = {
+    coordinates: [origin, dest],
+  };
 
   const res = await fetch(url, {
+    method: "POST",
     headers: {
-      "User-Agent": "HolyMove/1.0 (support@holymove.example)",
+      Authorization: config.orsApiKey,
+      "Content-Type": "application/json",
       Accept: "application/json",
     },
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) {
     const txt = await res.text().catch(() => "");
-    throw new Error(`OSRM ${res.status}: ${txt || res.statusText}`);
+    throw new Error(`ORS ${res.status}: ${txt || res.statusText}`);
   }
 
   const data = await res.json();
   const r = data?.routes?.[0];
-  if (!r) throw new Error("OSRM: no route found");
+  if (!r) throw new Error("ORS: no route found");
 
   return {
-    distance: r.distance, // meters
-    duration: r.duration, // seconds
+    distance: r.summary.distance, // meters
+    duration: r.summary.duration, // seconds
     geometry: r.geometry, // GeoJSON LineString
-    source: "OSRM",
+    source: "ORS",
   };
 }
