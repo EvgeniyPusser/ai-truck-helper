@@ -6,6 +6,7 @@ import helmet from "helmet";
 
 import chatRoutes from "./routes/chat.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import helpersRoutes from "./routes/helpers.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
 
@@ -36,6 +37,8 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
+
+app.use("/api/helpers", helpersRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

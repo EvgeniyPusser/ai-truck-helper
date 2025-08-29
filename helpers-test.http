@@ -1,0 +1,11 @@
+### Тест запроса к /api/helpers
+POST http://localhost:3001/api/helpers
+Content-Type: application/json
+
+{
+  "pickupZip": "10001",
+  "dropoffZip": "90001",
+  "helpers": 2,
+  "volume": 25,
+  "date": "2025-09-01"
+}
