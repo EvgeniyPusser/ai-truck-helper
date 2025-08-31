@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Box, VStack, Input, Button, Select, Heading, FormLabel, FormControl } from "@chakra-ui/react";
+import {
+  Box,
+  VStack,
+  Input,
+  Button,
+  Select,
+  Heading,
+  FormLabel,
+  FormControl
+} from "@chakra-ui/react";
 
 const MoveForm = ({ onSubmit }) => {
   const [pickupZip, setPickupZip] = useState("");
@@ -8,7 +17,7 @@ const MoveForm = ({ onSubmit }) => {
   const [volume, setVolume] = useState(20);
   const [date, setDate] = useState("");
 
-  // 👇 локальная "сегодняшняя" дата в формате YYYY-MM-DD (без UTC-сдвига)
+  // 👇 сегодняшняя дата (локально), чтобы календарь начинался с неё
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -18,9 +27,9 @@ const MoveForm = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // дополнительная защита на случай старых браузеров
+    // доп. защита
     if (date && date < minDate) {
-      alert("Please choose a date that is today or later.");
+      alert("Please choose today or a future date.");
       return;
     }
 
@@ -34,39 +43,64 @@ const MoveForm = ({ onSubmit }) => {
         <VStack spacing={4}>
           <FormControl isRequired>
             <FormLabel htmlFor="pickupZip">Pickup ZIP</FormLabel>
-            <Input id="pickupZip" value={pickupZip} onChange={e => setPickupZip(e.target.value)} inputMode="numeric" pattern="\d{5}" />
+            <Input
+              id="pickupZip"
+              value={pickupZip}
+              onChange={(e) => setPickupZip(e.target.value)}
+              inputMode="numeric"
+              pattern="\d{5}"
+            />
           </FormControl>
 
           <FormControl isRequired>
             <FormLabel htmlFor="dropoffZip">Dropoff ZIP</FormLabel>
-            <Input id="dropoffZip" value={dropoffZip} onChange={e => setDropoffZip(e.target.value)} inputMode="numeric" pattern="\d{5}" />
+            <Input
+              id="dropoffZip"
+              value={dropoffZip}
+              onChange={(e) => setDropoffZip(e.target.value)}
+              inputMode="numeric"
+              pattern="\d{5}"
+            />
           </FormControl>
 
           <FormControl>
             <FormLabel htmlFor="rooms">Rooms</FormLabel>
-            <Select id="rooms" value={rooms} onChange={e => setRooms(Number(e.target.value))}>
-              {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+            <Select
+              id="rooms"
+              value={rooms}
+              onChange={(e) => setRooms(Number(e.target.value))}
+            >
+              {[1, 2, 3, 4, 5].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
             </Select>
           </FormControl>
 
           <FormControl>
             <FormLabel htmlFor="volume">Volume (cu.m)</FormLabel>
-            <Input id="volume" type="number" value={volume} onChange={e => setVolume(Number(e.target.value))} min={1} />
+            <Input
+              id="volume"
+              type="number"
+              value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              min={1}
+            />
           </FormControl>
 
           <FormControl isRequired>
-  <FormLabel htmlFor="date">Date</FormLabel>
-  <Input
-    id="date"
-    type="date"
-    value={date}
-    onChange={e => setDate(e.target.value)}
-    min={minDate}   // 👈 minDate = сегодня, значит "сегодня" разрешено
-  />
-</FormControl>
+            <FormLabel htmlFor="date">Date</FormLabel>
+            <Input
+              id="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              min={minDate}  // 👈 календарь доступен начиная с сегодняшнего дня
+            />
+          </FormControl>
 
-
-          <Button colorScheme="blue" type="submit" w="100%">Calculate</Button>
+          <Button colorScheme="blue" type="submit" w="100%">
+            Calculate
+          </Button>
         </VStack>
       </form>
     </Box>
