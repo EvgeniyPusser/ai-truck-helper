@@ -1,6 +1,10 @@
 import { Router } from "express";
 const r = Router();
 
+import { getHelpers } from "../controllers/helpers.controller.js";
+
+r.post("/", getHelpers);
+
 // мини-валидация без бизнес-формул
 function isZip(v) {
   return typeof v === "string" && /^\d{5}$/.test(v);
