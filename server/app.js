@@ -18,20 +18,21 @@ const allowedOrigins = [
   "https://www.holymovela.com",
 ];
 
+const corsOptions = {
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+
 
 
 app.use(helmet());
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (allowedOrigins.some((o) => origin && o && origin.startsWith(o)))
-        return cb(null, true);
-      return cb(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-);
+
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("tiny"));
 
