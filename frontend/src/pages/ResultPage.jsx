@@ -1,3 +1,4 @@
+// ...existing code...
 import React from "react";
 import { Box, Heading, Text, VStack, Button } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,8 +23,20 @@ const ResultPage = () => {
                 <Text fontSize="md" color="gray.700" mb={2}>All offers:</Text>
                 <ul style={{margin:0, paddingLeft:20}}>
                   {result.map((h) => (
-                    <li key={h.id}>
-                      {h.name}: <strong>${h.rate}</strong>
+                    <li key={h.id} style={{marginBottom: "1em"}}>
+                      <div>
+                        <strong>{h.name}</strong>: ${h.rate}
+                      </div>
+                      {h.truck && (
+                        <Box bg="gray.50" p={3} rounded="md" mt={1} mb={1}>
+                          <Text fontSize="sm" color="gray.800">
+                            <strong>Truck:</strong> {h.truck.name} ({h.truck.volume_m3} m³, max {h.truck.max_weight_kg} kg)
+                          </Text>
+                          <Text fontSize="sm" color="gray.600" mt={1}>
+                            {h.truck.description}
+                          </Text>
+                        </Box>
+                      )}
                     </li>
                   ))}
                 </ul>

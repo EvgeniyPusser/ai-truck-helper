@@ -1,23 +1,37 @@
 [
   {
-    "id": "small",
-    "name": "Малый грузовик",
-    "volume_m3": 10,
-    "max_weight_kg": 1500,
-    "description": "Подходит для небольших переездов — квартира студия, до 2 комнат."
+    "id": "van",
+    "name": "Cargo Van",
+    "volume_m3": 7,
+    "max_weight_kg": 1200,
+    "description": "Cargo Van: Perfect for studio apartments, small moves, or quick deliveries. Maneuvers easily in city traffic."
   },
   {
-    "id": "medium",
-    "name": "Средний грузовик",
-    "volume_m3": 25,
+    "id": "sprinter",
+    "name": "Sprinter Van",
+    "volume_m3": 12,
+    "max_weight_kg": 1800,
+    "description": "Sprinter Van: Great for 1-bedroom apartments or small office moves. More space than a cargo van, still easy to park."
+  },
+  {
+    "id": "small_box",
+    "name": "12ft Box Truck",
+    "volume_m3": 20,
     "max_weight_kg": 3500,
-    "description": "Оптимален для квартир от 2 до 4 комнат."
+    "description": "12ft Box Truck: Ideal for 1–2 room apartments, small homes, or medium deliveries."
   },
   {
-    "id": "large",
-    "name": "Большой грузовик",
+    "id": "medium_box",
+    "name": "16ft Box Truck",
+    "volume_m3": 30,
+    "max_weight_kg": 7700,
+    "description": "16ft Box Truck: Best for 2–4 room apartments or mid-size moves. The go-to choice for most relocations."
+  },
+  {
+    "id": "large_box",
+    "name": "26ft Box Truck",
     "volume_m3": 50,
-    "max_weight_kg": 7000,
-    "description": "Для больших домов и офисных переездов."
+    "max_weight_kg": 15400,
+    "description": "26ft Box Truck: Built for large homes, office moves, or big loads. Handles major moves with ease."
   }
 ]

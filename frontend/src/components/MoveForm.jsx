@@ -116,7 +116,24 @@ const MoveForm = ({ onSubmit }) => {
   const [pickupZip, setPickupZip] = useState("");
   const [dropoffZip, setDropoffZip] = useState("");
   const [rooms, setRooms] = useState(1);
-  const [volume, setVolume] = useState(20);
+  const [volume, setVolume] = useState(12); // default for 1 room
+
+  // Estimate volume by rooms (same as backend)
+  function estimateVolumeByRooms(rooms) {
+    if (rooms <= 0) return 7;
+    if (rooms === 1) return 12;
+    if (rooms === 2) return 20;
+    if (rooms === 3) return 30;
+    if (rooms === 4) return 40;
+    return 50;
+  }
+
+  // When rooms changes, auto-set volume
+  const handleRoomsChange = (e) => {
+    const r = Number(e.target.value);
+    setRooms(r);
+    setVolume(estimateVolumeByRooms(r));
+  };
   const [date, setDate] = useState("");
 
   // 👇 локальная "сегодняшняя" дата в формате YYYY-MM-DD (без UTC-сдвига)
@@ -155,7 +172,7 @@ const MoveForm = ({ onSubmit }) => {
 
           <FormControl>
             <FormLabel htmlFor="rooms">Rooms</FormLabel>
-            <Select id="rooms" value={rooms} onChange={e => setRooms(Number(e.target.value))}>
+            <Select id="rooms" value={rooms} onChange={handleRoomsChange}>
               {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
             </Select>
           </FormControl>
