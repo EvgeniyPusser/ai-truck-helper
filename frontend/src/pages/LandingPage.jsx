@@ -64,7 +64,23 @@ const LandingPage = () => {
         {result && (
           <Box bg="white" p={6} rounded="md" shadow="md" mt={2} maxW="600px" w="100%">
             <Heading size="md" mb={2}>Result</Heading>
-            <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>{JSON.stringify(result, null, 2)}</pre>
+            {Array.isArray(result) && result.length > 0 ? (
+              <>
+                <Text fontSize="lg" color="blue.700" mb={2}>
+                  Цена для клиента: <strong>${result[0].rate}</strong>
+                </Text>
+                <Text fontSize="md" color="gray.700" mb={2}>Все предложения:</Text>
+                <ul style={{margin:0, paddingLeft:20}}>
+                  {result.map((h) => (
+                    <li key={h.id}>
+                      {h.name}: <strong>${h.rate}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>{JSON.stringify(result, null, 2)}</pre>
+            )}
           </Box>
         )}
 

@@ -135,7 +135,7 @@ const MoveForm = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit({ pickupZip, dropoffZip, rooms, volume, date });
+  onSubmit({ pickupZip, dropoffZip, helpers: rooms, volume, date });
   };
 
   return (
