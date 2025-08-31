@@ -14,9 +14,11 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env?.VITE_API_URL,
-  process.env?.NGROK_DOMAIN ? `https://${process.env.NGROK_DOMAIN}` : undefined,
-].filter(Boolean);
+  "https://holymovela.com",
+  "https://www.holymovela.com",
+];
+
+
 
 app.use(helmet());
 app.use(
