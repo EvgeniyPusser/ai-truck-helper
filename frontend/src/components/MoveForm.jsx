@@ -164,30 +164,24 @@ const MoveForm = ({ onSubmit }) => {
             <FormLabel htmlFor="pickupZip">Pickup ZIP</FormLabel>
             <Input id="pickupZip" value={pickupZip} onChange={e => setPickupZip(e.target.value)} inputMode="numeric" pattern="\d{5}" />
           </FormControl>
-
           <FormControl isRequired>
             <FormLabel htmlFor="dropoffZip">Dropoff ZIP</FormLabel>
             <Input id="dropoffZip" value={dropoffZip} onChange={e => setDropoffZip(e.target.value)} inputMode="numeric" pattern="\d{5}" />
           </FormControl>
-
           <FormControl>
             <FormLabel htmlFor="rooms">Rooms</FormLabel>
             <Select id="rooms" value={rooms} onChange={handleRoomsChange}>
               {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
             </Select>
           </FormControl>
-
           <FormControl>
             <FormLabel htmlFor="volume">Volume (cu.m)</FormLabel>
             <Input id="volume" type="number" value={volume} onChange={e => setVolume(Number(e.target.value))} min={1} />
           </FormControl>
-
           <FormControl isRequired>
             <FormLabel htmlFor="date">Date</FormLabel>
-            {/* 👇 запрещаем прошлые даты */}
             <Input id="date" type="date" value={date} onChange={e => setDate(e.target.value)} min={minDate} />
           </FormControl>
-
           <Button colorScheme="blue" type="submit" w="100%">Calculate</Button>
         </VStack>
       </form>

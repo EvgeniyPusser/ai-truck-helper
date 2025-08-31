@@ -48,7 +48,7 @@ const LandingPage = () => {
   return (
     <>
       {/* Promo code banner */}
-      <Box minH="100vh" w="100vw" bg="yellow.300" py={2} textAlign="center" fontWeight="bold" fontSize={["sm","md"]} letterSpacing="wide">
+      <Box w="100vw" bg="yellow.300" py={1} textAlign="center" fontWeight="semibold" fontSize="xs" letterSpacing="wide" position="fixed" top={0} left={0} zIndex={10} borderBottom="1px solid #ECC94B">
         USE COUPON CODE <span style={{color:'#2B6CB0'}}>#ONESHOTMOVEFOR3</span> FOR 3 FREE BOXES!
       </Box>
       {/* Hero Section - covers full width */}
@@ -58,6 +58,7 @@ const LandingPage = () => {
         bgGradient="linear(to-br, blue.700, blue.400)"
         position="relative"
         px={0}
+        pt={[6,8,10]}
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -78,9 +79,6 @@ const LandingPage = () => {
           zIndex={1}
         >
           <Image src={dwarfImg} alt="Gnome Mascot" boxSize={["120px", "180px", "220px"]} mb={2} shadow="2xl" borderRadius="full" border="4px solid white" />
-          <Heading size={['2xl','3xl','4xl']} color="white" textShadow="0 2px 16px #0006" textAlign="center" mb={2}>
-            BEST MOVING RATES<br />IN ALL OF LOS ANGELES
-          </Heading>
           <Text fontSize={["lg", "2xl", "3xl"]} color="whiteAlpha.900" maxW={["90vw", "600px"]} textAlign="center" fontWeight="bold" mb={4}>
             INSTANT QUOTE
           </Text>
@@ -88,7 +86,7 @@ const LandingPage = () => {
             Fast, reliable moving service for any apartment size.<br />
             Enter your ZIP, number of rooms, date, and baggage details — get instant price, route, truck info, and more!
           </Text>
-          <Box w="100vw" maxW="100vw" bg="white" p={[4, 6, 8]} rounded="2xl" shadow="2xl" mt={2}>
+          <Box w="100vw" maxW={["100vw","700px","900px"]} bg="white" p={[4, 8, 12]} rounded="2xl" shadow="2xl" mt={2}>
             <MoveForm onSubmit={handleSubmit} />
             {error && (
               <Box bg="red.50" border="1px solid #fca5a5" color="red.700" p={3} rounded="md" mt={3} fontSize={["sm","md"]}>
