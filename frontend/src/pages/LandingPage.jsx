@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Box, VStack, Image, Heading, Text, Button } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MoveForm from "../components/MoveForm";
 import dwarfImg from "../assets/myDwarf.png";
 import { health } from "../api/health";
 
 const LandingPage = () => {
   const [result, setResult] = useState(null);
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   // проверка, что сервер жив
@@ -29,13 +31,14 @@ const LandingPage = () => {
       });
 
       if (!res.ok) {
-        // покажем понятную ошибку, если роут отсутствует (404) или другая проблема
         const text = await res.text();
         throw new Error(`POST /api/helpers → ${res.status}. ${text}`);
       }
 
       const data = await res.json();
       setResult(data);
+      // переход на страницу результата с передачей данных
+      navigate("/result", { state: { result: data } });
     } catch (e) {
       console.error(e);
       setError(e.message || "Request failed");

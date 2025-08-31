@@ -7,11 +7,13 @@ import CompanyPage from "./pages/CompanyPage";
 import TruckPage from "./pages/TruckPage";
 import DriverPage from "./pages/DriverPage";
 import AgentPage from "./pages/AgentPage";
+import ResultPage from "./pages/ResultPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+  <Route path="/result" element={<ResultPage />} />
       <Route path="/helper" element={<HelperPage />} />
       <Route path="/company" element={<CompanyPage />} />
       <Route path="/truck" element={<TruckPage />} />
