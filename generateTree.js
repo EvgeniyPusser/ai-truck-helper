@@ -1,39 +1,35 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var path = require("path");
-var baseDir = process.cwd();
-var output = [];
+import * as fs from 'fs';
+import * as path from 'path';
+const baseDir = process.cwd();
+const output = [];
 // Configuration:
-var excludeDirs = new Set(['node_modules', '.git', 'dist']);
-var maxDepth = 3; // Change to desired max depth, or Infinity for unlimited
-var includeHidden = false; // Set true to include hidden files/folders
-function walk(dir, prefix, depth) {
-    if (prefix === void 0) { prefix = ''; }
-    if (depth === void 0) { depth = 0; }
+const excludeDirs = new Set(['node_modules', '.git', 'dist']);
+const maxDepth = 3; // Change to desired max depth, or Infinity for unlimited
+const includeHidden = false; // Set true to include hidden files/folders
+function walk(dir, prefix = '', depth = 0) {
     if (depth > maxDepth)
         return;
-    var entries;
+    let entries;
     try {
         entries = fs.readdirSync(dir, { withFileTypes: true });
     }
-    catch (_a) {
+    catch {
         return; // skip unreadable dirs
     }
     // Filter based on hidden and excludeDirs
-    var visible = entries.filter(function (e) {
+    const visible = entries.filter(e => {
         if (!includeHidden && e.name.startsWith('.'))
             return false;
         if (excludeDirs.has(e.name))
             return false;
         return true;
     });
-    var lastIndex = visible.length - 1;
-    visible.forEach(function (entry, index) {
-        var isLast = index === lastIndex;
-        var pointer = isLast ? '┗' : '┣';
-        var connector = isLast ? '  ' : '┃ ';
-        var displayName = entry.name + (entry.isDirectory() ? '/' : '');
+    const lastIndex = visible.length - 1;
+    visible.forEach((entry, index) => {
+        const isLast = index === lastIndex;
+        const pointer = isLast ? '┗' : '┣';
+        const connector = isLast ? '  ' : '┃ ';
+        const displayName = entry.name + (entry.isDirectory() ? '/' : '');
         output.push(prefix + pointer + ' ' + displayName);
         if (entry.isDirectory()) {
             walk(path.join(dir, entry.name), prefix + connector, depth + 1);
@@ -44,4 +40,4 @@ function walk(dir, prefix, depth) {
 output.push(path.basename(baseDir) + '/');
 walk(baseDir);
 fs.writeFileSync('structure.txt', output.join('\n'), 'utf8');
-console.log("\u2705 structure.txt created with maxDepth=".concat(maxDepth, ", includeHidden=").concat(includeHidden));
+console.log(`✅ structure.txt created with maxDepth=${maxDepth}, includeHidden=${includeHidden}`);

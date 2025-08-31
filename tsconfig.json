@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "server",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowJs": true,
     "checkJs": false,
-    "resolveJsonModule": true,
     "moduleDetection": "force",
     "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": "build",
     "types": [
       "node"
     ],
@@ -21,10 +21,9 @@
     ],
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "**/*.ts",
-    "server/config.js"
-  ],
+"include": [
+  "server/**/*"
+],
   "exclude": [
     "node_modules",
     "build"

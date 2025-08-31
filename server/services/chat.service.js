@@ -1,4 +1,4 @@
-import { geocode } from "./geocode.ts";
+import { geocode } from "./geocode.js";
 import { getRoute } from "./route.js";
 import fetch from "node-fetch";
 import { config } from "../config.js";
