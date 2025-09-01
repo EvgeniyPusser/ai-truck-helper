@@ -7,9 +7,18 @@ import helmet from "helmet";
 import chatRoutes from "./routes/chat.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import helpersRoutes from "./routes/helpers.routes.js";
-import orsRoutes from "./routes/ors.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
+// ...
+import planRoutes from "./routes/plan.routes.js";
+// ...
+
+// API роуты
+app.use("/api/auth", limits.auth, authRoutes);
+app.use("/api/chat", limits.chat, chatRoutes);
+app.use("/api/helpers", helpersRoutes);
+app.use("/api/route", orsRoutes);
+app.use("/api/plan", planRoutes); // ← ДОБАВИЛИ ЭТУ СТРОКУ
 
 const app = express();
 
@@ -42,7 +51,6 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/helpers", helpersRoutes);
-app.use("/api/route", orsRoutes);
 
 // ошибки
 app.use(notFound);

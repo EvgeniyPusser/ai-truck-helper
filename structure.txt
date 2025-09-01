@@ -1,5 +1,4 @@
 ai-truck-helper/
-┣ ai-truck-helper@1.0.0
 ┣ chat-test.http
 ┣ eslint.config.js
 ┣ frontend/
@@ -11,15 +10,34 @@ ai-truck-helper/
 ┃ ┃ ┗ vite.svg
 ┃ ┣ README.md
 ┃ ┣ src/
+┃ ┃ ┣ api/
+┃ ┃ ┃ ┣ auth.js
+┃ ┃ ┃ ┣ health.js
+┃ ┃ ┃ ┗ http.js
 ┃ ┃ ┣ App.css
 ┃ ┃ ┣ App.jsx
 ┃ ┃ ┣ assets/
-┃ ┃ ┃ ┗ react.svg
+┃ ┃ ┃ ┣ myDwarf.png
+┃ ┃ ┃ ┣ react.svg
+┃ ┃ ┃ ┗ truck.png
+┃ ┃ ┣ components/
+┃ ┃ ┃ ┣ MoveForm.jsx
+┃ ┃ ┃ ┗ USAMap.jsx
 ┃ ┃ ┣ index.css
-┃ ┃ ┗ main.jsx
+┃ ┃ ┣ main.jsx
+┃ ┃ ┗ pages/
+┃ ┃   ┣ AgentPage.jsx
+┃ ┃   ┣ CompanyPage.jsx
+┃ ┃   ┣ DriverPage.jsx
+┃ ┃   ┣ HelperPage.jsx
+┃ ┃   ┣ LandingPage-1.jsx
+┃ ┃   ┣ LandingPage.jsx
+┃ ┃   ┣ ResultPage.jsx
+┃ ┃   ┗ TruckPage.jsx
 ┃ ┗ vite.config.js
 ┣ generateTree.js
 ┣ generateTree.ts
+┣ helpers-test.http
 ┣ index.html
 ┣ package-lock.json
 ┣ package.json
@@ -29,15 +47,16 @@ ai-truck-helper/
 ┣ scripts/
 ┃ ┣ client/
 ┃ ┃ ┗ chat.js
-┃ ┣ routeDiag.js
 ┃ ┣ route_opt.py
-┃ ┗ test.py
+┃ ┣ test.py
+┃ ┗ test_route.json
 ┣ server/
 ┃ ┣ app.js
-┃ ┣ config.ts
+┃ ┣ config.js
 ┃ ┣ controllers/
 ┃ ┃ ┣ auth.controller.js
-┃ ┃ ┗ chat.controller.js
+┃ ┃ ┣ chat.controller.js
+┃ ┃ ┗ helpers.controller.js
 ┃ ┣ data/
 ┃ ┃ ┣ clients.json
 ┃ ┃ ┣ helpers.json
@@ -52,17 +71,20 @@ ai-truck-helper/
 ┃ ┃   ┗ planner.ts
 ┃ ┣ routes/
 ┃ ┃ ┣ auth.routes.js
-┃ ┃ ┗ chat.routes.js
+┃ ┃ ┣ chat.routes.js
+┃ ┃ ┣ helpers.routes.js
+┃ ┃ ┗ ors.routes.js
 ┃ ┣ services/
 ┃ ┃ ┣ chat.service.js
 ┃ ┃ ┣ geocode.ts
 ┃ ┃ ┣ providers.js
 ┃ ┃ ┣ route.js
+┃ ┃ ┣ test.ts
 ┃ ┃ ┗ user.service.js
 ┃ ┗ utils/
 ┃   ┗ jwt.js
 ┣ structure.txt
 ┣ test.js
+┣ tsc
 ┣ tsconfig.json
-┣ tsx
 ┗ vite.config.js

@@ -1,61 +1,25 @@
-import { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
-import L from 'leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import truckImg from '../assets/truck.png';
 
 const USA_BOUNDS = [
   [24.396308, -125.0],
   [49.384358, -66.93457]
 ];
 
-const truckIcon = new L.Icon({
-  iconUrl: truckImg,
-  iconSize: [40, 40],
-  iconAnchor: [20, 20],
-});
 
-function TruckMarker({ route }) {
-  const [posIdx, setPosIdx] = useState(0);
-  const intervalRef = useRef();
 
-  useEffect(() => {
-    if (!route || route.length === 0) return;
-    setPosIdx(0);
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setPosIdx(idx => (idx < route.length - 1 ? idx + 1 : idx));
-    }, 100);
-    return () => clearInterval(intervalRef.current);
-  }, [route]);
+import { Polyline } from 'react-leaflet';
 
-  if (!route || route.length === 0) return null;
-  return <Marker position={route[posIdx]} icon={truckIcon} />;
-}
+// Пример: маршрут из Нью-Йорка в Лос-Анджелес, 100 точек
+const start = [40.7128, -74.0060]; // Нью-Йорк (lat, lng)
+const end = [34.0522, -118.2437]; // Лос-Анджелес (lat, lng)
+const pointsCount = 100;
+const route = Array.from({ length: pointsCount }, (_, i) => [
+  start[0] + (end[0] - start[0]) * (i / (pointsCount - 1)),
+  start[1] + (end[1] - start[1]) * (i / (pointsCount - 1))
+]);
 
 export default function USAMap() {
-  const [route, setRoute] = useState([]);
-
-  useEffect(() => {
-    fetch('/api/route', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        coordinates: [
-          [-74.0060, 40.7128], // Нью-Йорк (lng, lat)
-          [-118.2437, 34.0522] // Лос-Анджелес (lng, lat)
-        ]
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.features && data.features[0]) {
-          const coords = data.features[0].geometry.coordinates.map(([lng, lat]) => [lat, lng]);
-          setRoute(coords);
-        }
-      });
-  }, []);
-
   return (
     <MapContainer
       center={[37.8, -96]}
@@ -71,10 +35,8 @@ export default function USAMap() {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* Маршрут */}
-      {route.length > 0 && <Polyline positions={route} color="red" />}
-      {/* Анимированный грузовичок */}
-      <TruckMarker route={route} />
+      {/* Реальный маршрут (Polyline) */}
+      <Polyline positions={route} color="red" />
     </MapContainer>
   );
 }
