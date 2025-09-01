@@ -9,54 +9,37 @@ import authRoutes from "./routes/auth.routes.js";
 import helpersRoutes from "./routes/helpers.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { limits } from "./middleware/rateLimit.js";
-// ...
-import planRoutes from "./routes/plan.routes.js";
-// ...
-
-// API роуты
-app.use("/api/auth", limits.auth, authRoutes);
-app.use("/api/chat", limits.chat, chatRoutes);
-app.use("/api/helpers", helpersRoutes);
-app.use("/api/route", orsRoutes);
-app.use("/api/plan", planRoutes); // ← ДОБАВИЛИ ЭТУ СТРОКУ
 
 const app = express();
 
-// ✅ список разрешённых источников
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://holymovela.com",
-  "https://www.holymovela.com",
-];
-
-// ✅ CORS настройки
+// ✅ CORS
 const corsOptions = {
   origin: true,
   credentials: true,
 };
-
-// ✅ сначала CORS (и preflight)
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
-// потом остальное
+// middleware
 app.use(helmet());
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("tiny"));
 
-// health-чек
+// health-check
 app.get("/health", (_req, res) => res.json({ ok: true }));
+app.post("/api/route", (req, res) => {
+  res.json({ alive: true, got: req.body });
+});
 
-// API роуты
+// ✅ API роуты (только один блок!)
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/helpers", helpersRoutes);
+app.use("/api/route", orsRoutes); // теперь точно работает
+app.use("/api/plan", planRoutes);
 
 // ошибки
 app.use(notFound);
 app.use(errorHandler);
 
 export default app;
-
-
-

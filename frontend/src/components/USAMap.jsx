@@ -1,42 +1,113 @@
-import { MapContainer, TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+
+// import { MapContainer, TileLayer } from 'react-leaflet';
+// import 'leaflet/dist/leaflet.css';
+
+// const USA_BOUNDS = [
+//   [24.396308, -125.0],
+//   [49.384358, -66.93457]
+// ];
+
+// export default function USAMap() {
+//   return (
+//     <MapContainer
+//       center={[37.8, -96]}
+//       zoom={4}
+//       style={{ width: '100%', height: '400px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+//       maxBounds={USA_BOUNDS}
+//       maxBoundsViscosity={1.0}
+//       scrollWheelZoom={true}
+//       minZoom={3}
+//       maxZoom={10}
+//       attributionControl={false}
+//     >
+//       <TileLayer
+//         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+//       />
+//     </MapContainer>
+//   );
+// }
+
+// ...existing code...
+// @ts-nocheck.
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
+/** @typedef {[number, number]} LatLng */
 
 const USA_BOUNDS = [
   [24.396308, -125.0],
-  [49.384358, -66.93457]
+  [49.384358, -66.93457],
 ];
 
-
-
-import { Polyline } from 'react-leaflet';
-
-// Пример: маршрут из Нью-Йорка в Лос-Анджелес, 100 точек
-const start = [40.7128, -74.0060]; // Нью-Йорк (lat, lng)
-const end = [34.0522, -118.2437]; // Лос-Анджелес (lat, lng)
-const pointsCount = 100;
-const route = Array.from({ length: pointsCount }, (_, i) => [
-  start[0] + (end[0] - start[0]) * (i / (pointsCount - 1)),
-  start[1] + (end[1] - start[1]) * (i / (pointsCount - 1))
-]);
+/**
+ * @param {{ coords: LatLng[] }} props
+ */
+function FitToRoute({ coords }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!coords || coords.length < 2) return;
+    map.fitBounds(coords, { padding: [20, 20] });
+  }, [coords, map]);
+  return null;
+}
 
 export default function USAMap() {
+  /** @type {[LatLng[] | null, Function]} */
+  const [route, setRoute] = useState(null);
+
+  useEffect(() => {
+    // Пример: LA -> Phoenix (координаты строго [lng, lat] для запроса)
+    /** @type {Array<[number, number]>} */
+    const coordsORS = [
+      [-118.243683, 34.052235], // Los Angeles [lng, lat]
+      [-112.074036, 33.448376], // Phoenix [lng, lat]
+    ];
+
+    fetch(`/api/maps/route`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        coordinates: coordsORS, // [lng, lat]
+        profile: "driving-car",
+        simplify: true,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        // Бэк уже вернул [lat, lng]
+        setRoute(data?.route?.coordinates ?? null);
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <MapContainer
       center={[37.8, -96]}
       zoom={4}
-      style={{ width: '100%', height: '400px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+      style={{
+        width: "100%",
+        height: "400px",
+        borderRadius: "12px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+      }}
       maxBounds={USA_BOUNDS}
       maxBoundsViscosity={1.0}
-      scrollWheelZoom={true}
+      scrollWheelZoom
       minZoom={3}
-      maxZoom={10}
-      attributionControl={false}
+      maxZoom={18}
+      attributionControl
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
-      {/* Реальный маршрут (Polyline) */}
-      <Polyline positions={route} color="red" />
+      {route && (
+        <>
+          <Polyline positions={route} />
+          <FitToRoute coords={route} />
+        </>
+      )}
     </MapContainer>
   );
 }
