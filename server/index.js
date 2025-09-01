@@ -17,7 +17,7 @@ import cors from "cors";
 import path from "path";
 import fs from "fs";
 import dotenv from "dotenv";
-import mapsRouter from "./routes/maps.routes";
+
 
 // Загружаем .env именно из КОРНЯ репозитория
 const envCandidates = [

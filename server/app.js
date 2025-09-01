@@ -36,7 +36,7 @@ app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/helpers", helpersRoutes);
 app.use("/api/route", orsRoutes); // теперь точно работает
-app.use("/api/plan", planRoutes);
+
 
 // ошибки
 app.use(notFound);
