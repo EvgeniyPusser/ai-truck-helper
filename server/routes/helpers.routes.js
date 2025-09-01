@@ -1,16 +1,15 @@
 import { Router } from "express";
 const r = Router();
 
+
 import { getHelpers } from "../controllers/helpers.controller.js";
 
-r.post("/", getHelpers);
-
-// мини-валидация без бизнес-формул
+// мини-валидация как middleware
 function isZip(v) {
   return typeof v === "string" && /^\d{5}$/.test(v);
 }
 
-r.post("/", (req, res) => {
+function validateHelperRequest(req, res, next) {
   const { pickupZip, dropoffZip, rooms, volume, date } = req.body || {};
   const errors = [];
 
@@ -28,12 +27,9 @@ r.post("/", (req, res) => {
   if (errors.length) {
     return res.status(400).json({ ok: false, errors });
   }
+  next();
+}
 
-  // без «коэффициентов»: просто возвращаем валидные данные
-  return res.json({
-    ok: true,
-    received: { pickupZip, dropoffZip, rooms, volume, date },
-  });
-});
+r.post("/", validateHelperRequest, getHelpers);
 
 export default r;

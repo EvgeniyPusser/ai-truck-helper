@@ -1,9 +1,4 @@
-# POST http://localhost:3001/api/chat
-# Content-Type: application/json
 
-# {
-#   "message": "Я переезжаю из Москвы в Нью-Йорк через три дня, у меня диван, кровать и 12 коробок и три больших кошки"
-# }
 POST http://localhost:3001/api/chat
 Content-Type: application/json
 

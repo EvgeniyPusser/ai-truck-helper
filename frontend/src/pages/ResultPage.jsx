@@ -1,8 +1,8 @@
-// ...existing code...
 import React from "react";
 import { Box, Heading, Text, VStack, Button, Icon } from "@chakra-ui/react";
 import { FaTruckMoving } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import USAMap from '../components/USAMap';
 
 const ResultPage = () => {
   const location = useLocation();
@@ -18,6 +18,10 @@ const ResultPage = () => {
             <Text fontSize={["xl","2xl"]} color="blue.800" mb={4} textAlign="center" fontWeight="bold" letterSpacing="wide">
               Estimated price: <span style={{color:'#2B6CB0'}}>${result[0].rate}</span>
             </Text>
+            {/* Карта США с маркерами ZIP (можно передать массив координат) */}
+            <Box w="100%" mb={6}>
+              <USAMap zipMarkers={result.map(h => h.zipCoords).filter(Boolean)} />
+            </Box>
             {Array.isArray(result) && result.length > 0 && (
               <Box w="100%" mt={2}>
                 <Text fontSize="lg" color="blue.600" mb={3} textAlign="center" fontWeight="semibold">All offers:</Text>
