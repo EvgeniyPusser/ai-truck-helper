@@ -12,6 +12,11 @@ import { limits } from "./middleware/rateLimit.js";
 
 const app = express();
 
+// server/app.js (or index.js)
+import mapsRoutes from "./routes/maps.routes.js";
+app.use("/api/maps", mapsRoutes);
+
+
 // ✅ CORS
 const corsOptions = {
   origin: true,
@@ -35,7 +40,7 @@ app.post("/api/route", (req, res) => {
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/helpers", helpersRoutes);
-app.use("/api/route", orsRoutes); // теперь точно работает
+// теперь точно работает
 
 
 // ошибки
