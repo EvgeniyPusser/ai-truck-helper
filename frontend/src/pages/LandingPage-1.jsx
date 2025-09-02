@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import { Box, VStack, Image, Heading, Text, Button } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import MoveForm from "../components/MoveForm";
@@ -57,6 +59,7 @@ const LandingPage = () => {
         setError("");
         setResult(null);
 
+        // Первый запрос: расчет
         const res = await fetch(`${apiUrl}/api/helpers`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -68,10 +71,34 @@ const LandingPage = () => {
         }
 
         const data = await res.json();
-        setResult(data);
+
+        // Второй запрос: маршрут
+        // Пример: координаты должны быть в formData.pickupLng, pickupLat, dropoffLng, dropoffLat
+        // Если у вас другие поля, замените их ниже
+        const routeRes = await fetch(`${apiUrl}/api/maps/route`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            coordinates: [
+              [formData.pickupLng, formData.pickupLat],
+              [formData.dropoffLng, formData.dropoffLat],
+            ],
+            profile: "driving-car",
+          }),
+        });
+
+        let routeData = null;
+        if (routeRes.ok) {
+          routeData = await routeRes.json();
+        } else {
+          routeData = { error: await routeRes.text() };
+        }
+
+        // Сохраняем оба результата
+        setResult({ offers: data, route: routeData.route });
 
         // переход на страницу результата с передачей данных
-        navigate("/result", { state: { result: data } });
+        navigate("/result", { state: { offers: data, route: routeData.route } });
       } catch (e) {
         console.error(e);
         setError(e.message || "Request failed");
@@ -169,16 +196,17 @@ const LandingPage = () => {
                 <Heading size="md" mb={2}>
                   Result
                 </Heading>
-                {Array.isArray(result) && result.length > 0 ? (
+                {/* Выводим предложения */}
+                {result.offers && Array.isArray(result.offers) && result.offers.length > 0 ? (
                   <>
                     <Text fontSize="lg" color="blue.700" mb={2}>
-                      Цена для клиента: <strong>${result[0].rate}</strong>
+                      Цена для клиента: <strong>${result.offers[0].rate}</strong>
                     </Text>
                     <Text fontSize="md" color="gray.700" mb={2}>
                       Все предложения:
                     </Text>
                     <ul style={{ margin: 0, paddingLeft: 20 }}>
-                      {result.map((h) => (
+                      {result.offers.map((h) => (
                         <li key={h.id ?? h.name}>
                           {h.name}: <strong>${h.rate}</strong>
                         </li>
@@ -187,8 +215,36 @@ const LandingPage = () => {
                   </>
                 ) : (
                   <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>
-                    {JSON.stringify(result, null, 2)}
+                    {JSON.stringify(result.offers, null, 2)}
                   </pre>
+                )}
+                {/* Визуализация маршрута на карте */}
+                <Heading size="sm" mt={4} mb={2} color="teal.700">
+                  Маршрут на карте
+                </Heading>
+                {result.route && Array.isArray(result.route) && result.route.length > 1 ? (
+                  <Box w="100%" h="300px" mb={2}>
+                    <MapContainer
+                      style={{ width: "100%", height: "100%", borderRadius: "12px" }}
+                      center={result.route[0]}
+                      zoom={7}
+                      scrollWheelZoom={true}
+                    >
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution="&copy; OpenStreetMap contributors"
+                      />
+                      <Polyline positions={result.route} color="blue" weight={5} />
+                      <Marker position={result.route[0]}>
+                        <Popup>Start</Popup>
+                      </Marker>
+                      <Marker position={result.route[result.route.length - 1]}>
+                        <Popup>End</Popup>
+                      </Marker>
+                    </MapContainer>
+                  </Box>
+                ) : (
+                  <Text color="red.500">Нет данных маршрута</Text>
                 )}
               </Box>
             )}

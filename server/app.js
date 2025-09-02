@@ -1,48 +1,28 @@
+// server/app.js  — версия "maps-only"
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import helmet from "helmet";
-
 import mapsRoutes from "./routes/maps.routes.js";
-import chatRoutes from "./routes/chat.routes.js";
-import authRoutes from "./routes/auth.routes.js";
-import helpersRoutes from "./routes/helpers.routes.js";
-import { notFound, errorHandler } from "./middleware/error.js";
-import { limits } from "./middleware/rateLimit.js";
 
 const app = express();
 
-// server/app.js (or index.js)
+// парсер тела — ДО роутов
+app.use(express.json({ limit: "5mb" }));
 
+// health
+app.get("/health", (_req, res) => res.json({ ok: true, ctx: "maps-only" }));
+
+// ТОЛЬКО карты
 app.use("/api/maps", mapsRoutes);
 
-// ✅ CORS
-const corsOptions = {
-  origin: true,
-  credentials: true,
-};
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-
-// middleware
-app.use(helmet());
-app.use(express.json({ limit: "5mb" }));
-app.use(morgan("tiny"));
-
-// health-check
-app.get("/health", (_req, res) => res.json({ ok: true }));
-app.post("/api/route", (req, res) => {
-  res.json({ alive: true, got: req.body });
+// 404 (в самом конце)
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found (maps-only)" });
 });
 
-// ✅ API роуты (только один блок!)
-app.use("/api/auth", limits.auth, authRoutes);
-app.use("/api/chat", limits.chat, chatRoutes);
-app.use("/api/helpers", helpersRoutes);
-
-// ошибки
-app.use(notFound);
-app.use(errorHandler);
+// обработчик ошибок (минимальный)
+app.use((err, _req, res, _next) => {
+  console.error("ERROR:", err);
+  res.status(500).json({ error: err?.message || "Server error" });
+});
 
 export default app;

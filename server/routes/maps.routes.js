@@ -1,95 +1,107 @@
-import express from "express";
-import fetch from "node-fetch";
-import dotenv from "dotenv";
-dotenv.config();
+import { Router } from "express";
 
-const router = express.Router();
-const ORS_API_KEY = process.env.ORS_API_KEY;
+const router = Router();
 
-// POST /api/maps/route
+// Общая функция запроса к ORS и конвертации геометрии в [lat,lng]
+async function orsRoute(coordinates, profile = "driving-car", simplify = true) {
+  const url = `https://api.openrouteservice.org/v2/directions/${encodeURIComponent(
+    profile
+  )}/geojson`;
+  const body = { coordinates, geometry_simplify: !!simplify }; // ORS ждёт [lng,lat]
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: process.env.ORS_API_KEY || "",
+      "Content-Type": "application/json; charset=utf-8",
+      Accept: "application/geo+json, application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error(`ORS HTTP ${r.status}: ${txt}`);
+  }
+
+  const geo = await r.json();
+  const line = geo?.features?.[0]?.geometry?.coordinates; // [[lng,lat],...]
+  if (!Array.isArray(line) || line.length < 2) {
+    throw new Error("No route geometry");
+  }
+  return line.map(([lng, lat]) => [lat, lng]); // → Leaflet порядок
+}
+
+// POST /api/maps/route — API для фронта (если понадобится)
 router.post("/route", async (req, res) => {
   try {
-    const { coordinates } = req.body;
+    const {
+      coordinates,
+      profile = "driving-car",
+      simplify = true,
+    } = req.body || {};
     if (!Array.isArray(coordinates) || coordinates.length < 2) {
-      return res
-        .status(400)
-        .json({ error: "Coordinates required: [from, to]" });
+      return res.status(400).json({
+        error:
+          "coordinates must be an array of [lng,lat] with at least two points",
+      });
     }
-    const orsUrl =
-      "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
-    const orsRes = await fetch(orsUrl, {
-      method: "POST",
-      headers: {
-        Authorization: ORS_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ coordinates }),
-    });
-    if (!orsRes.ok) {
-      const text = await orsRes.text();
-      return res.status(orsRes.status).json({ error: text });
-    }
-    const orsData = await orsRes.json();
-    res.json(orsData);
+    const latlng = await orsRoute(coordinates, profile, simplify);
+    res.json({ route: { profile, coordinates: latlng } });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({
+      error: "Route calculation failed",
+      details: String(e?.message || e),
+    });
   }
 });
 
-// DEMO: простая страница с картой и маршрутом (без фронта)
-router.get("/map-demo", async (req, res) => {
-  const coordinates = [
-    [-74.006, 40.7128], // Нью-Йорк (lng, lat)
-    [-118.2437, 34.0522], // Лос-Анджелес (lng, lat)
-  ];
+// GET /api/maps/demo — HTML-страница с картой и демо-маршрутом (без фронта)
+router.get("/demo", async (_req, res) => {
   try {
-    const orsUrl =
-      "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
-    const orsRes = await fetch(orsUrl, {
-      method: "POST",
-      headers: {
-        Authorization: ORS_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ coordinates }),
-    });
-    if (!orsRes.ok) {
-      const text = await orsRes.text();
-      return res.status(orsRes.status).send(`<pre>${text}</pre>`);
-    }
-    const orsData = await orsRes.json();
-    const routeCoords = orsData.features[0].geometry.coordinates.map(
-      ([lng, lat]) => [lat, lng]
-    );
-    res.send(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Маршрут ORS Demo</title>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-        <style> #map { width: 100vw; height: 90vh; } </style>
-      </head>
-      <body>
-        <h2>Маршрут: Нью-Йорк → Лос-Анджелес</h2>
-        <div id="map"></div>
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <script>
-          const map = L.map('map').setView([37.8, -96], 4);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(map);
-          const route = ${JSON.stringify(routeCoords)};
-          L.polyline(route, { color: 'red', weight: 5 }).addTo(map);
-          L.marker(route[0]).addTo(map).bindPopup('Start').openPopup();
-          L.marker(route[route.length-1]).addTo(map).bindPopup('End');
-          map.fitBounds(L.polyline(route).getBounds(), { padding: [20, 20] });
-        </script>
-      </body>
-      </html>
-    `);
+    // LA -> Phoenix (в ORS формате [lng,lat])
+    const coordsORS = [
+      [-118.243683, 34.052235],
+      [-112.074036, 33.448376],
+    ];
+    const latlng = await orsRoute(coordsORS);
+
+    const html = `<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Demo Route (LA → Phoenix)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  html,body,#map{height:100%;margin:0}
+  #map{border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+</style>
+</head><body>
+<div id="map"></div>
+<script>window.__ROUTE__=${JSON.stringify(latlng)};</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+  const route = window.__ROUTE__;
+  const map = L.map('map', { scrollWheelZoom: true }).setView([37.8,-96], 4);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  const line = L.polyline(route, { weight: 5, lineJoin: 'round' }).addTo(map);
+  const start = route[0], end = route[route.length-1];
+  L.marker(start).bindPopup('Start: Los Angeles').addTo(map);
+  L.marker(end).bindPopup('End: Phoenix').addTo(map);
+  map.fitBounds(line.getBounds(), { padding: [20,20] });
+</script>
+</body></html>`;
+
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(html);
   } catch (e) {
-    res.status(500).send(`<pre>${e.message}</pre>`);
+    res.status(500).send(String(e?.message || e));
   }
 });
 
