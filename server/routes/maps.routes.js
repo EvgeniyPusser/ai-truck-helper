@@ -5,12 +5,12 @@ import "leaflet/dist/leaflet.css";
 
 /** @typedef {[number, number]} LatLng */
 
-const USA_BOUNDS: [LatLng, LatLng] = [
+const USA_BOUNDS = [
   [24.396308, -125.0],    // SW
   [49.384358,  -66.93457] // NE
 ];
 
-function FitToRoute({ coords }: { coords: LatLng[] }) {
+function FitToRoute({ coords }) {
   const map = useMap();
   useEffect(() => {
     if (!coords || coords.length < 2) return;
@@ -20,7 +20,7 @@ function FitToRoute({ coords }: { coords: LatLng[] }) {
   return null;
 }
 
-type RouteResp = { route?: { coordinates?: LatLng[] } };
+// type RouteResp = { route?: { coordinates?: LatLng[] } }; // Removed for JS compatibility
 
 export default function USAMap() {
   const [route, setRoute] = useState<LatLng[] | null>(null);
@@ -47,15 +47,15 @@ export default function USAMap() {
           signal: ac.signal,
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: RouteResp = await res.json();
+        const data = await res.json();
 
         const coords = data?.route?.coordinates;
         if (!Array.isArray(coords) || coords.length < 2) {
           throw new Error("Route missing or invalid");
         }
         // Expecting backend already returns [lat, lng]
-        setRoute(coords as LatLng[]);
-      } catch (e: any) {
+        setRoute(coords);
+      } catch (e) {
         if (e.name !== "AbortError") setError(e.message || "Route fetch failed");
       }
     })();
