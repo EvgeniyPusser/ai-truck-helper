@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 
+import mapsRoutes from "./routes/maps.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import helpersRoutes from "./routes/helpers.routes.js";
@@ -13,9 +14,8 @@ import { limits } from "./middleware/rateLimit.js";
 const app = express();
 
 // server/app.js (or index.js)
-import mapsRoutes from "./routes/maps.routes.js";
-app.use("/api/maps", mapsRoutes);
 
+app.use("/api/maps", mapsRoutes);
 
 // ✅ CORS
 const corsOptions = {
@@ -40,8 +40,6 @@ app.post("/api/route", (req, res) => {
 app.use("/api/auth", limits.auth, authRoutes);
 app.use("/api/chat", limits.chat, chatRoutes);
 app.use("/api/helpers", helpersRoutes);
-// теперь точно работает
-
 
 // ошибки
 app.use(notFound);

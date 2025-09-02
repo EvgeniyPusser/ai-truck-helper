@@ -1,116 +1,96 @@
-import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import express from "express";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
+dotenv.config();
 
-/** @typedef {[number, number]} LatLng */
+const router = express.Router();
+const ORS_API_KEY = process.env.ORS_API_KEY;
 
-const USA_BOUNDS = [
-  [24.396308, -125.0],    // SW
-  [49.384358,  -66.93457] // NE
-];
+// POST /api/maps/route
+router.post("/route", async (req, res) => {
+  try {
+    const { coordinates } = req.body;
+    if (!Array.isArray(coordinates) || coordinates.length < 2) {
+      return res
+        .status(400)
+        .json({ error: "Coordinates required: [from, to]" });
+    }
+    const orsUrl =
+      "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    const orsRes = await fetch(orsUrl, {
+      method: "POST",
+      headers: {
+        Authorization: ORS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ coordinates }),
+    });
+    if (!orsRes.ok) {
+      const text = await orsRes.text();
+      return res.status(orsRes.status).json({ error: text });
+    }
+    const orsData = await orsRes.json();
+    res.json(orsData);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
-function FitToRoute({ coords }) {
-  const map = useMap();
-  useEffect(() => {
-    if (!coords || coords.length < 2) return;
-    const bounds = L.polyline(coords).getBounds(); // robust bounds from path
-    map.fitBounds(bounds, { padding: [20, 20] });
-  }, [coords, map]);
-  return null;
-}
+// DEMO: простая страница с картой и маршрутом (без фронта)
+router.get("/map-demo", async (req, res) => {
+  const coordinates = [
+    [-74.006, 40.7128], // Нью-Йорк (lng, lat)
+    [-118.2437, 34.0522], // Лос-Анджелес (lng, lat)
+  ];
+  try {
+    const orsUrl =
+      "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    const orsRes = await fetch(orsUrl, {
+      method: "POST",
+      headers: {
+        Authorization: ORS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ coordinates }),
+    });
+    if (!orsRes.ok) {
+      const text = await orsRes.text();
+      return res.status(orsRes.status).send(`<pre>${text}</pre>`);
+    }
+    const orsData = await orsRes.json();
+    const routeCoords = orsData.features[0].geometry.coordinates.map(
+      ([lng, lat]) => [lat, lng]
+    );
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Маршрут ORS Demo</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <style> #map { width: 100vw; height: 90vh; } </style>
+      </head>
+      <body>
+        <h2>Маршрут: Нью-Йорк → Лос-Анджелес</h2>
+        <div id="map"></div>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+          const map = L.map('map').setView([37.8, -96], 4);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+          const route = ${JSON.stringify(routeCoords)};
+          L.polyline(route, { color: 'red', weight: 5 }).addTo(map);
+          L.marker(route[0]).addTo(map).bindPopup('Start').openPopup();
+          L.marker(route[route.length-1]).addTo(map).bindPopup('End');
+          map.fitBounds(L.polyline(route).getBounds(), { padding: [20, 20] });
+        </script>
+      </body>
+      </html>
+    `);
+  } catch (e) {
+    res.status(500).send(`<pre>${e.message}</pre>`);
+  }
+});
 
-// type RouteResp = { route?: { coordinates?: LatLng[] } }; // Removed for JS compatibility
-
-export default function USAMap() {
-  const [route, setRoute] = useState<LatLng[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  // Example: LA -> Phoenix (send [lng, lat] to API)
-  const coordsORS = useMemo<[number, number][]>(() => ([
-    [-118.243683, 34.052235], // Los Angeles [lng, lat]
-    [-112.074036, 33.448376], // Phoenix   [lng, lat]
-  ]), []);
-
-  useEffect(() => {
-    const ac = new AbortController();
-    (async () => {
-      try {
-        const res = await fetch("/api/maps/route", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            coordinates: coordsORS, // [lng, lat] for your backend/router
-            profile: "driving-car",
-            simplify: true,
-          }),
-          signal: ac.signal,
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-
-        const coords = data?.route?.coordinates;
-        if (!Array.isArray(coords) || coords.length < 2) {
-          throw new Error("Route missing or invalid");
-        }
-        // Expecting backend already returns [lat, lng]
-        setRoute(coords);
-      } catch (e) {
-        if (e.name !== "AbortError") setError(e.message || "Route fetch failed");
-      }
-    })();
-    return () => ac.abort();
-  }, [coordsORS]);
-
-  const start = route?.[0];
-  const end = route?.[route.length - 1];
-
-  return (
-    <MapContainer
-      center={[37.8, -96]}
-      zoom={4}
-      style={{ width: "100%", height: 400, borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
-      maxBounds={USA_BOUNDS}
-      maxBoundsViscosity={1}
-      scrollWheelZoom
-      minZoom={3}
-      maxZoom={18}
-      attributionControl
-    >
-      <TileLayer
-        // For production, consider a provider or your own tiles;
-        // avoid hardcoding OSM tiles per OSMF policy.
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      />
-
-      {error && (
-        <div style={{ position: "absolute", top: 8, left: 8, background: "white", padding: 8, borderRadius: 8 }}>
-          {error}
-        </div>
-      )}
-
-      {route && (
-        <>
-          <Polyline
-            positions={route}
-            pathOptions={{ weight: 5, lineJoin: "round" }}
-            // If you add the arrowheads plugin: arrowheads
-          />
-          {start && (
-            <Marker position={start}>
-              <Popup>Start</Popup>
-            </Marker>
-          )}
-          {end && (
-            <Marker position={end}>
-              <Popup>End</Popup>
-            </Marker>
-          )}
-          <FitToRoute coords={route} />
-        </>
-      )}
-    </MapContainer>
-  );
-}
-
+export default router;
