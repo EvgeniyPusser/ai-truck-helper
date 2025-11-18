@@ -1,5 +1,6 @@
-import { apiFetch } from "./http";
+const API_URL = "http://localhost:3001";
 
-export function health() {
-  return apiFetch("/health");
+export async function health() {
+  const res = await fetch(`${API_URL}/api/health`);
+  return res.json();
 }

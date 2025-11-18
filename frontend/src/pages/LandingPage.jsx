@@ -97,17 +97,21 @@ const LandingPage = () => {
             )}
             {result && (
               <Box bg="gray.50" p={4} rounded="md" shadow="md" mt={3}>
-                <Heading size="md" mb={2}>Result</Heading>
+                <Heading size="md" mb={2}>Quick Preview</Heading>
                 {Array.isArray(result) && result.length > 0 ? (
                   <>
                     <Text fontSize="lg" color="blue.700" mb={2}>
-                      Цена для клиента: <strong>${result[0].rate}</strong>
+                      Best Price: <strong>${Math.min(...result.map(h => h.rate)).toLocaleString()}</strong>
                     </Text>
-                    <Text fontSize="md" color="gray.700" mb={2}>Все предложения:</Text>
+                    <Text fontSize="md" color="gray.700" mb={2}>
+                      Distance: {result[0].distance} miles • Time: {result[0].estimatedTime} hours
+                    </Text>
+                    <Text fontSize="md" color="gray.700" mb={3}>Available movers:</Text>
                     <ul style={{margin:0, paddingLeft:20}}>
                       {result.map((h) => (
                         <li key={h.id}>
-                          {h.name}: <strong>${h.rate}</strong>
+                          <strong>{h.name}</strong>: ${h.rate.toLocaleString()} 
+                          <span style={{color: '#666', fontSize: '12px'}}> • {h.rating}⭐ • {h.source}</span>
                         </li>
                       ))}
                     </ul>

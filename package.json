@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx server/index.ts"
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
   },
   "engines": {
     "node": "22.x"

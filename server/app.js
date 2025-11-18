@@ -1,28 +1,33 @@
-// server/app.js  — версия "maps-only"
-import "dotenv/config";
 import express from "express";
-import mapsRoutes from "./routes/maps.routes.js";
+import cors from "cors";
+import helpersRoutes from "./routes/helpers.routes.js";
 
 const app = express();
 
-// парсер тела — ДО роутов
-app.use(express.json({ limit: "5mb" }));
+// Middlewares
+app.use(cors());
+app.use(express.json({ limit: "2mb" }));
 
-// health
-app.get("/health", (_req, res) => res.json({ ok: true, ctx: "maps-only" }));
-
-// ТОЛЬКО карты
-app.use("/api/maps", mapsRoutes);
-
-// 404 (в самом конце)
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found (maps-only)" });
+// Health check
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok", service: "core" });
 });
 
-// обработчик ошибок (минимальный)
-app.use((err, _req, res, _next) => {
-  console.error("ERROR:", err);
-  res.status(500).json({ error: err?.message || "Server error" });
+// Minimal chat stub — временно, чтобы фронт мог работать
+app.post("/api/chat", (req, res) => {
+  const message = req.body?.message || "no message";
+  console.log("Chat message received:", message);
+  res.json({
+    reply: `Server received: ${message}`,
+  });
+});
+
+// Подключаем правильный роут для helpers
+app.use("/api/helpers", helpersRoutes);
+
+// 404 at the end
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found" });
 });
 
 export default app;

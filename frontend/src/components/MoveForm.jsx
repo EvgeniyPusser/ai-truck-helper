@@ -41,7 +41,15 @@ const MoveForm = ({ onSubmit }) => {
       return;
     }
 
-  onSubmit({ pickupZip, dropoffZip, helpers: rooms, volume, date });
+    // Отправляем и rooms, и helpers для совместимости
+    onSubmit({ 
+      pickupZip, 
+      dropoffZip, 
+      helpers: rooms, 
+      rooms: rooms, 
+      volume, 
+      date 
+    });
   };
 
   return (
