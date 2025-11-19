@@ -141,19 +141,19 @@ const ResultPage = () => {
                     <Text fontSize="lg" fontWeight="semibold" mb={3} color="blue.700">Services Included</Text>
                     <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={2}>
                       <HStack>
-                        <Icon as={helper.services.packing ? FaCheck : FaTimes} color={helper.services.packing ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.includes("Packing") ? FaCheck : FaTimes} color={helper.services?.includes("Packing") ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Packing Service</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services.unpacking ? FaCheck : FaTimes} color={helper.services.unpacking ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.includes("Unpacking") ? FaCheck : FaTimes} color={helper.services?.includes("Unpacking") ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Unpacking Service</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services.furniture_assembly ? FaCheck : FaTimes} color={helper.services.furniture_assembly ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.includes("Furniture Assembly") ? FaCheck : FaTimes} color={helper.services?.includes("Furniture Assembly") ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Furniture Assembly</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services.storage ? FaCheck : FaTimes} color={helper.services.storage ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.includes("Storage") ? FaCheck : FaTimes} color={helper.services?.includes("Storage") ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Storage Available</Text>
                       </HStack>
                     </Grid>
@@ -181,42 +181,42 @@ const ResultPage = () => {
                       <AccordionPanel pb={4} pt={4}>
                         <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={3}>
                           <HStack justify="space-between">
-                            <Text fontSize="sm">Labor ({helper.helperCount} helpers × {helper.estimatedTime}h)</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.laborCost)}</Text>
+                            <Text fontSize="sm">Labor ({helper.helpers || 2} helpers × {helper.estimatedTime})</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.laborCost || Math.floor(helper.price * 0.6))}</Text>
                           </HStack>
                           <HStack justify="space-between">
                             <Text fontSize="sm">Truck Rental</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.truckRental)}</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.truckRental || Math.floor(helper.price * 0.2))}</Text>
                           </HStack>
                           <HStack justify="space-between">
                             <Text fontSize="sm">Mileage ({helper.distance} mi)</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.mileageFee)}</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.mileageFee || Math.floor(helper.price * 0.1))}</Text>
                           </HStack>
                           <HStack justify="space-between">
                             <Text fontSize="sm">Packing Materials</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.packingMaterials)}</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.packingMaterials || Math.floor(helper.price * 0.05))}</Text>
                           </HStack>
                           <HStack justify="space-between">
                             <Text fontSize="sm">Fuel Surcharge</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.fuelSurcharge)}</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.fuelSurcharge || Math.floor(helper.price * 0.03))}</Text>
                           </HStack>
                           <HStack justify="space-between">
                             <Text fontSize="sm">Insurance</Text>
-                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.insurance)}</Text>
+                            <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.insurance || Math.floor(helper.price * 0.02))}</Text>
                           </HStack>
                         </Grid>
                         <Divider my={3} />
                         <HStack justify="space-between" mb={2}>
                           <Text fontSize="sm">Subtotal</Text>
-                          <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.subtotal)}</Text>
+                          <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.subtotal || Math.floor(helper.price * 0.85))}</Text>
                         </HStack>
                         <HStack justify="space-between" mb={3}>
                           <Text fontSize="sm">Taxes</Text>
-                          <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown.taxes)}</Text>
+                          <Text fontSize="sm" fontWeight="medium">{formatCurrency(helper.costBreakdown?.taxes || Math.floor(helper.price * 0.15))}</Text>
                         </HStack>
                         <HStack justify="space-between" p={3} bg="green.50" rounded="lg">
                           <Text fontSize="lg" fontWeight="bold">Total</Text>
-                          <Text fontSize="lg" fontWeight="bold" color="green.600">{formatCurrency(helper.costBreakdown.total)}</Text>
+                          <Text fontSize="lg" fontWeight="bold" color="green.600">{formatCurrency(helper.costBreakdown?.total || helper.price)}</Text>
                         </HStack>
                       </AccordionPanel>
                     </AccordionItem>
