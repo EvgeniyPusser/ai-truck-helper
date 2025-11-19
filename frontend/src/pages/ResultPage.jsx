@@ -141,19 +141,19 @@ const ResultPage = () => {
                     <Text fontSize="lg" fontWeight="semibold" mb={3} color="blue.700">Services Included</Text>
                     <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={2}>
                       <HStack>
-                        <Icon as={helper.services?.includes("Packing") ? FaCheck : FaTimes} color={helper.services?.includes("Packing") ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.packing ? FaCheck : FaTimes} color={helper.services?.packing ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Packing Service</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services?.includes("Unpacking") ? FaCheck : FaTimes} color={helper.services?.includes("Unpacking") ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.unpacking ? FaCheck : FaTimes} color={helper.services?.unpacking ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Unpacking Service</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services?.includes("Furniture Assembly") ? FaCheck : FaTimes} color={helper.services?.includes("Furniture Assembly") ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.furniture_assembly ? FaCheck : FaTimes} color={helper.services?.furniture_assembly ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Furniture Assembly</Text>
                       </HStack>
                       <HStack>
-                        <Icon as={helper.services?.includes("Storage") ? FaCheck : FaTimes} color={helper.services?.includes("Storage") ? "green.500" : "red.500"} />
+                        <Icon as={helper.services?.storage ? FaCheck : FaTimes} color={helper.services?.storage ? "green.500" : "red.500"} />
                         <Text fontSize="sm">Storage Available</Text>
                       </HStack>
                     </Grid>
