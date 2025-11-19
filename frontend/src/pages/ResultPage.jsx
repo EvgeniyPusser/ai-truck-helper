@@ -31,6 +31,11 @@ const ResultPage = () => {
 
   const formatCurrency = (amount) => `$${amount.toLocaleString()}`;
 
+  // Debug info
+  console.log('ResultPage - location.state:', location.state);
+  console.log('ResultPage - result:', result);
+  console.log('ResultPage - API URL:', import.meta.env.VITE_API_URL);
+
   return (
     <Box minH="100vh" w="100vw" bgGradient="linear(to-br, blue.700, blue.400, blue.100)" display="flex" flexDirection="column" justifyContent="center" alignItems="center" px={0}>
       <Box w="100%" maxW="1000px" bg="white" p={[6,8]} rounded="3xl" shadow="2xl" display="flex" flexDirection="column" alignItems="center" justifyContent="center" borderWidth="4px" borderStyle="solid" borderColor="blue.300" mt={[0,4]} mx={4}>
@@ -232,7 +237,18 @@ const ResultPage = () => {
             </VStack>
           </>
         ) : (
-          <Text color="red.500" textAlign="center" fontSize="lg">No result data. Please return to the main page and try again.</Text>
+          <VStack spacing={4} textAlign="center">
+            <Text color="red.500" fontSize="lg">No result data found.</Text>
+            <Text color="gray.600" fontSize="sm">
+              Debug info: {JSON.stringify({
+                hasLocationState: !!location.state,
+                hasResult: !!result,
+                resultType: typeof result,
+                apiUrl: import.meta.env.VITE_API_URL
+              }, null, 2)}
+            </Text>
+            <Text color="blue.600">Please return to the main page and try again.</Text>
+          </VStack>
         )}
         
         <Button colorScheme="yellow" mt={6} w="100%" size="lg" fontWeight="bold" fontSize="xl" onClick={() => navigate("/")}>
