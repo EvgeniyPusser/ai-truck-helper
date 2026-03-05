@@ -15,10 +15,7 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  AccordionIcon,
-  List,
-  ListItem,
-  ListIcon
+  AccordionIcon
 } from "@chakra-ui/react";
 import { FaTruckMoving, FaClock, FaRoute, FaStar, FaPhone, FaCheck, FaTimes } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,13 +25,13 @@ const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const result = location.state?.result;
+  const route = location.state?.route;
 
   const formatCurrency = (amount) => `$${amount.toLocaleString()}`;
 
   // Debug info
   console.log('ResultPage - location.state:', location.state);
   console.log('ResultPage - result:', result);
-  console.log('ResultPage - API URL:', import.meta.env.VITE_API_URL);
 
   return (
     <Box minH="100vh" w="100vw" bgGradient="linear(to-br, blue.700, blue.400, blue.100)" display="flex" flexDirection="column" justifyContent="center" alignItems="center" px={0}>
@@ -72,7 +69,7 @@ const ResultPage = () => {
 
             {/* Route Map */}
             <Box w="100%" mb={6}>
-              <USAMap zipMarkers={result.map(h => h.zipCoords).filter(Boolean)} />
+              <USAMap routeCoordinates={route} />
             </Box>
 
             {/* Detailed Quotes */}
@@ -243,8 +240,7 @@ const ResultPage = () => {
               Debug info: {JSON.stringify({
                 hasLocationState: !!location.state,
                 hasResult: !!result,
-                resultType: typeof result,
-                apiUrl: import.meta.env.VITE_API_URL
+                resultType: typeof result
               }, null, 2)}
             </Text>
             <Text color="blue.600">Please return to the main page and try again.</Text>

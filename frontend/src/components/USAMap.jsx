@@ -89,6 +89,8 @@ import "leaflet/dist/leaflet.css";
 
 /** @typedef {[number, number]} LatLng */
 
+const API_URL = "http://localhost:3001";
+
 const USA_BOUNDS = [
   [24.396308, -125.0],    // SW
   [49.384358,  -66.93457] // NE
@@ -104,7 +106,7 @@ function FitToRoute({ coords }) {
   return null;
 }
 
-export default function USAMap() {
+export default function USAMap({ routeCoordinates = null }) {
   const [route, setRoute] = useState(null);
   const [error, setError] = useState(null);
 
@@ -114,11 +116,19 @@ export default function USAMap() {
     [-112.074036, 33.448376], // Phoenix   [lng, lat]
   ]), []);
 
+  const routeUrl = `${API_URL}/api/maps/route`;
+
   useEffect(() => {
+    if (Array.isArray(routeCoordinates) && routeCoordinates.length >= 2) {
+      setRoute(routeCoordinates);
+      setError(null);
+      return;
+    }
+
     const ac = new AbortController();
     (async () => {
       try {
-        const res = await fetch("/api/maps/route", {
+        const res = await fetch(routeUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -141,7 +151,7 @@ export default function USAMap() {
       }
     })();
     return () => ac.abort();
-  }, [coordsORS]);
+  }, [coordsORS, routeCoordinates]);
 
   const start = route?.[0];
   const end = route?.[route.length - 1];
@@ -159,8 +169,6 @@ export default function USAMap() {
       attributionControl
     >
       <TileLayer
-        // For production, consider a provider or your own tiles;
-        // avoid hardcoding OSM tiles per OSMF policy.
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />

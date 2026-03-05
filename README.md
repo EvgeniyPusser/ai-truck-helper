@@ -1,12 +1,39 @@
-# React + Vite
+# Holy Move (Local Only)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект настроен только для локальной разработки.
+Используется монорепо на `npm workspaces` (frontend в `frontend/`).
 
-Currently, two official plugins are available:
+## Запуск
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Создай `.env` в корне (можно скопировать из `.env.example`):
+```env
+PORT=3001
+ORS_API_KEY=your_key_here
+```
 
-## Expanding the ESLint configuration
+2. Установи зависимости из корня:
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Если остался старый `frontend/node_modules`, удали его вручную.
+
+4. Запусти backend:
+```bash
+npm run dev:server
+```
+
+5. В отдельном терминале запусти frontend:
+```bash
+npm run dev:client
+```
+
+6. Открой:
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:3001`
+
+## Что работает
+
+- `POST /api/helpers`
+- `POST /api/maps/route`
+- `GET /api/health`

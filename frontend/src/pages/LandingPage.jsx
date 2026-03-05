@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import { Box, VStack, Image, Heading, Text, Button } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Image, Heading, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import MoveForm from "../components/MoveForm";
 import dwarfImg from "../assets/myDwarf.png";
 import { health } from "../api/health";
+
+const API_URL = "http://localhost:3001";
 
 const LandingPage = () => {
   const [result, setResult] = useState(null);
@@ -23,8 +24,7 @@ const LandingPage = () => {
       setError("");
       setResult(null);
 
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
-      const res = await fetch(`${apiUrl}/api/helpers`, {
+      const res = await fetch(`${API_URL}/api/helpers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -36,8 +36,33 @@ const LandingPage = () => {
       }
 
       const data = await res.json();
+      let route = null;
+
+      try {
+        const routeRes = await fetch(`${API_URL}/api/maps/route`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pickupZip: formData.pickupZip,
+            dropoffZip: formData.dropoffZip,
+            profile: "driving-car",
+          }),
+        });
+
+        if (routeRes.ok) {
+          const routeJson = await routeRes.json();
+          if (Array.isArray(routeJson?.route?.coordinates)) {
+            route = routeJson.route.coordinates;
+          }
+        } else {
+          console.warn("Route API failed:", routeRes.status);
+        }
+      } catch (routeErr) {
+        console.warn("Route API error:", routeErr);
+      }
+
       setResult(data);
-      navigate("/result", { state: { result: data } });
+      navigate("/result", { state: { result: data, route } });
     } catch (e) {
       console.error(e);
       setError(e.message || "Request failed");
