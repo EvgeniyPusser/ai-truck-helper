@@ -23,6 +23,8 @@ npm install
 npm run dev:server
 ```
 
+`dev:server` runs in watch mode and reloads backend changes automatically.
+
 5. В отдельном терминале запусти frontend:
 ```bash
 npm run dev:client
@@ -36,4 +38,5 @@ npm run dev:client
 
 - `POST /api/helpers`
 - `POST /api/maps/route`
+- `POST /api/ai-local`
 - `GET /api/health`

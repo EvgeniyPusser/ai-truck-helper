@@ -8,12 +8,12 @@
     "frontend"
   ],
   "scripts": {
-    "dev:server": "node server/index.js",
+    "dev:server": "tsx watch server/index.js",
     "dev:client": "npm run dev --workspace frontend",
     "build:client": "npm run build --workspace frontend",
     "build": "tsc",
     "start": "node server/index.js",
-    "dev": "node server/index.js"
+    "dev": "tsx watch server/index.js"
   },
   "engines": {
     "node": "22.x"
