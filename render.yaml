@@ -2,8 +2,8 @@ services:
   - type: web
     name: holymove-api
     runtime: node
-    buildCommand: npm install --production --ignore-scripts
-    startCommand: node server/index.js
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index.js
     envVars:
       - key: NODE_VERSION
         value: 22.0.0
