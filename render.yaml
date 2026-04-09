@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: holymove-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: ORS_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: ALLOWED_ORIGINS
+        value: https://holymovela.com,https://www.holymovela.com
