@@ -17,19 +17,24 @@ async function saveHelperRequest(req, request, result) {
   if (!canSaveHelperRequest(req)) return null;
   if (!isMongoConfigured()) return null;
 
-  const db = getDb();
-  const insertResult = await db.collection("helper_requests").insertOne({
-    request,
-    result,
-    resultCount: result.length,
-    aiAnalysis: {
-      status: "pending",
+  try {
+    const db = getDb();
+    const insertResult = await db.collection("helper_requests").insertOne({
+      request,
+      result,
+      resultCount: result.length,
+      aiAnalysis: {
+        status: "pending",
+        createdAt: new Date(),
+      },
       createdAt: new Date(),
-    },
-    createdAt: new Date(),
-  });
+    });
 
-  return insertResult.insertedId;
+    return insertResult.insertedId;
+  } catch (error) {
+    console.error("[HolyMove] Failed to save helper request:", error);
+    return null;
+  }
 }
 
 function buildHelperAnalysisPrompt(request, result) {

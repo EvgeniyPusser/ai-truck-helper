@@ -8,7 +8,11 @@ const server = http.createServer(app);
 
 async function start() {
   if (isMongoConfigured()) {
-    await connectMongo();
+    try {
+      await connectMongo();
+    } catch (error) {
+      console.error("[HolyMove] MongoDB unavailable; starting API without persistence:", error);
+    }
   }
 
   server.listen(PORT, () => {
