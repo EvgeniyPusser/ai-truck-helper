@@ -83,7 +83,7 @@
 // }
 
 import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { API_URL } from "../api/config";
@@ -152,9 +152,6 @@ export default function USAMap({ routeCoordinates = null }) {
     return () => ac.abort();
   }, [coordsORS, routeCoordinates]);
 
-  const start = route?.[0];
-  const end = route?.[route.length - 1];
-
   return (
     <MapContainer
       center={[37.8, -96]}
@@ -183,18 +180,7 @@ export default function USAMap({ routeCoordinates = null }) {
           <Polyline
             positions={route}
             pathOptions={{ weight: 5, lineJoin: "round" }}
-            // If you add the arrowheads plugin: arrowheads
           />
-          {start && (
-            <Marker position={start}>
-              <Popup>Start</Popup>
-            </Marker>
-          )}
-          {end && (
-            <Marker position={end}>
-              <Popup>End</Popup>
-            </Marker>
-          )}
           <FitToRoute coords={route} />
         </>
       )}
