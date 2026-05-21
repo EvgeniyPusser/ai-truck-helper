@@ -4,6 +4,7 @@ import helpersRoutes from "./routes/helpers.routes.js";
 import mapsRoutes from "./routes/maps.routes.js";
 import aiRoutes from "./routes/ai.routes.js";
 import providersRoutes from "./routes/providers.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 import { getMongoHealth } from "./db/mongo.js";
 const app = express();
 const allowedOrigins = [
@@ -37,6 +38,7 @@ app.use("/api/helpers", helpersRoutes);
 app.use("/api/maps", mapsRoutes);
 app.use("/api/ai-local", aiRoutes);
 app.use("/api/providers", providersRoutes);
+app.use("/api/admin", adminRoutes);
 app.use((req, res) => {
     res.status(404).json({ error: "Not found" });
 });

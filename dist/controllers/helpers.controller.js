@@ -1,7 +1,7 @@
 import { getDb, isMongoConfigured } from "../db/mongo.js";
 import { askLocalAi, getAiText } from "../services/localAi.js";
+import { getPersistenceState } from "../services/persistenceState.js";
 import { findHelpers } from "../services/providers.js";
-const saveHelperRequests = ["1", "true", "yes"].includes(String(process.env.SAVE_HELPER_REQUESTS || "").toLowerCase());
 const helperSaveToken = process.env.HELPER_SAVE_TOKEN || "";
 function canSaveHelperRequest(req) {
     if (!isMongoConfigured())
@@ -9,7 +9,7 @@ function canSaveHelperRequest(req) {
     if (helperSaveToken) {
         return req.get("x-helper-save-token") === helperSaveToken;
     }
-    return saveHelperRequests;
+    return getPersistenceState().saveHelperRequests;
 }
 async function saveHelperRequest(req, request, result) {
     if (!canSaveHelperRequest(req))
