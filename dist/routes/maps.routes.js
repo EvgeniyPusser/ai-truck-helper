@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 function getOrsApiKey() {
-    return process.env.ORS_API_KEY || "";
+    return process.env.ORS_API_KEY || process.env.OPENROUTESERVICE_API_KEY || "";
 }
 function isZip(v) {
     return typeof v === "string" && /^\d{5}$/.test(v);
