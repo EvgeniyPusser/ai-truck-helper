@@ -16,4 +16,4 @@ services:
       - key: MONGODB_DB_NAME
         value: holy_move
       - key: ALLOWED_ORIGINS
-        value: https://holymovela.com,https://www.holymovela.com,http://localhost:5173,http://localhost:4173
+        value: https://holymovela.com,https://www.holymovela.com,https://ai-truck-helper-frontend.onrender.com,http://localhost:5173,http://localhost:4173

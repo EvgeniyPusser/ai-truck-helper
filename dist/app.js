@@ -11,6 +11,7 @@ const allowedOrigins = [
     "http://localhost:4173",
     "https://holymovela.com",
     "https://www.holymovela.com",
+    "https://ai-truck-helper-frontend.onrender.com",
     // Add any other domains (ngrok, staging, etc.) as needed
     ...(process.env.ALLOWED_ORIGINS
         ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
