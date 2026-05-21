@@ -3,6 +3,8 @@ import cors from "cors";
 import helpersRoutes from "./routes/helpers.routes.js";
 import mapsRoutes from "./routes/maps.routes.js";
 import aiRoutes from "./routes/ai.routes.js";
+import providersRoutes from "./routes/providers.routes.js";
+import { getMongoHealth } from "./db/mongo.js";
 const app = express();
 const allowedOrigins = [
     "http://localhost:5173",
@@ -26,12 +28,14 @@ app.use(cors({
     credentials: true,
 }));
 app.use(express.json({ limit: "2mb" }));
-app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok", service: "core" });
+app.get("/api/health", async (_req, res) => {
+    const mongo = await getMongoHealth();
+    res.json({ status: "ok", service: "core", mongo });
 });
 app.use("/api/helpers", helpersRoutes);
 app.use("/api/maps", mapsRoutes);
 app.use("/api/ai-local", aiRoutes);
+app.use("/api/providers", providersRoutes);
 app.use((req, res) => {
     res.status(404).json({ error: "Not found" });
 });
