@@ -1,6 +1,16 @@
+const OPENROUTER_BASE_URL =
+  process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1";
+const OPENROUTER_CHAT_URL = `${OPENROUTER_BASE_URL.replace(/\/$/, "")}/chat/completions`;
+const OPENROUTER_MODEL =
+  process.env.OPENROUTER_MODEL || "google/gemma-3-4b-it:free";
 const AI_LOCAL_URL =
-  process.env.AI_LOCAL_URL || "http://localhost:1234/v1/chat/completions";
-const AI_LOCAL_MODEL = process.env.AI_LOCAL_MODEL || "google/gemma-3-4b";
+  process.env.AI_LOCAL_URL ||
+  (process.env.OPENROUTER_API_KEY
+    ? OPENROUTER_CHAT_URL
+    : "http://localhost:1234/v1/chat/completions");
+const AI_LOCAL_MODEL =
+  process.env.AI_LOCAL_MODEL ||
+  (process.env.OPENROUTER_API_KEY ? OPENROUTER_MODEL : "google/gemma-3-4b");
 const AI_LOCAL_TIMEOUT_MS = Number(process.env.AI_LOCAL_TIMEOUT_MS || 180000);
 
 export async function askLocalAi(message, options = {}) {
@@ -15,6 +25,13 @@ export async function askLocalAi(message, options = {}) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(process.env.OPENROUTER_API_KEY
+          ? {
+              Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+              "HTTP-Referer": process.env.PUBLIC_SITE_URL || "https://holymovela.com",
+              "X-Title": "Holy Move",
+            }
+          : {}),
       },
       signal: controller.signal,
       body: JSON.stringify({
