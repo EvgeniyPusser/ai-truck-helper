@@ -16,11 +16,8 @@ import { FaTruckMoving, FaStar, FaShieldAlt } from "react-icons/fa";
 import MoveForm from "../components/MoveForm";
 import Navbar from "../components/Navbar";
 import { health } from "../api/health";
+import { API_URL } from "../api/config";
 
-const API_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.MODE === "production" 
-    ? "https://ai-truck-helper-1.onrender.com"
-    : "http://localhost:3001");
 const HERO_BG =
   "https://images.pexels.com/photos/6169661/pexels-photo-6169661.jpeg?auto=compress&cs=tinysrgb&w=1920";
 

@@ -12,6 +12,7 @@
     "dev:client": "npm run dev --workspace frontend",
     "build:client": "npm run build --workspace frontend",
     "build": "tsc",
+    "seed:providers": "node scripts/seed-providers.js",
     "start": "node server/index.js",
     "dev": "tsx watch server/index.js"
   },
@@ -21,7 +22,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mongodb": "^7.2.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

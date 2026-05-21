@@ -9,5 +9,11 @@ services:
         value: 22.0.0
       - key: ORS_API_KEY
         sync: false          # set manually in Render dashboard
+      - key: OPENROUTER_API_KEY
+        sync: false          # set manually in Render dashboard if /api/ai-local is used
+      - key: MONGODB_DISABLED
+        value: "true"
+      - key: MONGODB_DB_NAME
+        value: holy_move
       - key: ALLOWED_ORIGINS
-        value: https://holymovela.com,https://www.holymovela.com
+        value: https://holymovela.com,https://www.holymovela.com,http://localhost:5173,http://localhost:4173

@@ -86,10 +86,9 @@ import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { API_URL } from "../api/config";
 
 /** @typedef {[number, number]} LatLng */
-
-const API_URL = "http://localhost:3001";
 
 const USA_BOUNDS = [
   [24.396308, -125.0],    // SW
