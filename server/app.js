@@ -24,7 +24,7 @@ const allowedOrigins = [
 ];
 
 function isLocalDevOrigin(origin) {
-  return /^http:\/\/(localhost|127\.0\.0\.1|\d{1,3}(?:\.\d{1,3}){3}):(5173|4173)$/.test(origin);
+  return /^http:\/\/(localhost|127\.0\.0\.1|\d{1,3}(?:\.\d{1,3}){3}):(517[3-9]|417[3-9])$/.test(origin);
 }
 
 app.use(
