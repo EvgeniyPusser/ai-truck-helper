@@ -23,12 +23,18 @@ const allowedOrigins = [
     : []),
 ];
 
+function isLocalDevOrigin(origin) {
+  return /^http:\/\/(localhost|127\.0\.0\.1|\d{1,3}(?:\.\d{1,3}){3}):(5173|4173)$/.test(origin);
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
       // allow requests with no origin (curl, Postman, server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (allowedOrigins.includes(origin) || isLocalDevOrigin(origin)) {
+        return callback(null, true);
+      }
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
