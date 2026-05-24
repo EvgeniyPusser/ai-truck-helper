@@ -1,0 +1,118 @@
+// Preview-only Prisma schema for the future Supabase/Postgres data layer.
+// This file is not used by the running app yet.
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ApiRequestLog {
+  id           String   @id @default(cuid())
+  method       String
+  path         String
+  statusCode   Int
+  durationMs   Int
+  origin       String?
+  ip           String?
+  userAgent    String?
+  query        Json?
+  requestBody  Json?
+  responseBody Json?
+  error        String?
+  createdAt    DateTime @default(now())
+
+  @@map("api_request_logs")
+  @@index([createdAt])
+  @@index([path])
+  @@index([statusCode])
+}
+
+model HelperQuoteRequest {
+  id              String   @id @default(cuid())
+  pickupZip       String
+  dropoffZip      String
+  helpers         Float?
+  rooms           Float?
+  volume          Float?
+  moveDate        String?
+  request         Json
+  response        Json
+  resultCount     Int      @default(0)
+  selectedOfferId String?
+  aiStatus        String?
+  aiText          String?
+  aiModel         String?
+  aiError         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("helper_quote_requests")
+  @@index([createdAt])
+  @@index([pickupZip])
+  @@index([dropoffZip])
+}
+
+model RouteRequest {
+  id               String   @id @default(cuid())
+  pickupZip        String?
+  dropoffZip       String?
+  profile          String   @default("driving-car")
+  simplify         Boolean  @default(true)
+  inputCoordinates Json?
+  routeCoordinates Json?
+  error            String?
+  createdAt        DateTime @default(now())
+
+  @@map("route_requests")
+  @@index([createdAt])
+  @@index([pickupZip])
+  @@index([dropoffZip])
+}
+
+model AiRequestLog {
+  id         String   @id @default(cuid())
+  provider   String
+  model      String?
+  prompt     String
+  response   Json?
+  status     String
+  error      String?
+  durationMs Int?
+  createdAt  DateTime @default(now())
+
+  @@map("ai_request_logs")
+  @@index([createdAt])
+  @@index([provider])
+  @@index([status])
+}
+
+model Provider {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  serviceType String
+  rating      Float    @default(0)
+  serviceZips String[] @default([])
+  pricing     Json
+  services    String[] @default([])
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("providers")
+  @@index([serviceType])
+  @@index([status])
+}
+
+model AdminEvent {
+  id          String   @id @default(cuid())
+  action      String
+  requestBody Json?
+  result      Json?
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@map("admin_events")
+  @@index([createdAt])
+  @@index([action])
+}

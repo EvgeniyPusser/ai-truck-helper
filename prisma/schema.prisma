@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model HelperQuoteRequest {
+  id              String   @id @default(cuid())
+  pickupZip       String
+  dropoffZip      String
+  helpers         Float?
+  rooms           Float?
+  volume          Float?
+  moveDate        String?
+  request         Json
+  response        Json
+  resultCount     Int      @default(0)
+  selectedOfferId String?
+  aiStatus        String?
+  aiText          String?
+  aiModel         String?
+  aiError         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("helper_quote_requests")
+  @@index([createdAt])
+  @@index([pickupZip])
+  @@index([dropoffZip])
+}
+
+model ApiRequestLog {
+  id           String   @id @default(cuid())
+  method       String
+  path         String
+  statusCode   Int
+  durationMs   Int
+  origin       String?
+  ip           String?
+  userAgent    String?
+  query        Json?
+  requestBody  Json?
+  responseBody Json?
+  error        String?
+  createdAt    DateTime @default(now())
+
+  @@map("api_request_logs")
+  @@index([createdAt])
+  @@index([path])
+  @@index([statusCode])
+}

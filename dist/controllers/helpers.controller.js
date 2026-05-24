@@ -1,5 +1,6 @@
 import { getDb, isMongoConfigured } from "../db/mongo.js";
 import { askLocalAi, getAiText } from "../services/localAi.js";
+import { saveHelperQuoteRequest, updateHelperQuoteAnalysis, } from "../services/helperQuoteRequests.js";
 import { getPersistenceState } from "../services/persistenceState.js";
 import { findHelpers } from "../services/providers.js";
 const helperSaveToken = process.env.HELPER_SAVE_TOKEN || "";
@@ -86,6 +87,29 @@ async function analyzeAndSaveHelperRequest(id, request, result) {
         });
     }
 }
+async function analyzeAndSaveSupabaseRequest(id, request, result) {
+    if (!id)
+        return;
+    try {
+        const aiResponse = await askLocalAi(buildHelperAnalysisPrompt(request, result), {
+            temperature: 0.2,
+            maxTokens: 250,
+        });
+        const aiText = getAiText(aiResponse);
+        await updateHelperQuoteAnalysis(id, {
+            aiStatus: "completed",
+            aiText,
+            aiModel: aiResponse?.model || null,
+            aiError: null,
+        });
+    }
+    catch (error) {
+        await updateHelperQuoteAnalysis(id, {
+            aiStatus: "failed",
+            aiError: String(error?.message || error),
+        });
+    }
+}
 export async function getHelpers(req, res) {
     try {
         const { pickupZip, dropoffZip, helpers, volume, rooms, date } = req.body;
@@ -99,9 +123,14 @@ export async function getHelpers(req, res) {
         };
         console.log("Request data:", helperRequest);
         const result = await findHelpers(helperRequest);
+        const savedSupabaseRequest = await saveHelperQuoteRequest(helperRequest, result);
         const savedRequestId = await saveHelperRequest(req, helperRequest, result);
+        analyzeAndSaveSupabaseRequest(savedSupabaseRequest?.id, helperRequest, result);
         analyzeAndSaveHelperRequest(savedRequestId, helperRequest, result);
-        console.log("Response data:", result, { savedRequestId });
+        console.log("Response data:", result, {
+            savedRequestId,
+            savedSupabaseRequestId: savedSupabaseRequest?.id,
+        });
         res.json(result);
     }
     catch (err) {

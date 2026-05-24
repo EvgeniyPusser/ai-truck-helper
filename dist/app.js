@@ -6,6 +6,7 @@ import aiRoutes from "./routes/ai.routes.js";
 import providersRoutes from "./routes/providers.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import { getMongoHealth } from "./db/mongo.js";
+import { isPrismaConfigured, prisma } from "./db/prisma.js";
 const app = express();
 const allowedOrigins = [
     "http://localhost:5173",
@@ -38,7 +39,20 @@ app.use(cors({
 app.use(express.json({ limit: "2mb" }));
 app.get("/api/health", async (_req, res) => {
     const mongo = await getMongoHealth();
-    res.json({ status: "ok", service: "core", mongo });
+    const supabase = {
+        configured: isPrismaConfigured(),
+        connected: false,
+    };
+    if (prisma) {
+        try {
+            await prisma.$queryRaw `SELECT 1`;
+            supabase.connected = true;
+        }
+        catch (error) {
+            supabase.error = String(error?.message || error);
+        }
+    }
+    res.json({ status: "ok", service: "core", mongo, supabase });
 });
 app.use("/api/helpers", helpersRoutes);
 app.use("/api/maps", mapsRoutes);
