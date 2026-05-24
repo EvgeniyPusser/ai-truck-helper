@@ -150,7 +150,7 @@ export default function USAMap({ routeCoordinates = null }) {
       }
     })();
     return () => ac.abort();
-  }, [coordsORS, routeCoordinates]);
+  }, [coordsORS, routeCoordinates, routeUrl]);
 
   return (
     <MapContainer

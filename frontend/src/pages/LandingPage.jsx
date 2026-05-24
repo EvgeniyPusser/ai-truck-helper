@@ -60,7 +60,9 @@ const LandingPage = () => {
           if (Array.isArray(routeJson?.route?.coordinates))
             route = routeJson.route.coordinates;
         }
-      } catch {}
+      } catch (routeError) {
+        console.warn("route fetch failed:", routeError);
+      }
       navigate("/result", { state: { result: data, route } });
     } catch (e) {
       setError(e.message || "Request failed");
