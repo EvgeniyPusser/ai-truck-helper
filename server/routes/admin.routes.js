@@ -3,11 +3,6 @@ import {
   getPersistenceState,
   setSaveHelperRequests,
 } from "../services/persistenceState.js";
-import {
-  createPriceSample,
-  getPriceSampleStats,
-  listPriceSamples,
-} from "../services/priceSamples.js";
 
 const router = Router();
 
@@ -41,40 +36,6 @@ router.post("/persistence", (req, res) => {
   }
 
   return res.json(setSaveHelperRequests(req.body.saveHelperRequests));
-});
-
-router.get("/price-samples", async (req, res) => {
-  if (!isAuthorized(req)) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const samples = await listPriceSamples(req.query);
-    const stats = await getPriceSampleStats();
-    return res.json({ samples, stats });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Failed to load price samples",
-      details: String(error?.message || error),
-    });
-  }
-});
-
-router.post("/price-samples", async (req, res) => {
-  if (!isAuthorized(req)) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const sample = await createPriceSample(req.body);
-    return res.status(201).json({ sample });
-  } catch (error) {
-    return res.status(error.statusCode || 500).json({
-      error: error.statusCode ? error.message : "Failed to save price sample",
-      errors: error.errors,
-      details: String(error?.message || error),
-    });
-  }
 });
 
 export default router;
