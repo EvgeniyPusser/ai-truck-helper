@@ -8,22 +8,22 @@ datasource db {
 
 model HelperQuoteRequest {
   id              String   @id @default(cuid())
-  pickupZip       String
-  dropoffZip      String
+  pickupZip       String   @map("pickup_zip")
+  dropoffZip      String   @map("dropoff_zip")
   helpers         Float?
   rooms           Float?
   volume          Float?
-  moveDate        String?
+  moveDate        String?  @map("move_date")
   request         Json
   response        Json
-  resultCount     Int      @default(0)
-  selectedOfferId String?
-  aiStatus        String?
-  aiText          String?
-  aiModel         String?
-  aiError         String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  resultCount     Int      @default(0) @map("result_count")
+  selectedOfferId String?  @map("selected_offer_id")
+  aiStatus        String?  @map("ai_status")
+  aiText          String?  @map("ai_text")
+  aiModel         String?  @map("ai_model")
+  aiError         String?  @map("ai_error")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("helper_quote_requests")
   @@index([createdAt])
@@ -35,16 +35,16 @@ model ApiRequestLog {
   id           String   @id @default(cuid())
   method       String
   path         String
-  statusCode   Int
-  durationMs   Int
+  statusCode   Int      @map("status_code")
+  durationMs   Int      @map("duration_ms")
   origin       String?
   ip           String?
-  userAgent    String?
+  userAgent    String?  @map("user_agent")
   query        Json?
-  requestBody  Json?
-  responseBody Json?
+  requestBody  Json?    @map("request_body")
+  responseBody Json?    @map("response_body")
   error        String?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("api_request_logs")
   @@index([createdAt])
