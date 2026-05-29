@@ -25,24 +25,24 @@ import heroImg from "../assets/newWorldHero.png";
 const steps = [
   {
     icon: FaHeart,
-    title: "Сначала успокаиваем дом",
-    text: "Дети, питомцы, родители, бабушки и дедушки должны понимать: это не хаос, это новый маршрут для всей семьи.",
+    title: "Calm the house first",
+    text: "Kids, pets, parents, grandparents, favorite toys, old photos, tiny routines. A move feels easier when everyone knows this is still your home, just on its way to a new chapter.",
   },
   {
     icon: FaTasks,
-    title: "Потом собираем план",
-    text: "Что взять первым, что подписать, что отдать муверам, какие вопросы задать до того, как начались коробки.",
+    title: "Turn the mess into a plan",
+    text: "We help you think through what matters before the boxes take over: timing, rooms, fragile things, family needs, and the questions movers should answer clearly.",
   },
   {
     icon: FaBoxOpen,
-    title: "И только потом зовем исполнителей",
-    text: "Когда вы готовы доверить подбор нам, мы попросим ZIP, дату, размер переезда и запустим текущий подбор муверов.",
+    title: "Then we bring in the movers",
+    text: "When you are ready for us to help choose the crew, we ask for the ZIP codes, move date, and move size. That starts the same working quote flow you already know.",
   },
 ];
 
 const LandingPage = () => {
   return (
-    <Box w="100%" minH="100vh" bg="#fbfaf7" color="gray.900" overflowX="hidden">
+    <Box w="100%" minH="100vh" bg="#fffaf3" color="gray.900" overflowX="hidden">
       <Navbar />
 
       <Box
@@ -51,25 +51,25 @@ const LandingPage = () => {
         minH={["auto", "auto", "calc(100vh - 92px)"]}
         pt={["112px", "116px", "124px"]}
         pb={[10, 12, 16]}
-        bg="#101820"
+        bg="#17231e"
         overflow="hidden"
       >
         <Image
           src={heroImg}
-          alt="A hopeful new chapter after moving"
+          alt="A warm Los Angeles moving story"
           position="absolute"
           inset={0}
           w="100%"
           h="100%"
           objectFit="cover"
           objectPosition="center"
-          opacity={0.7}
+          opacity={0.78}
         />
-        <Box position="absolute" inset={0} bg="rgba(5, 9, 18, 0.58)" />
+        <Box position="absolute" inset={0} bg="rgba(12, 20, 17, 0.42)" />
         <Box
           position="absolute"
           inset={0}
-          bg="linear-gradient(90deg, rgba(5,9,18,0.92) 0%, rgba(5,9,18,0.72) 45%, rgba(5,9,18,0.26) 100%)"
+          bg="linear-gradient(90deg, rgba(18,25,22,0.92) 0%, rgba(18,25,22,0.70) 46%, rgba(18,25,22,0.18) 100%)"
         />
 
         <Flex
@@ -81,19 +81,19 @@ const LandingPage = () => {
           minH={["auto", "auto", "calc(100vh - 180px)"]}
           align="center"
         >
-          <VStack align="start" spacing={6} maxW="690px">
+          <VStack align="start" spacing={6} maxW="700px">
             <HStack
               spacing={3}
               px={4}
               py={2}
-              bg="rgba(255,255,255,0.12)"
-              border="1px solid rgba(255,255,255,0.24)"
+              bg="rgba(255,250,243,0.14)"
+              border="1px solid rgba(255,250,243,0.28)"
               borderRadius="full"
               color="white"
             >
-              <Icon as={FaHome} color="brand.300" />
+              <Icon as={FaHome} color="#f8bd66" />
               <Text fontSize="sm" fontWeight="bold">
-                Holy Move prepares the family before the movers arrive
+                Los Angeles moving help for real families
               </Text>
             </HStack>
 
@@ -104,21 +104,22 @@ const LandingPage = () => {
               lineHeight="0.98"
               fontWeight="black"
             >
-              Вы переезжаете?
-              <Text as="span" display="block" color="brand.300">
-                Катастрофа?
+              Moving?
+              <Text as="span" display="block" color="#f8bd66">
+                Feels like a disaster?
               </Text>
-              Есть решение.
+              There is a calmer way.
             </Heading>
 
-            <Text color="whiteAlpha.900" fontSize={["lg", "xl"]} lineHeight="1.65" maxW="620px">
-              Переезд может стать частью семейной истории. Не днем, когда
-              “наш дом” развалился на коробки, а моментом, где все держатся
-              вместе: дети, близкие, старшие родные, любимые вещи и новый адрес.
+            <Text color="whiteAlpha.900" fontSize={["lg", "xl"]} lineHeight="1.65" maxW="640px">
+              A move does not have to become the day your home fell apart into
+              boxes. It can become part of your family story: kids, pets, older
+              parents, favorite things, familiar voices, and the new address
+              waiting on the other side.
             </Text>
 
             <Text color="white" fontSize={["xl", "2xl"]} fontWeight="extrabold">
-              Наш дом едет с нами. Все будет хорошо.
+              Our home is moving with us. Everything is going to be okay.
             </Text>
 
             <HStack spacing={4} flexWrap="wrap">
@@ -128,12 +129,12 @@ const LandingPage = () => {
                 size="lg"
                 h="56px"
                 px={7}
-                bg="brand.500"
+                bg="#ff7a45"
                 color="white"
                 rightIcon={<Icon as={FaArrowRight} />}
-                _hover={{ bg: "brand.600", textDecoration: "none" }}
+                _hover={{ bg: "#ea6332", textDecoration: "none" }}
               >
-                Подберите нам муверов
+                Help us choose movers
               </Button>
               <Button
                 as="a"
@@ -146,39 +147,38 @@ const LandingPage = () => {
                 borderColor="whiteAlpha.700"
                 _hover={{ bg: "whiteAlpha.200", textDecoration: "none" }}
               >
-                Сначала подготовиться
+                First, make it feel manageable
               </Button>
             </HStack>
           </VStack>
         </Flex>
       </Box>
 
-      <Box id="story" bg="#fbfaf7" py={[12, 16, 20]} px={[4, 6, 8]}>
+      <Box id="story" bg="#fffaf3" py={[12, 16, 20]} px={[4, 6, 8]}>
         <Box maxW="1120px" mx="auto">
           <SimpleGrid columns={[1, 1, 2]} spacing={[8, 10, 14]} alignItems="center">
             <VStack align="start" spacing={5}>
-              <Text color="brand.600" fontWeight="black" letterSpacing="0.08em" fontSize="sm">
-                НЕ СРАЗУ ZIP. СНАЧАЛА ЧЕЛОВЕК.
+              <Text color="#c05621" fontWeight="black" letterSpacing="0.08em" fontSize="sm">
+                NOT ZIP CODES FIRST. PEOPLE FIRST.
               </Text>
-              <Heading as="h2" fontSize={["3xl", "4xl"]} lineHeight="1.1" color="navy.700">
-                Мы не начинаем с “сколько коробок”.
-                Мы начинаем с “что с вами происходит”.
+              <Heading as="h2" fontSize={["3xl", "4xl"]} lineHeight="1.1" color="#243b35">
+                Before we calculate the move, we help you understand the move.
               </Heading>
               <Text color="gray.700" fontSize="lg" lineHeight="1.8">
-                Переезд давит потому, что он выглядит как потеря контроля.
-                Holy Move превращает это в последовательность: увидеть новый
-                дом, собрать спокойный план, подготовить семью и только потом
-                подключить исполнителей.
+                Moving feels heavy because it looks like lost control. Holy Move
+                turns that feeling into a clear sequence: protect the family
+                rhythm, make a practical plan, then bring in movers when the
+                household is ready.
               </Text>
             </VStack>
 
             <Box
               bg="white"
               border="1px solid"
-              borderColor="gray.200"
+              borderColor="#eadfce"
               borderRadius="8px"
               p={[5, 7]}
-              shadow="0 18px 50px rgba(22, 28, 45, 0.10)"
+              shadow="0 18px 50px rgba(46, 37, 26, 0.10)"
             >
               <VStack align="stretch" spacing={5}>
                 {steps.map((step) => (
@@ -189,14 +189,14 @@ const LandingPage = () => {
                       flex="0 0 auto"
                       align="center"
                       justify="center"
-                      bg="brand.50"
-                      color="brand.600"
+                      bg="#fff1e8"
+                      color="#c05621"
                       borderRadius="8px"
                     >
                       <Icon as={step.icon} />
                     </Flex>
                     <Box>
-                      <Text fontWeight="extrabold" color="navy.700" mb={1}>
+                      <Text fontWeight="extrabold" color="#243b35" mb={1}>
                         {step.title}
                       </Text>
                       <Text color="gray.600" lineHeight="1.65">
@@ -211,7 +211,7 @@ const LandingPage = () => {
         </Box>
       </Box>
 
-      <Box bg="navy.700" color="white" py={[12, 14]} px={[4, 6, 8]}>
+      <Box bg="#243b35" color="white" py={[12, 14]} px={[4, 6, 8]}>
         <Flex
           maxW="1120px"
           mx="auto"
@@ -222,11 +222,11 @@ const LandingPage = () => {
         >
           <Box maxW="720px">
             <Heading as="h2" fontSize={["2xl", "3xl"]} mb={3}>
-              Готовы доверить подбор исполнителей нам?
+              Ready for us to help find the movers?
             </Heading>
             <Text color="whiteAlpha.850" fontSize="lg">
-              Тогда переходим к практической части: ZIP-коды, дата, размер
-              переезда и подбор подходящих муверов.
+              Then we move into the practical part: ZIP codes, date, move size,
+              and a working quote flow for matching the right moving help.
             </Text>
           </Box>
           <Button
@@ -235,12 +235,12 @@ const LandingPage = () => {
             size="lg"
             h="56px"
             px={7}
-            bg="brand.500"
+            bg="#ff7a45"
             color="white"
             rightIcon={<Icon as={FaArrowRight} />}
-            _hover={{ bg: "brand.600", textDecoration: "none" }}
+            _hover={{ bg: "#ea6332", textDecoration: "none" }}
           >
-            Перейти к подбору
+            Start the calculations
           </Button>
         </Flex>
       </Box>

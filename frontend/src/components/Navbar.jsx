@@ -81,8 +81,8 @@ const Navbar = () => (
             </Text>
           </HStack>
           <Box
-            as="a"
-            href="/quote"
+            as="button"
+            type="button"
             bg="brand.500"
             color="white"
             fontWeight="extrabold"
