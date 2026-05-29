@@ -1,286 +1,249 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
+  Button,
   Flex,
-  Image,
   Heading,
-  Text,
-  SimpleGrid,
-  Icon,
   HStack,
+  Icon,
+  Image,
+  SimpleGrid,
+  Text,
   VStack,
 } from "@chakra-ui/react";
-import dwarfImg from "../assets/myDwarf.png";
-import { useNavigate } from "react-router-dom";
-import { FaTruckMoving, FaStar, FaShieldAlt } from "react-icons/fa";
-import MoveForm from "../components/MoveForm";
+import {
+  FaArrowRight,
+  FaBoxOpen,
+  FaHeart,
+  FaHome,
+  FaTasks,
+} from "react-icons/fa";
 import Navbar from "../components/Navbar";
-import { health } from "../api/health";
-import { API_URL } from "../api/config";
+import heroImg from "../assets/newWorldHero.png";
 
-const HERO_BG =
-  "https://images.pexels.com/photos/6169661/pexels-photo-6169661.jpeg?auto=compress&cs=tinysrgb&w=1920";
+const steps = [
+  {
+    icon: FaHeart,
+    title: "Сначала успокаиваем дом",
+    text: "Дети, питомцы, родители, бабушки и дедушки должны понимать: это не хаос, это новый маршрут для всей семьи.",
+  },
+  {
+    icon: FaTasks,
+    title: "Потом собираем план",
+    text: "Что взять первым, что подписать, что отдать муверам, какие вопросы задать до того, как начались коробки.",
+  },
+  {
+    icon: FaBoxOpen,
+    title: "И только потом зовем исполнителей",
+    text: "Когда вы готовы доверить подбор нам, мы попросим ZIP, дату, размер переезда и запустим текущий подбор муверов.",
+  },
+];
 
 const LandingPage = () => {
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    health()
-      .then((r) => console.log("health:", r))
-      .catch((e) => console.error("health error:", e));
-  }, []);
-
-  const handleSubmit = async (formData) => {
-    try {
-      setError("");
-      const res = await fetch(`${API_URL}/api/helpers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`POST /api/helpers → ${res.status}. ${text}`);
-      }
-      const data = await res.json();
-      let route = null;
-      try {
-        const routeRes = await fetch(`${API_URL}/api/maps/route`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            pickupZip: formData.pickupZip,
-            dropoffZip: formData.dropoffZip,
-            profile: "driving-car",
-          }),
-        });
-        if (routeRes.ok) {
-          const routeJson = await routeRes.json();
-          if (Array.isArray(routeJson?.route?.coordinates))
-            route = routeJson.route.coordinates;
-        }
-      } catch (routeError) {
-        console.warn("route fetch failed:", routeError);
-      }
-      navigate("/result", { state: { result: data, route } });
-    } catch (e) {
-      setError(e.message || "Request failed");
-    }
-  };
-
   return (
-    <Box w="100%" minH="100vh" overflowX="hidden">
-
+    <Box w="100%" minH="100vh" bg="#fbfaf7" color="gray.900" overflowX="hidden">
       <Navbar />
 
-      {/* ── Hero ── */}
       <Box
+        as="main"
         position="relative"
-        w="100%"
-        minH="100vh"
-        pt="92px"
-        bgImage={`url('${HERO_BG}')`}
-        bgSize="cover"
-        bgPosition="center"
-        bg="navy.800"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
+        minH={["auto", "auto", "calc(100vh - 92px)"]}
+        pt={["112px", "116px", "124px"]}
+        pb={[10, 12, 16]}
+        bg="#101820"
         overflow="hidden"
       >
-        {/* Dark overlay — separate Box instead of _before (Chakra v2 compatible) */}
+        <Image
+          src={heroImg}
+          alt="A hopeful new chapter after moving"
+          position="absolute"
+          inset={0}
+          w="100%"
+          h="100%"
+          objectFit="cover"
+          objectPosition="center"
+          opacity={0.7}
+        />
+        <Box position="absolute" inset={0} bg="rgba(5, 9, 18, 0.58)" />
         <Box
           position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="rgba(8,16,40,0.82)"
-          zIndex={0}
+          inset={0}
+          bg="linear-gradient(90deg, rgba(5,9,18,0.92) 0%, rgba(5,9,18,0.72) 45%, rgba(5,9,18,0.26) 100%)"
         />
-        <Box
+
+        <Flex
           position="relative"
           zIndex={1}
-          w="100%"
-          maxW="1100px"
+          maxW="1180px"
+          mx="auto"
           px={[4, 6, 8]}
-          py={[8, 10, 12]}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
+          minH={["auto", "auto", "calc(100vh - 180px)"]}
+          align="center"
         >
-          {/* Headline row */}
-          <Flex
-            direction={["column", "column", "row"]}
-            align="center"
-            justify="center"
-            gap={[6, 8, 10]}
-            mb={[8, 10]}
-            w="100%"
-          >
-            {/* Gnome */}
-            <Box flexShrink={0} position="relative">
-              <Image
-                src={dwarfImg}
-                alt="Holy Move Gnome Mascot"
-                boxSize={["140px", "170px", "200px"]}
-                borderRadius="full"
-                border="4px solid"
-                borderColor="brand.500"
-                shadow="0 0 0 8px rgba(255,98,0,0.20), 0 20px 60px rgba(0,0,0,0.5)"
-              />
-              {/* Badge */}
-              <Box
-                position="absolute"
-                bottom="-8px"
-                left="50%"
-                transform="translateX(-50%)"
+          <VStack align="start" spacing={6} maxW="690px">
+            <HStack
+              spacing={3}
+              px={4}
+              py={2}
+              bg="rgba(255,255,255,0.12)"
+              border="1px solid rgba(255,255,255,0.24)"
+              borderRadius="full"
+              color="white"
+            >
+              <Icon as={FaHome} color="brand.300" />
+              <Text fontSize="sm" fontWeight="bold">
+                Holy Move prepares the family before the movers arrive
+              </Text>
+            </HStack>
+
+            <Heading
+              as="h1"
+              color="white"
+              fontSize={["4xl", "5xl", "6xl"]}
+              lineHeight="0.98"
+              fontWeight="black"
+            >
+              Вы переезжаете?
+              <Text as="span" display="block" color="brand.300">
+                Катастрофа?
+              </Text>
+              Есть решение.
+            </Heading>
+
+            <Text color="whiteAlpha.900" fontSize={["lg", "xl"]} lineHeight="1.65" maxW="620px">
+              Переезд может стать частью семейной истории. Не днем, когда
+              “наш дом” развалился на коробки, а моментом, где все держатся
+              вместе: дети, близкие, старшие родные, любимые вещи и новый адрес.
+            </Text>
+
+            <Text color="white" fontSize={["xl", "2xl"]} fontWeight="extrabold">
+              Наш дом едет с нами. Все будет хорошо.
+            </Text>
+
+            <HStack spacing={4} flexWrap="wrap">
+              <Button
+                as={RouterLink}
+                to="/quote"
+                size="lg"
+                h="56px"
+                px={7}
                 bg="brand.500"
                 color="white"
-                fontSize="10px"
-                fontWeight="extrabold"
-                px={3}
-                py={1}
-                borderRadius="full"
-                whiteSpace="nowrap"
-                letterSpacing="0.06em"
+                rightIcon={<Icon as={FaArrowRight} />}
+                _hover={{ bg: "brand.600", textDecoration: "none" }}
               >
-                YOUR MOVE BUDDY
-              </Box>
-            </Box>
-
-            {/* Text */}
-            <VStack
-              align={["center", "center", "start"]}
-              spacing={4}
-              textAlign={["center", "center", "left"]}
-            >
-              <HStack spacing={1}>
-                {[...Array(5)].map((_, i) => (
-                  <Icon key={i} as={FaStar} color="brand.400" boxSize={4} />
-                ))}
-                <Text color="whiteAlpha.800" fontSize="sm" ml={2}>
-                  Trusted by 1,000+ families
-                </Text>
-              </HStack>
-
-              <Heading
-                as="h1"
-                fontSize={["3xl", "4xl", "5xl", "6xl"]}
-                fontWeight="extrabold"
+                Подберите нам муверов
+              </Button>
+              <Button
+                as="a"
+                href="#story"
+                size="lg"
+                h="56px"
+                px={7}
+                variant="outline"
                 color="white"
-                lineHeight="1.05"
-                letterSpacing="tight"
+                borderColor="whiteAlpha.700"
+                _hover={{ bg: "whiteAlpha.200", textDecoration: "none" }}
               >
-                MOVING MADE{" "}
-                <Text as="span" color="brand.400">
-                  SIMPLE.
-                </Text>
-              </Heading>
+                Сначала подготовиться
+              </Button>
+            </HStack>
+          </VStack>
+        </Flex>
+      </Box>
 
-              <Text
-                fontSize={["lg", "xl", "2xl"]}
-                fontWeight="bold"
-                color="whiteAlpha.900"
-                lineHeight="1.3"
-              >
-                Instant price. Route. Truck info.
-                <br />
-                <Text as="span" color="brand.300" fontWeight="normal" fontSize={["md", "lg"]}>
-                  Enter your ZIP — get a quote in seconds.
-                </Text>
+      <Box id="story" bg="#fbfaf7" py={[12, 16, 20]} px={[4, 6, 8]}>
+        <Box maxW="1120px" mx="auto">
+          <SimpleGrid columns={[1, 1, 2]} spacing={[8, 10, 14]} alignItems="center">
+            <VStack align="start" spacing={5}>
+              <Text color="brand.600" fontWeight="black" letterSpacing="0.08em" fontSize="sm">
+                НЕ СРАЗУ ZIP. СНАЧАЛА ЧЕЛОВЕК.
+              </Text>
+              <Heading as="h2" fontSize={["3xl", "4xl"]} lineHeight="1.1" color="navy.700">
+                Мы не начинаем с “сколько коробок”.
+                Мы начинаем с “что с вами происходит”.
+              </Heading>
+              <Text color="gray.700" fontSize="lg" lineHeight="1.8">
+                Переезд давит потому, что он выглядит как потеря контроля.
+                Holy Move превращает это в последовательность: увидеть новый
+                дом, собрать спокойный план, подготовить семью и только потом
+                подключить исполнителей.
               </Text>
             </VStack>
-          </Flex>
 
-          {/* ── Form Card ── */}
-          <Box
-            id="quote-form"
-            w="100%"
-            maxW="860px"
-            bg="white"
-            rounded="2xl"
-            shadow="0 24px 80px rgba(0,0,0,0.5)"
-            overflow="hidden"
-          >
-            {/* Card header stripe */}
-            <Flex bg="navy.600" px={6} py={3} align="center" gap={3}>
-              <Icon as={FaTruckMoving} color="brand.400" boxSize={5} />
-              <Text color="white" fontWeight="extrabold" fontSize="md" letterSpacing="wide">
-                GET YOUR FREE INSTANT QUOTE
-              </Text>
-            </Flex>
-
-            <Box p={[5, 7]}>
-              <MoveForm onSubmit={handleSubmit} />
-              {error && (
-                <Box
-                  bg="red.50"
-                  border="1px solid"
-                  borderColor="red.200"
-                  color="red.700"
-                  p={3}
-                  rounded="lg"
-                  mt={4}
-                  fontSize="sm"
-                >
-                  {error}
-                </Box>
-              )}
+            <Box
+              bg="white"
+              border="1px solid"
+              borderColor="gray.200"
+              borderRadius="8px"
+              p={[5, 7]}
+              shadow="0 18px 50px rgba(22, 28, 45, 0.10)"
+            >
+              <VStack align="stretch" spacing={5}>
+                {steps.map((step) => (
+                  <HStack key={step.title} align="start" spacing={4}>
+                    <Flex
+                      w="42px"
+                      h="42px"
+                      flex="0 0 auto"
+                      align="center"
+                      justify="center"
+                      bg="brand.50"
+                      color="brand.600"
+                      borderRadius="8px"
+                    >
+                      <Icon as={step.icon} />
+                    </Flex>
+                    <Box>
+                      <Text fontWeight="extrabold" color="navy.700" mb={1}>
+                        {step.title}
+                      </Text>
+                      <Text color="gray.600" lineHeight="1.65">
+                        {step.text}
+                      </Text>
+                    </Box>
+                  </HStack>
+                ))}
+              </VStack>
             </Box>
-          </Box>
+          </SimpleGrid>
         </Box>
       </Box>
 
-      {/* ── Trust Bar ── */}
-      <Box
-        bg="gray.50"
-        borderTop="1px solid"
-        borderColor="gray.200"
-        py={10}
-        px={[4, 6]}
-      >
-        <SimpleGrid
-          columns={[1, 3]}
-          spacing={8}
-          maxW="860px"
+      <Box bg="navy.700" color="white" py={[12, 14]} px={[4, 6, 8]}>
+        <Flex
+          maxW="1120px"
           mx="auto"
-          textAlign="center"
+          align={["start", "start", "center"]}
+          justify="space-between"
+          gap={6}
+          direction={["column", "column", "row"]}
         >
-          <VStack spacing={2}>
-            <Icon as={FaTruckMoving} boxSize={8} color="brand.500" />
-            <Text fontSize="3xl" fontWeight="extrabold" color="navy.600" lineHeight="1">
-              1,000+
+          <Box maxW="720px">
+            <Heading as="h2" fontSize={["2xl", "3xl"]} mb={3}>
+              Готовы доверить подбор исполнителей нам?
+            </Heading>
+            <Text color="whiteAlpha.850" fontSize="lg">
+              Тогда переходим к практической части: ZIP-коды, дата, размер
+              переезда и подбор подходящих муверов.
             </Text>
-            <Text fontSize="sm" color="gray.600" fontWeight="semibold" textTransform="uppercase" letterSpacing="wide">
-              Moves Completed
-            </Text>
-          </VStack>
-
-          <VStack spacing={2}>
-            <Icon as={FaStar} boxSize={8} color="brand.500" />
-            <Text fontSize="3xl" fontWeight="extrabold" color="navy.600" lineHeight="1">
-              4.9 ★
-            </Text>
-            <Text fontSize="sm" color="gray.600" fontWeight="semibold" textTransform="uppercase" letterSpacing="wide">
-              Average Rating
-            </Text>
-          </VStack>
-
-          <VStack spacing={2}>
-            <Icon as={FaShieldAlt} boxSize={8} color="brand.500" />
-            <Text fontSize="3xl" fontWeight="extrabold" color="navy.600" lineHeight="1">
-              100%
-            </Text>
-            <Text fontSize="sm" color="gray.600" fontWeight="semibold" textTransform="uppercase" letterSpacing="wide">
-              Licensed & Insured
-            </Text>
-          </VStack>
-        </SimpleGrid>
+          </Box>
+          <Button
+            as={RouterLink}
+            to="/quote"
+            size="lg"
+            h="56px"
+            px={7}
+            bg="brand.500"
+            color="white"
+            rightIcon={<Icon as={FaArrowRight} />}
+            _hover={{ bg: "brand.600", textDecoration: "none" }}
+          >
+            Перейти к подбору
+          </Button>
+        </Flex>
       </Box>
-
     </Box>
   );
 };

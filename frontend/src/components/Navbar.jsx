@@ -82,7 +82,7 @@ const Navbar = () => (
           </HStack>
           <Box
             as="a"
-            href="/"
+            href="/quote"
             bg="brand.500"
             color="white"
             fontWeight="extrabold"
@@ -95,7 +95,7 @@ const Navbar = () => (
             transition="all 0.2s"
             whiteSpace="nowrap"
           >
-            NEW QUOTE
+            FIND MOVERS
           </Box>
         </HStack>
       </Flex>
