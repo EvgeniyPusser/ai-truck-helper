@@ -1,4 +1,5 @@
 import { prisma } from "../db/prisma.js";
+import { toPrismaJson } from "./json.js";
 function numberOrNull(value) {
     const number = Number(value);
     return Number.isFinite(number) ? number : null;
@@ -15,8 +16,8 @@ export async function saveHelperQuoteRequest(request, response) {
                 rooms: numberOrNull(request.rooms),
                 volume: numberOrNull(request.volume),
                 moveDate: request.date || null,
-                request,
-                response,
+                request: toPrismaJson(request),
+                response: toPrismaJson(response),
                 resultCount: Array.isArray(response) ? response.length : 0,
                 aiStatus: "pending",
             },

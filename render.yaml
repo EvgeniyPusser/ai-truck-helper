@@ -11,6 +11,10 @@ services:
         sync: false          # set manually in Render dashboard
       - key: OPENROUTER_API_KEY
         sync: false          # set manually in Render dashboard if /api/ai-local is used
+      - key: DATABASE_URL
+        sync: false          # set manually in Render dashboard; required for Prisma writes
+      - key: DIRECT_URL
+        sync: false          # optional direct Postgres URL for Prisma CLI/db push
       - key: MONGODB_DISABLED
         value: "true"
       - key: MONGODB_DB_NAME

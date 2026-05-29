@@ -7,6 +7,7 @@ import providersRoutes from "./routes/providers.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import { getMongoHealth } from "./db/mongo.js";
 import { isPrismaConfigured, prisma } from "./db/prisma.js";
+import { apiRequestLogger } from "./services/apiRequestLogs.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(
   })
 );
 app.use(express.json({ limit: "2mb" }));
+app.use(apiRequestLogger);
 
 app.get("/api/health", async (_req, res) => {
   const mongo = await getMongoHealth();

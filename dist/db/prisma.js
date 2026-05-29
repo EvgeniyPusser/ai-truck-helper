@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 const globalForPrisma = globalThis;
 function getConnectionString() {
-    return process.env.DATABASE_URL || process.env.DIRECT_URL || "";
+    return process.env.DATABASE_URL || process.env.DIRECT_URL || process.env.DB_URL || "";
 }
 export function isPrismaConfigured() {
     return Boolean(getConnectionString());

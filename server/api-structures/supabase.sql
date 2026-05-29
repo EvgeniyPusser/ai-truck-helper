@@ -5,45 +5,45 @@ create table if not exists api_request_logs (
   id text primary key,
   method text not null,
   path text not null,
-  status_code integer not null,
-  duration_ms integer not null,
+  "statusCode" integer not null,
+  "durationMs" integer not null,
   origin text,
   ip text,
-  user_agent text,
+  "userAgent" text,
   query jsonb,
-  request_body jsonb,
-  response_body jsonb,
+  "requestBody" jsonb,
+  "responseBody" jsonb,
   error text,
-  created_at timestamptz not null default now()
+  "createdAt" timestamptz not null default now()
 );
 
-create index if not exists api_request_logs_created_at_idx on api_request_logs (created_at);
+create index if not exists api_request_logs_created_at_idx on api_request_logs ("createdAt");
 create index if not exists api_request_logs_path_idx on api_request_logs (path);
-create index if not exists api_request_logs_status_code_idx on api_request_logs (status_code);
+create index if not exists api_request_logs_status_code_idx on api_request_logs ("statusCode");
 
 create table if not exists helper_quote_requests (
   id text primary key,
-  pickup_zip text not null,
-  dropoff_zip text not null,
+  "pickupZip" text not null,
+  "dropoffZip" text not null,
   helpers double precision,
   rooms double precision,
   volume double precision,
-  move_date text,
+  "moveDate" text,
   request jsonb not null,
   response jsonb not null,
-  result_count integer not null default 0,
-  selected_offer_id text,
-  ai_status text,
-  ai_text text,
-  ai_model text,
-  ai_error text,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  "resultCount" integer not null default 0,
+  "selectedOfferId" text,
+  "aiStatus" text,
+  "aiText" text,
+  "aiModel" text,
+  "aiError" text,
+  "createdAt" timestamptz not null default now(),
+  "updatedAt" timestamptz not null default now()
 );
 
-create index if not exists helper_quote_requests_created_at_idx on helper_quote_requests (created_at);
-create index if not exists helper_quote_requests_pickup_zip_idx on helper_quote_requests (pickup_zip);
-create index if not exists helper_quote_requests_dropoff_zip_idx on helper_quote_requests (dropoff_zip);
+create index if not exists helper_quote_requests_created_at_idx on helper_quote_requests ("createdAt");
+create index if not exists helper_quote_requests_pickup_zip_idx on helper_quote_requests ("pickupZip");
+create index if not exists helper_quote_requests_dropoff_zip_idx on helper_quote_requests ("dropoffZip");
 
 create table if not exists route_requests (
   id text primary key,

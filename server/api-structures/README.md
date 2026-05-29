@@ -1,9 +1,9 @@
 # API Data Structures
 
-These files describe the future Supabase/Postgres data layer for the existing API.
-They are intentionally not imported by the running server yet.
+These files describe the Supabase/Postgres data layer for the existing API.
+Prisma is now wired into the running server for helper quote requests and API request logs.
 
-Use this folder as a staging area before wiring Prisma into the app.
+Use Prisma as the source of truth for applied schema changes.
 
 Current API surfaces covered:
 
@@ -23,4 +23,4 @@ Planned database tables:
 - `providers`: provider catalog currently backed by Mongo when enabled.
 - `admin_events`: admin changes such as persistence toggles.
 
-No runtime code uses these files yet.
+Runtime code currently writes `api_request_logs` and `helper_quote_requests`.
