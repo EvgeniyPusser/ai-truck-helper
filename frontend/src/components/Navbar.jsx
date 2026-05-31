@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { Box, Flex, Image, Text, HStack, VStack, Icon } from "@chakra-ui/react";
 import { FaPhone } from "react-icons/fa";
 import dwarfImg from "../assets/myDwarf.png";
@@ -81,8 +82,8 @@ const Navbar = () => (
             </Text>
           </HStack>
           <Box
-            as="a"
-            href="/quote"
+            as={RouterLink}
+            to="/quote"
             bg="brand.500"
             color="white"
             fontWeight="extrabold"
