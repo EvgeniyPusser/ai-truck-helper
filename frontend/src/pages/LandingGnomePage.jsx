@@ -274,6 +274,15 @@ const LandingGnomePage = () => {
               2026 Holy Move. Made with love for families in Los Angeles.
             </Text>
             <HStack spacing={6}>
+              <Text
+                as={RouterLink}
+                to="/privacy"
+                fontSize="xs"
+                color="gray.500"
+                _hover={{ color: "brand.600", textDecoration: "underline" }}
+              >
+                Privacy Policy
+              </Text>
               <Icon as={FaHeart} color="red.400" />
               <Text fontSize="xs">EN | HE | RU | ES | YI</Text>
             </HStack>
