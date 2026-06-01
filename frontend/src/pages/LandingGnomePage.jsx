@@ -28,6 +28,7 @@ import {
   FaLanguage,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import GnomeVision from "../components/GnomeVision";
 import heroImg from "../assets/newWorldHero.png";
 
 const contactHref = "mailto:hello@holymove.ai?subject=Holy%20Move%20early%20access";
@@ -139,6 +140,8 @@ const LandingGnomePage = () => {
                 </Text>
               </HStack>
             </Box>
+
+            <GnomeVision />
           </VStack>
 
           <Box flex={1} position="relative">
