@@ -26,6 +26,10 @@ dist-ssr
 # Environment files — .env.production is committed (no secrets, only public API URL)
 .env
 .env.local
+.meta-user-data/
+.meta-post-schedule.json
+__pycache__/
+*.py[cod]
 
 # Frontend build
 frontend/dist
