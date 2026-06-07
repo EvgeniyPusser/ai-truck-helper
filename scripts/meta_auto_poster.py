@@ -10,6 +10,7 @@ IMAGE_ROOT = PROJECT_ROOT / "content" / "images" / "TravelSlydeShow"
 USER_DATA_DIR = PROJECT_ROOT / ".meta-user-data"
 SCHEDULE_STATE_FILE = PROJECT_ROOT / ".meta-post-schedule.json"
 INTERVAL_DAYS = 3
+POST_INTERVAL_DAYS = [4, 3, 3, 3, 3, 3]
 FACEBOOK_PAGE_ID = "61579990136292"
 FACEBOOK_PAGE_URL = f"https://www.facebook.com/profile.php?id={FACEBOOK_PAGE_ID}"
 INSTAGRAM_USERNAME = "holymovela"
@@ -162,9 +163,11 @@ def print_schedule(schedule=None):
     print(f"Следующий пост: {next_index + 1} — {POSTS[next_index]['title']}")
     print(f"Срок публикации: {next_due:%d.%m.%Y %H:%M %Z}")
     print("Последующие публикации:")
+    due = next_due
     for index in range(next_index, len(POSTS)):
-        due = next_due + timedelta(days=INTERVAL_DAYS * (index - next_index))
         print(f"  {index + 1}: {due:%d.%m.%Y %H:%M} — {POSTS[index]['title']}")
+        if index < len(POSTS) - 1:
+            due += timedelta(days=POST_INTERVAL_DAYS[index])
 
 
 def load_playwright():
@@ -259,7 +262,9 @@ async def publish_due_post():
         schedule["completed"] = True
     else:
         schedule["next_post_index"] = next_index
-        schedule["next_due"] = (datetime.now().astimezone() + timedelta(days=INTERVAL_DAYS)).isoformat(timespec="seconds")
+        schedule["next_due"] = (
+            datetime.now().astimezone() + timedelta(days=POST_INTERVAL_DAYS[index])
+        ).isoformat(timespec="seconds")
     save_schedule(schedule)
     print_schedule(schedule)
 
