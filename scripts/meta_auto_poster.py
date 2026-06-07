@@ -10,7 +10,7 @@ IMAGE_ROOT = PROJECT_ROOT / "content" / "images" / "TravelSlydeShow"
 USER_DATA_DIR = PROJECT_ROOT / ".meta-user-data"
 SCHEDULE_STATE_FILE = PROJECT_ROOT / ".meta-post-schedule.json"
 INTERVAL_DAYS = 3
-POST_INTERVAL_DAYS = [4, 4, 3, 3, 4, 3]
+POST_INTERVAL_DAYS = [4, 4, 3, 3, 3, 3]
 FACEBOOK_PAGE_ID = "61579990136292"
 FACEBOOK_PAGE_URL = f"https://www.facebook.com/profile.php?id={FACEBOOK_PAGE_ID}"
 INSTAGRAM_USERNAME = "holymovela"
