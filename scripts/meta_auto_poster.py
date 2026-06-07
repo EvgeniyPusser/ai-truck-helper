@@ -106,6 +106,8 @@ def parse_args():
     parser.add_argument("--list", action="store_true", help="List configured posts.")
     parser.add_argument("--init-schedule", action="store_true", help="Start a schedule whose first post is due in 3 days.")
     parser.add_argument("--run-due", action="store_true", help="Publish the next post only when its scheduled time is due.")
+    parser.add_argument("--remind-due", action="store_true", help="Show a reminder one hour before the next post.")
+    parser.add_argument("--rehearse-next", action="store_true", help="Open and fill the next scheduled post without publishing.")
     parser.add_argument("--status", action="store_true", help="Show schedule status.")
     return parser.parse_args()
 
@@ -168,6 +170,30 @@ def print_schedule(schedule=None):
         print(f"  {index + 1}: {due:%d.%m.%Y %H:%M} — {POSTS[index]['title']}")
         if index < len(POSTS) - 1:
             due += timedelta(days=POST_INTERVAL_DAYS[index])
+
+
+def show_reminder_if_due():
+    schedule = load_schedule()
+    if not schedule or schedule["completed"]:
+        return
+
+    due = datetime.fromisoformat(schedule["next_due"])
+    now = datetime.now().astimezone()
+    reminder_time = due - timedelta(hours=1)
+    if reminder_time <= now < due:
+        index = schedule["next_post_index"]
+        message = (
+            f"Через час, в {due:%H:%M}, будет опубликован пост {index + 1}: "
+            f"{POSTS[index]['title']}. Для репетиции запустите:\n"
+            "python scripts/meta_auto_poster.py --rehearse-next"
+        )
+        print(message)
+        try:
+            import ctypes
+
+            ctypes.windll.user32.MessageBoxW(0, message, "Holy Move: публикация через час", 0x40)
+        except (AttributeError, OSError):
+            pass
 
 
 def load_playwright():
@@ -269,6 +295,22 @@ async def publish_due_post():
     print_schedule(schedule)
 
 
+async def rehearse_next_post():
+    schedule = load_schedule()
+    if not schedule:
+        print("Расписание отсутствует. Сначала выполните --init-schedule.")
+        return
+    if schedule["completed"]:
+        print("Все посты уже опубликованы.")
+        return
+
+    index = schedule["next_post_index"]
+    post = POSTS[index]
+    print(f"Репетиция поста {index + 1}: {post['title']}")
+    print("Публикация не произойдет: кнопка Publish нажата не будет.")
+    await open_meta(post, publish=False)
+
+
 async def login_only():
     async_playwright = load_playwright()
 
@@ -307,6 +349,12 @@ def main():
         if not args.publish:
             raise SystemExit("--run-due требует явный флаг --publish")
         asyncio.run(publish_due_post())
+        return
+    if args.remind_due:
+        show_reminder_if_due()
+        return
+    if args.rehearse_next:
+        asyncio.run(rehearse_next_post())
         return
     if args.login:
         asyncio.run(login_only())
