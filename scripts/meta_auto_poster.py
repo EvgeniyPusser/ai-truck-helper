@@ -124,7 +124,7 @@ def print_posts():
 def load_schedule():
     if not SCHEDULE_STATE_FILE.is_file():
         return None
-    return json.loads(SCHEDULE_STATE_FILE.read_text(encoding="utf-8"))
+    return json.loads(SCHEDULE_STATE_FILE.read_text(encoding="utf-8-sig"))
 
 
 def save_schedule(schedule):
