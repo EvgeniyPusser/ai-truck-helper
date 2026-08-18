@@ -30,6 +30,9 @@ dist-ssr
 .meta-post-schedule.json
 __pycache__/
 *.py[cod]
+.env.*.local
+frontend/.env.local
+frontend/.env.*.local
 
 # Frontend build
 frontend/dist
